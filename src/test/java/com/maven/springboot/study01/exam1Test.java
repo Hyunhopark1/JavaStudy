@@ -39,6 +39,7 @@ public class exam1Test {
             math.subTest1(2330,50002);
         });
         System.out.println(exception.toString());
+
     }
     @Test
     public void multiply001() throws Exception{
@@ -52,6 +53,24 @@ public class exam1Test {
         assertThatThrownBy(() -> math.mathTest2(-1,10)).isInstanceOf(Exception.class);
 
         assertThatThrownBy(() -> math.mathTest2(2,103)).isInstanceOf(Exception.class);
+
+
+
+    }
+    @Test
+    public void compare001() throws Exception{
+        //given
+        MathExam math=new MathExam();
+        //when
+        //then
+        assertThat(1).isEqualTo(math.mathTest4(3,3));
+        assertThat(-1).isEqualTo(math.mathTest4(27 ,19));
+
+        assertThatThrownBy(() -> math.mathTest4(-1,-1)).isInstanceOf(Exception.class);
+
+        assertThatThrownBy(() -> math.mathTest4(10001,10001)).isInstanceOf(Exception.class);
+
+        System.out.println(math.mathTest4(2,2));
     }
 
 
