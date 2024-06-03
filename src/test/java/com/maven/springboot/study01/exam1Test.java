@@ -25,10 +25,10 @@ public class exam1Test {
 
 
 //        //assertThat(actual).isEqualTo(expected).describedAs("실제값과 다름");
-        assertThat(29).isLessThan(math.subTest1(100,70));
-        assertThat(98).isEqualTo(math.subTest1(100,2));
-        assertThat(3).isEqualTo(math.subTest1(10,7));
-        assertThat(301).isGreaterThan(math.subTest1(1000,700));
+        assertThat(math.subTest1(100,70)).isLessThan(29);
+        assertThat(math.subTest1(100,2)).isEqualTo(98);
+        assertThat(math.subTest1(10,7)).isEqualTo(3);
+        assertThat(math.subTest1(1000,700)).isGreaterThan(301);
 
         //Exception 예외가 발생해야지만 정상 동작으로 인식
         assertThatThrownBy(() -> math.subTest1(70000,7)).isInstanceOf(Exception.class);
@@ -47,8 +47,8 @@ public class exam1Test {
         MathExam math=new MathExam();
         //when
         //then
-        assertThat(12).isEqualTo(math.mathTest2(3,4));
-        assertThat(513).isEqualTo(math.mathTest2(27 ,19));
+        assertThat(math.mathTest2(3,4)).isEqualTo(12);
+        assertThat(math.mathTest2(27 ,19)).isEqualTo(513);
 
         assertThatThrownBy(() -> math.mathTest2(-1,10)).isInstanceOf(Exception.class);
 
@@ -63,8 +63,8 @@ public class exam1Test {
         MathExam math=new MathExam();
         //when
         //then
-        assertThat(1).isEqualTo(math.mathTest4(3,3));
-        assertThat(-1).isEqualTo(math.mathTest4(27 ,19));
+        assertThat(math.mathTest4(3,3)).isEqualTo(1);
+        assertThat(math.mathTest4(27 ,19)).isEqualTo(-1);
 
         assertThatThrownBy(() -> math.mathTest4(-1,-1)).isInstanceOf(Exception.class);
 
@@ -73,7 +73,50 @@ public class exam1Test {
         System.out.println(math.mathTest4(2,2));
     }
 
+    @Test
+    public void exam120817() throws Exception{
+        MathExam math=new MathExam();
 
+        int[] numbers={1,2,3,4,5,6,7,8,9,10};
+        assertThat(math.mathTest120817(numbers)).isEqualTo(5.5);
+
+
+        Throwable exception = assertThrows(Exception.class, () ->{
+            math.mathTest120817(new int[]{0,1000,3000});
+        });
+        System.out.println(exception.toString());
+
+        exception=assertThrows(Exception.class, () -> math.mathTest120817(new int[]{}));
+        System.out.println(exception.toString());
+
+
+    }
+    @Test
+    public void exam120829() throws Exception{
+        MathExam math=new MathExam();
+
+        int angle=135;
+        assertThat(math.mathTest120829(angle)).isEqualTo(3);
+
+    }
+    @Test
+    public void exam120831() throws Exception{
+        MathExam math=new MathExam();
+
+        int n=10;
+        assertThat(math.mathTest120831(n)).isEqualTo(30);
+
+    }
+    /*
+    @Test
+    public void exam120830() throws Exception{
+        MathExam math=new MathExam();
+        //n은 1개당 12000 / k는 1개당 2000
+        int n=8,k=2;
+
+        assertThat(math.mathTest120830(n,k)).isEqualTo(1000);
+    }
+    */
 
 
 }
