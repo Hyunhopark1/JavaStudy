@@ -95,8 +95,8 @@ public class exam1Test {
     public void exam120829() throws Exception{
         MathExam math=new MathExam();
 
-        int angle=135;
-        assertThat(math.mathTest120829(angle)).isEqualTo(3);
+        int angle=180;
+        assertThat(math.mathTest120829(angle)).isEqualTo(4);
 
     }
     @Test
@@ -114,10 +114,44 @@ public class exam1Test {
         //n은 1개당 12000 / k는 1개당 2000
         int n=12,k=3;
 
-        assertThat(math.mathTest120830(n,k)).isEqualTo(150000);
+        assertThat(math.mathTest120830(n,k)).isEqualTo(148000);
     }
 
+    @Test
+    public void exam120820() throws Exception{
+        System.out.println("exam120820");
+        MathExam math=new MathExam();
 
+        assertThat(math.mathTest120820(26)).isEqualTo(1999);
+        Throwable exception=assertThrows(Exception.class, () ->math.mathTest120820(153));
+        System.out.println(exception.toString());
+    }
+
+    @Test
+    public void exam120806() throws Exception{
+        System.out.println("exam120806");
+        MathExam math=new MathExam();
+
+        assertThat(math.mathTest120806(1,16)).isEqualTo(62);
+    }
+    @Test
+    public void exam120847() throws Exception{
+        System.out.println("exam120847");
+        MathExam math=new MathExam();
+
+        int[] numbers={1,2,3,4,5};
+
+        assertThat(math.mathTest120847(numbers)).isEqualTo(20);
+    }
+    @Test
+    public void exam120583() throws Exception{
+        System.out.println("exam120583");
+        MathExam math=new MathExam();
+
+        int[] numbers={1,1,2,3,4,5};
+
+        assertThat(math.mathTest120583(numbers,1)).isEqualTo(2);
+    }
 
 }
 
