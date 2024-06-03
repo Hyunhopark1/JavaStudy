@@ -152,6 +152,32 @@ public class exam1Test {
 
         assertThat(math.mathTest120583(numbers,1)).isEqualTo(2);
     }
+    @Test
+    public void exam120585() throws Exception{
+        System.out.println("exam120585");
+        MathExam math=new MathExam();
+
+        int[] numbers={195,199,157,163};
+
+        assertThat(math.mathTest120585(numbers,175)).isEqualTo(2);
+    }
+    @Test
+    public void exam120811() throws Exception{
+        System.out.println("exam120811");
+        MathExam math=new MathExam();
+
+        int[] numbers={1,3,5,7,9};
+
+        assertThat(math.mathTest120811(numbers)).isEqualTo(5);
+    }
+    @Test
+    public void exam120813() throws Exception{
+        System.out.println("exam120813");
+        MathExam math=new MathExam();
+
+        int[] expected={1, 3, 5, 7};
+        assertThat(math.mathTest120813(8)).isEqualTo(expected);
+    }
 
 }
 

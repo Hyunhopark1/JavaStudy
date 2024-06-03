@@ -99,11 +99,12 @@ public class MathExam {
         if (n < 0 || n > 1000) {
             throw new Exception("n은 0보다 크고 1000이하값 이어야 합니다 ");
         }
-        while (n != 0) {
-            if (n % 2 == 0) {
-                ans += n;
-            }
+        if (n % 2 != 0) {
             n--;
+        }
+        while (n > 0) {
+            ans += n;
+            n -= 2;
         }
         return ans;
     }
@@ -181,20 +182,84 @@ public class MathExam {
         }
         for (int arr : array) {
             if (arr < 0 || arr > 1000) {
-                throw new Exception("배열의 원소는 0~1000");
+                throw new Exception(String.format("[%d]는 배열의 크기를 벗어났습니다", n));
             }
         }
-        if(n<0 || n>1000){
+        if (n < 0 || n > 1000) {
             throw new Exception("n은 0~1000");
         }
 
-        int ans=0;
-        for(int arr: array){
-            if(arr==n){
+        int ans = 0;
+        for (int arr : array) {
+            if (arr == n) {
                 ans++;
             }
         }
         return ans;
+    }
+
+    //머쓱이
+    public int mathTest120585(int[] array, int height) throws Exception {
+        if (array.length < 1 || array.length > 100) {
+            throw new Exception("배열의 길이 1~100");
+        }
+        if (height < 1 || height > 200) {
+            throw new Exception(String.format("[%d]는 1~200을 벗어났습니다", height));
+        }
+
+        int ans = 0;
+
+        for (int arr : array) {
+            if (arr < 1 || arr > 200) {
+                throw new Exception(String.format("[%d]는 1~200을 벗어났습니다", arr));
+            }
+
+            if (arr > height) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    //중앙값 구하기
+    public int mathTest120811(int[] array) throws Exception {
+        if (array.length < 0 || array.length > 100) {
+            throw new Exception(String.format("[%d]는 1~100을 벗어났습니다.", array.length));
+        }
+        if (array.length % 2 == 0) {
+            throw new Exception("배열의 길이는 홀수여야 합니다");
+        }
+        for (int arr : array) {
+            if (arr < -1000 || arr > 1000) {
+                throw new Exception("배열의 원소값은 -1000~1000");
+            }
+        }
+        Arrays.sort(array);
+
+        return array[array.length / 2];
+
+    }
+
+    //짝수는 싫어요
+    public int[] mathTest120813(int n) throws Exception {
+        int length = 0;
+
+        if (n % 2 == 0) {
+            length = n / 2;
+        } else
+            length = n / 2 + 1;
+
+        int[] result = new int[length];
+
+        int num = 1;
+
+        for (int i=0; i<result.length; i++) {
+            result[i]=num;
+            num += 2;
+        }
+
+        return result;
+
     }
 }
 
