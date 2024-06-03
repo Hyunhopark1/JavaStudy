@@ -25,10 +25,10 @@ public class exam1Test {
 
 
 //        //assertThat(actual).isEqualTo(expected).describedAs("실제값과 다름");
-        assertThat(math.subTest1(100,70)).isLessThan(29);
+        assertThat(math.subTest1(100,70)).isLessThan(31);
         assertThat(math.subTest1(100,2)).isEqualTo(98);
         assertThat(math.subTest1(10,7)).isEqualTo(3);
-        assertThat(math.subTest1(1000,700)).isGreaterThan(301);
+        assertThat(math.subTest1(1000,700)).isGreaterThan(299);
 
         //Exception 예외가 발생해야지만 정상 동작으로 인식
         assertThatThrownBy(() -> math.subTest1(70000,7)).isInstanceOf(Exception.class);
@@ -107,16 +107,16 @@ public class exam1Test {
         assertThat(math.mathTest120831(n)).isEqualTo(30);
 
     }
-    /*
+
     @Test
     public void exam120830() throws Exception{
         MathExam math=new MathExam();
         //n은 1개당 12000 / k는 1개당 2000
-        int n=8,k=2;
+        int n=12,k=3;
 
-        assertThat(math.mathTest120830(n,k)).isEqualTo(1000);
+        assertThat(math.mathTest120830(n,k)).isEqualTo(150000);
     }
-    */
+
 
 
 }

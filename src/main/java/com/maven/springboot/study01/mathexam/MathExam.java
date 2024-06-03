@@ -102,8 +102,8 @@ public class MathExam {
         }
         return ans;
     }
-    /*
-    public int mathTest120830(int n,int k) throws Exception {
+
+    public int mathTest120830(int n, int k) throws Exception {
 
         //n은 1개당 12000원, k는 1개당 2000원
         //n이 10을 넘길때마다 k 1개 --
@@ -118,14 +118,16 @@ public class MathExam {
             throw new Exception("k는 n/10 이상, 1000 미만값 이어야 합니다");
         }
 
-        npay=n*12000;
-        kpay=k*2000;
+        npay = n * 12000;
+        kpay = k * 2000;
 
+        if (!(n % 10 == 0) && n >= 10) {
+            k-=n/10;
+        }
 
-
-
+        ans=npay+kpay;
+        return ans;
     }
-    */
 
 
 }
