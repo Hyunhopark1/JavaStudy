@@ -273,27 +273,63 @@ public class MathExam {
         return ans;
 
     }
+
     //옷가게 할인 받기
-    public int mathTest120818(int price) throws Exception{
-        if(price<10 || price>1000000){
-            throw new Exception(String.format("[%d]는 10~1,000,000 을 벗어남",price));
+    public int mathTest120818(int price) throws Exception {
+        if (price < 10 || price > 1000000) {
+            throw new Exception(String.format("[%d]는 10~1,000,000 을 벗어남", price));
         }
-        if(!(price%10==0)){
+        if (!(price % 10 == 0)) {
             throw new Exception("price는 10원 단위여야 합니다.");
         }
 
-        if(price>=500000){
-            price*=0.8;
-        }
-        else if(price>=300000){
-            price*=0.9;
-        }
-        else if(price>=100000){
-            price*=0.95;
+        if (price >= 500000) {
+            price *= 0.8;
+        } else if (price >= 300000) {
+            price *= 0.9;
+        } else if (price >= 100000) {
+            price *= 0.95;
         }
 
-        return price;
+        return (int) price;
 
+    }
+    //가위 바위 보
+
+
+    //개미 군단
+    public int mathTest120837(int hp) throws Exception {
+        if (hp < 1 || hp > 1000) {
+            throw new Exception("hp는 1~1000의 값만 가능합니다");
+        }
+        int jang = hp / 5;
+        int byung = (hp % 5) / 3;
+        int il = (hp % 5) % 3;
+
+        int ans=jang+byung+il;
+
+        return  ans;
+
+    }
+
+    public int exam120818(int price) throws Exception {
+        if ( price < 10 || price > 1000000){
+            throw new Exception("price가 10과 100만 사이여야 합니다");
+        }
+        double A = price - price % 10;
+
+        double p = 0.0d;
+        if ( A >= 100000 ){
+            p = A / 100 * 95;
+            if ( A >= 300000){
+                p = A / 100 * 90;
+                if ( A >= 500000){
+                    p = A / 100 * 80;
+                }
+            }
+        }
+        int result = (int)p;
+        return result;
     }
 }
 
