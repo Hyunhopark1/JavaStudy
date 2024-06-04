@@ -178,6 +178,28 @@ public class exam1Test {
         int[] expected={1, 3, 5, 7};
         assertThat(math.mathTest120813(8)).isEqualTo(expected);
     }
+    @Test
+    public void exam120814() throws Exception{
+        System.out.println("exam120814");
+        MathExam math=new MathExam();
+
+
+        assertThat(math.mathTest120814(7)).isEqualTo(1);
+
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120814(101));
+        System.out.println(exception.toString());
+    }
+    @Test
+    public void exam120818() throws Exception{
+        System.out.println("exam120818");
+        MathExam math=new MathExam();
+
+
+        assertThat(math.mathTest120818(150000)).isEqualTo(142500);
+
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120818(1200000));
+        System.out.println(exception.toString());
+    }
 
 }
 

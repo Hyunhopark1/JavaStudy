@@ -253,12 +253,46 @@ public class MathExam {
 
         int num = 1;
 
-        for (int i=0; i<result.length; i++) {
-            result[i]=num;
+        for (int i = 0; i < result.length; i++) {
+            result[i] = num;
             num += 2;
         }
 
         return result;
+
+    }
+
+    //피자 나눠 먹기
+    public int mathTest120814(int n) throws Exception {
+        if (n < 1 || n > 100) {
+            throw new Exception("n은 1~100");
+        }
+        int ans = (n % 7 == 0) ? n / 7 : n / 7 + 1;
+
+
+        return ans;
+
+    }
+    //옷가게 할인 받기
+    public int mathTest120818(int price) throws Exception{
+        if(price<10 || price>1000000){
+            throw new Exception(String.format("[%d]는 10~1,000,000 을 벗어남",price));
+        }
+        if(!(price%10==0)){
+            throw new Exception("price는 10원 단위여야 합니다.");
+        }
+
+        if(price>=500000){
+            price*=0.8;
+        }
+        else if(price>=300000){
+            price*=0.9;
+        }
+        else if(price>=100000){
+            price*=0.95;
+        }
+
+        return price;
 
     }
 }
