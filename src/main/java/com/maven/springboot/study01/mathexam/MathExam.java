@@ -358,14 +358,13 @@ public class MathExam {
         }
         for (int i = 0; i < cipher.length(); i++) {
             char ch = cipher.charAt(i);
-            String str=String.valueOf(ch);
             if (Character.isUpperCase(ch)) {
                 throw new Exception("cipher는 소문자와 공백으로만 구성되어있습니다.");
             }
-            if ((i + 1) % code == 0) {
-                ans+=str;
-            }
+        }
 
+        for (int i = code; i <= cipher.length(); i += code) {
+            ans += cipher.substring(i - 1, i);
         }
         return ans;
     }
@@ -395,6 +394,51 @@ public class MathExam {
         ans[1] = odd;
 
         return ans;
+    }
+
+    //배열 회전시키기
+    /*
+    public int[] mathTest120844(int[] numbers, String direction) throws Exception {
+        int[] ans = new int[numbers.length];
+
+        if (numbers.length < 3 || numbers.length > 20) {
+            throw new Exception("numbers의 길이 : 3~20");
+        }
+        if(!(direction.equals("left") || direction.equals("right"))){
+            throw new Exception("direction은 left or right 이어야 합니다.");
+        }
+        if(direction.equals("left")){
+            for (int i=0; i<ans.length; i++){
+
+            }
+        }
+
+    }
+    */
+
+    //가장 큰 수 찾기
+    public int[] mathTest120899(int[] array) throws Exception{
+        if(array.length<1 || array.length>100){
+            throw new Exception(String.format("[%d]의 길이는 1 ~ 100 입니다.",array.length));
+        }
+        int[] result=new int[2];
+        int max=array[0];
+        int index=0;
+        for(int i=0; i<array.length; i++){
+            if (array[i] < 0 || array[i] > 1000) {
+                throw new Exception(String.format("[%d]의 값은 0 ~ 1000 입니다.",array[i]));
+            }
+
+            if(array[i]>max){
+                max=array[i];
+                index=i;
+            }
+
+        }
+        result[0]=max;
+        result[1]=index;
+
+        return result;
     }
 
 }

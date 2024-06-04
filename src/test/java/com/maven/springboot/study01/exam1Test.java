@@ -260,6 +260,21 @@ public class exam1Test {
         Throwable exception2 = assertThrows(Exception.class, () ->math.mathTest120892("ASDASDA SFASF",8));
         System.out.println(exception2.toString());
     }
+    @Test
+    public void exam120899() throws Exception{
+        System.out.println("exam120839");
+        MathExam math=new MathExam();
+
+
+
+         assertThat(math.mathTest120899(new int[]{1,8,3})).isEqualTo(new int[]{8,1});
+         assertThat(math.mathTest120899(new int[]{9,10,11,8})).isEqualTo(new int[]{11,2});
+
+
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120899(new int[]{1,1020,3000}));
+        System.out.println(exception.toString());
+
+    }
 
 
 }
