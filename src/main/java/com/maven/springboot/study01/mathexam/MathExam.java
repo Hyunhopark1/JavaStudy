@@ -294,8 +294,33 @@ public class MathExam {
         return (int) price;
 
     }
-    //가위 바위 보
 
+    //가위 바위 보
+    public String mathTest120839(String rsp) throws Exception {
+        if (rsp == null) {
+            throw new Exception("rsp에 값이 입력되지 않았습니다");
+        }
+        if (rsp.length() < 0 || rsp.length() > 100) {
+            throw new Exception("rsp의 길이 : 1~100");
+        }
+
+        String ans = "";
+
+        String[] arr = rsp.split("");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (!(arr[i].equals("0") || arr[i].equals("2") || arr[i].equals("5"))) {
+                throw new Exception("rsp는 숫자 0,2,5로 이루어져 있습니다");
+            }
+            if (arr[i].equals("2")) {
+                ans += "0";
+            } else if (arr[i].equals("0")) {
+                ans += "5";
+            } else
+                ans += "2";
+        }
+        return ans;
+    }
 
     //개미 군단
     public int mathTest120837(int hp) throws Exception {
@@ -312,8 +337,7 @@ public class MathExam {
         if (hp % 5 >= 3) {
             byung = (hp % 5) / 3;
             il = (hp % 5) % 3;
-        }
-        else{
+        } else {
             il = hp % 5;
         }
 
@@ -321,6 +345,56 @@ public class MathExam {
 
         return ans;
 
+    }
+
+    //암호 해독
+    public String mathTest120892(String cipher, int code) throws Exception {
+        String ans = "";
+        if (cipher.isEmpty() || cipher.length() > 1000) {
+            throw new Exception("cipher의 길이 : 1 ~ 1000");
+        }
+        if (code < 1 || code > cipher.length()) {
+            throw new Exception("code의 값 : 1 ~ cipher 길이");
+        }
+        for (int i = 0; i < cipher.length(); i++) {
+            char ch = cipher.charAt(i);
+            String str=String.valueOf(ch);
+            if (Character.isUpperCase(ch)) {
+                throw new Exception("cipher는 소문자와 공백으로만 구성되어있습니다.");
+            }
+            if ((i + 1) % code == 0) {
+                ans+=str;
+            }
+
+        }
+        return ans;
+    }
+
+    //짝수 홀수 개수
+    public int[] mathTest120824(int[] num_list) throws Exception {
+        if (num_list.length < 1 || num_list.length > 100) {
+            throw new Exception("num_list의 길이 : 1~100");
+        }
+
+        int odd = 0, even = 0;
+
+
+        for (int n : num_list) {
+            if (n < 0 || n > 1000) {
+                throw new Exception("num_list의 원소값 : 0~1000");
+            }
+            if (n % 2 == 0) {
+                even++;
+            } else {
+                odd++;
+            }
+        }
+
+        int[] ans = new int[2];
+        ans[0] = even;
+        ans[1] = odd;
+
+        return ans;
     }
 
 }

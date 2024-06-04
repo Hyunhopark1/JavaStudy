@@ -210,9 +210,54 @@ public class exam1Test {
 
         assertThat(math.mathTest120837(23)).isEqualTo(5);
         assertThat(math.mathTest120837(999)).isEqualTo(201);
+        assertThat(math.mathTest120837(24)).isEqualTo(6);
         Throwable exception = assertThrows(Exception.class, () ->math.mathTest120837(-3));
         System.out.println(exception.toString());
         Throwable exception2 = assertThrows(Exception.class, () ->math.mathTest120837(1002));
+        System.out.println(exception2.toString());
+    }
+    @Test
+    public void exam120839() throws Exception{
+        System.out.println("exam120839");
+        MathExam math=new MathExam();
+
+
+        assertThat(math.mathTest120839("205")).isEqualTo("052");
+        assertThat(math.mathTest120839("2")).isEqualTo("0");
+        assertThat(math.mathTest120839("0")).isEqualTo("5");
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120839("105"));
+        System.out.println(exception.toString());
+        Throwable exception2 = assertThrows(Exception.class, () ->math.mathTest120839("999"));
+        System.out.println(exception2.toString());
+    }
+ @Test
+    public void exam120824() throws Exception{
+        System.out.println("exam120839");
+        MathExam math=new MathExam();
+
+
+
+         assertThat(math.mathTest120824(new int[]{1, 2, 3, 4, 5})).isEqualTo(new int[]{2, 3});
+         assertThat(math.mathTest120824(new int[]{1, 3,5,7})).isEqualTo(new int[]{0,4});
+
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120824(new int[]{1,2,3,1005}));
+        System.out.println(exception.toString());
+        Throwable exception2 = assertThrows(Exception.class, () ->math.mathTest120824(new int[]{1,2,5559,9000}));
+        System.out.println(exception2.toString());
+    }
+    @Test
+    public void exam120892() throws Exception{
+        System.out.println("exam120839");
+        MathExam math=new MathExam();
+
+
+
+         assertThat(math.mathTest120892("dfjardstddetckdaccccdegk",4)).isEqualTo("attack");
+         assertThat(math.mathTest120892("pfqallllabwaoclk",2)).isEqualTo("fallback");
+
+        Throwable exception = assertThrows(Exception.class, () ->math.mathTest120892("ASDASDASFASF",4));
+        System.out.println(exception.toString());
+        Throwable exception2 = assertThrows(Exception.class, () ->math.mathTest120892("ASDASDA SFASF",8));
         System.out.println(exception2.toString());
     }
 
