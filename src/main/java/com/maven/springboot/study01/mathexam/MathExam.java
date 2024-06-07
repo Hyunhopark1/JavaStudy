@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class MathExam {
 
+
+
     public static void main(String[] args) throws Exception {
         MathExam me = new MathExam();
         int n1 = 3, n2 = 1;
@@ -439,7 +441,68 @@ public class MathExam {
         result[1]=index;
 
         return result;
+
     }
+    //로또 번호 추출
+    public static int[] lotto(){
+        int[] lottonum=new int[6];
+
+        for(int i=0; i<lottonum.length; i++){
+            lottonum[i]=(int)(Math.random()*45)+1;
+            for(int j=0; j<i; j++){
+                if(lottonum[i]==lottonum[j]){
+                    i--;
+                    break;
+                }
+            }
+        }
+        int temp=0;
+        for(int i=0; i<lottonum.length; i++){
+            for(int j=0; j<i; j++){
+                if(lottonum[i]<lottonum[j]){
+                    temp=lottonum[i];
+                    lottonum[i]=lottonum[j];
+                    lottonum[j]=temp;
+                }
+            }
+        }
+        return lottonum;
+    }
+    //최댓값 만들기(2)
+    public int mathTest120862(int[] numbers) throws Exception{
+        if(numbers.length<2 || numbers.length>100){
+            throw new Exception("numbers의 길이 : 2 ~ 100");
+        }
+        for (int n : numbers) {
+            if (n < -10000 || n > 10000) {
+                throw new Exception("number의 값 : -10000 ~ 10000");
+            }
+        }
+
+        int ans=0;
+        int max=numbers[0];
+
+        for (int i = 0; i < numbers.length; i++) {
+            if(numbers[i]>0){
+                if (numbers[i] > max) {
+                    max=numbers[i];
+                }
+                Arrays.sort(numbers);
+                ans=max*numbers[numbers.length-1];
+            } else{
+                if (numbers[i] < max) {
+                    max=numbers[i];
+                }
+                Arrays.sort(numbers);
+                ans=max*numbers[1];
+            }
+
+        }
+
+
+        return ans;
+    }
+
 
 }
 

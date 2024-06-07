@@ -3,6 +3,9 @@ package com.maven.springboot.study01;
 import com.maven.springboot.study01.mathexam.MathExam;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -274,6 +277,44 @@ public class exam1Test {
         Throwable exception = assertThrows(Exception.class, () ->math.mathTest120899(new int[]{1,1020,3000}));
         System.out.println(exception.toString());
 
+
+
+    }
+    @Test
+    public void lotto(){
+        System.out.println("로또 번호 출력");
+        int[] lottoarray = MathExam.lotto();
+
+        System.out.println(Arrays.toString(lottoarray));
+    }
+    
+    //진수 변환
+    @Test
+    public void numberprint() throws Exception{
+        int x = 0b1011;
+        int y = 0206;
+        int z = 0x2A0F;
+
+
+        char a='A',b='B',c='C';
+
+        System.out.println(String.format("10 진수 : x = %d , y = %d , z = %d",x, y, z));
+        System.out.println(String.format("8 진수 : a = %o , b = %o , c = %o",(int)a, (int)b, (int)c));
+        System.out.println(String.format("16 진수 : a = %x , b = %x , c = %x",(int)a, (int)b, (int)c));
+        System.out.println(String.format("Char : a = %c , b = %c , c = %c",(int)a, (int)b, (int)c));
+        System.out.println("\n");
+        System.out.println(String.format("10 진수 : a = %d , b = %d , c = %d",(int)a, (int)b, (int)c));
+        System.out.println(String.format("8 진수 : a = %o , b = %o , c = %o",(int)a, (int)b, (int)c));
+        System.out.println(String.format("16 진수 : a = %x , b = %x , c = %x",(int)a, (int)b, (int)c));
+        System.out.println(String.format("Char : a = %c , b = %c , c = %c",a, b, c));
+
+        System.out.println("\"\"");
+        int d =-2147483647;
+        int e =2147483647;
+        System.out.println(String.format("16진수 : d = %x",d));
+        System.out.println(String.format("16진수 : e = %x",e));
+
+    
     }
 
 
