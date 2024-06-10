@@ -1,9 +1,10 @@
 package com.maven.springboot.study01.mathexam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MathExam {
-
 
 
     public static void main(String[] args) throws Exception {
@@ -12,6 +13,12 @@ public class MathExam {
         int res = me.subTest1(n1, n2);
 
         System.out.println(res);
+
+        MathExam mathExam = new MathExam();
+        List<Integer> d = mathExam.divisor(24);
+        System.out.println(d);
+
+
 
     }
 
@@ -419,58 +426,60 @@ public class MathExam {
     */
 
     //가장 큰 수 찾기
-    public int[] mathTest120899(int[] array) throws Exception{
-        if(array.length<1 || array.length>100){
-            throw new Exception(String.format("[%d]의 길이는 1 ~ 100 입니다.",array.length));
+    public int[] mathTest120899(int[] array) throws Exception {
+        if (array.length < 1 || array.length > 100) {
+            throw new Exception(String.format("[%d]의 길이는 1 ~ 100 입니다.", array.length));
         }
-        int[] result=new int[2];
-        int max=array[0];
-        int index=0;
-        for(int i=0; i<array.length; i++){
+        int[] result = new int[2];
+        int max = array[0];
+        int index = 0;
+        for (int i = 0; i < array.length; i++) {
             if (array[i] < 0 || array[i] > 1000) {
-                throw new Exception(String.format("[%d]의 값은 0 ~ 1000 입니다.",array[i]));
+                throw new Exception(String.format("[%d]의 값은 0 ~ 1000 입니다.", array[i]));
             }
 
-            if(array[i]>max){
-                max=array[i];
-                index=i;
+            if (array[i] > max) {
+                max = array[i];
+                index = i;
             }
 
         }
-        result[0]=max;
-        result[1]=index;
+        result[0] = max;
+        result[1] = index;
 
         return result;
 
     }
-    //로또 번호 추출
-    public static int[] lotto(){
-        int[] lottonum=new int[6];
 
-        for(int i=0; i<lottonum.length; i++){
-            lottonum[i]=(int)(Math.random()*45)+1;
-            for(int j=0; j<i; j++){
-                if(lottonum[i]==lottonum[j]){
+    //로또 번호 추출
+    public static int[] lotto() {
+        int[] lottonum = new int[6];
+
+        for (int i = 0; i < lottonum.length; i++) {
+            lottonum[i] = (int) (Math.random() * 45) + 1;
+            for (int j = 0; j < i; j++) {
+                if (lottonum[i] == lottonum[j]) {
                     i--;
                     break;
                 }
             }
         }
-        int temp=0;
-        for(int i=0; i<lottonum.length; i++){
-            for(int j=0; j<i; j++){
-                if(lottonum[i]<lottonum[j]){
-                    temp=lottonum[i];
-                    lottonum[i]=lottonum[j];
-                    lottonum[j]=temp;
+        int temp = 0;
+        for (int i = 0; i < lottonum.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (lottonum[i] < lottonum[j]) {
+                    temp = lottonum[i];
+                    lottonum[i] = lottonum[j];
+                    lottonum[j] = temp;
                 }
             }
         }
         return lottonum;
     }
+
     //최댓값 만들기(2)
-    public int mathTest120862(int[] numbers) throws Exception{
-        if(numbers.length<2 || numbers.length>100){
+    public int mathTest120862(int[] numbers) throws Exception {
+        if (numbers.length < 2 || numbers.length > 100) {
             throw new Exception("numbers의 길이 : 2 ~ 100");
         }
         for (int n : numbers) {
@@ -479,28 +488,51 @@ public class MathExam {
             }
         }
 
-        int ans=0;
-        int max=numbers[0];
+        int ans = 0;
+        int max = numbers[0];
 
         for (int i = 0; i < numbers.length; i++) {
-            if(numbers[i]>0){
+            if (numbers[i] > 0) {
                 if (numbers[i] > max) {
-                    max=numbers[i];
+                    max = numbers[i];
                 }
                 Arrays.sort(numbers);
-                ans=max*numbers[numbers.length-1];
-            } else{
+                ans = max * numbers[numbers.length - 1];
+            } else {
                 if (numbers[i] < max) {
-                    max=numbers[i];
+                    max = numbers[i];
                 }
                 Arrays.sort(numbers);
-                ans=max*numbers[1];
+                ans = max * numbers[1];
             }
 
         }
 
+        int score = 0;
+        String g = "";
+        switch (score) {
+            case 60:
+                g = "A";
+                break;
+            case 50:
+                g="B";
+                break;
 
+        }
         return ans;
+    }
+
+    public List<Integer> divisor(int num) {
+        List<Integer> divList = new ArrayList<>();
+
+        for (int i = 1; i <= num; i++) {
+            if (num % i == 0) {
+                divList.add(i);
+            }
+        }
+        return divList;
+
+
     }
 
 
