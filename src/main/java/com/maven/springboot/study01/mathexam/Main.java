@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.codeUp1214();
+        main.codeUp1228();
     }
 
     public long pow(int a, int b) {
@@ -147,10 +147,10 @@ public class Main {
         int year = sc.nextInt();
         int month = sc.nextInt();
 
-        int result=0;
+        int result = 0;
 
 
-        switch(month) {
+        switch (month) {
             case 1:
             case 3:
             case 5:
@@ -158,17 +158,143 @@ public class Main {
             case 8:
             case 10:
             case 12:
-                result=31;
+                result = 31;
                 break;
             case 2:
-                result=(year % 400 == 0 || (year % 4 == 0 && !(year % 100 == 0)))?29:28;
+                result = (year % 400 == 0 || (year % 4 == 0 && !(year % 100 == 0))) ? 29 : 28;
                 break;
             default:
-                result=30;
+                result = 30;
                 break;
         }
 
         System.out.println(result);
+
+    }
+
+    public void codeUp1226() {
+        Scanner sc = new Scanner(System.in);
+        int[] lottonum = new int[7];
+
+        for (int i = 0; i < lottonum.length; i++) {
+            lottonum[i] = sc.nextInt();
+        }
+
+
+        int[] mylotto = new int[6];
+        for (int i = 0; i < mylotto.length; i++) {
+            mylotto[i] = sc.nextInt();
+        }
+        Arrays.sort(mylotto);
+
+        int cnt=0;
+        boolean bonus=false;
+
+
+        for (int i = 0; i < mylotto.length; i++) {
+            for (int j = 0; j < lottonum.length-1; j++) {
+                if (mylotto[i] == lottonum[j]) {
+                    cnt++;
+                }
+            }
+            if (mylotto[i] == lottonum[lottonum.length - 1]) {
+                bonus=true;
+            }
+        }
+
+        int res=0;
+
+        switch (cnt) {
+            case 6:
+                res=1;
+                break;
+            case 5:
+                res = bonus ? 2 : 3;
+                break;
+            case 4:
+                res=4;
+                break;
+            case 3:
+                res=5;
+                break;
+            default:
+                res=0;
+                break;
+        }
+        System.out.println(res);
+    }
+
+    public void codeUp1218() {
+        Scanner sc = new Scanner(System.in);
+
+        int a = 0, b = 0, c = 0;
+        a = sc.nextInt();
+        b = sc.nextInt();
+        c = sc.nextInt();
+
+        String res = "";
+        int[] sam = {a, b, c};
+        Arrays.sort(sam);
+
+        if (sam[2] >= sam[0] + sam[1]) {
+            res = "삼각형아님";
+        } else if (sam[0] == sam[1] && sam[1] == sam[2]) {
+            res = "정삼각형";
+        } else if ((sam[0] == sam[1] || sam[1] == sam[2])) {
+            res = "이등변삼각형";
+        }else if(Math.pow(sam[0],2)+Math.pow(sam[1],2)==Math.pow(sam[2],2)){
+            res = "직각삼각형";
+        }else{
+            res = "삼각형";
+        }
+
+        System.out.println(res);
+    }
+
+    public void codeUp1283(){
+        Scanner sc = new Scanner(System.in);
+        int a=sc.nextInt();
+        int b=sc.nextInt();
+        int[] c=new int[b];
+
+        double rev=0;
+        for(int i=0; i<c.length; i++){
+            c[i]=sc.nextInt();
+
+            if (c[i] > 0) {
+                rev =a + (c[i]/100*a);
+            } else {
+                rev+= a +(-1*(c[i]/100*a));
+            }
+        }
+        double res = rev-a;
+        System.out.println(String.format("%.0f",res));
+        String s=(res>0)?"good":(res==0)?"same":"bad";
+        System.out.println(s);
+
+    }
+    public void codeUp1228(){
+        Scanner sc = new Scanner(System.in);
+
+        double height=0.0d;
+        double weight=0.0d;
+
+        height = sc.nextDouble();
+        weight = sc.nextDouble();
+
+        double pyo = (height-100)*0.9;
+        double bmi = (weight-pyo)*100 / pyo;
+
+        String res="";
+        if (bmi <= 10) {
+            res = "정상";
+        } else if (bmi <= 20) {
+            res = "과체중";
+        }else {
+            res = "비만";
+        }
+
+        System.out.println(res);
 
     }
 
