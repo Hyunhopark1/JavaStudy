@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+
+
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.codeUp1228();
+        main.codeUp3015();
     }
 
     public long pow(int a, int b) {
@@ -187,38 +189,38 @@ public class Main {
         }
         Arrays.sort(mylotto);
 
-        int cnt=0;
-        boolean bonus=false;
+        int cnt = 0;
+        boolean bonus = false;
 
 
         for (int i = 0; i < mylotto.length; i++) {
-            for (int j = 0; j < lottonum.length-1; j++) {
+            for (int j = 0; j < lottonum.length - 1; j++) {
                 if (mylotto[i] == lottonum[j]) {
                     cnt++;
                 }
             }
             if (mylotto[i] == lottonum[lottonum.length - 1]) {
-                bonus=true;
+                bonus = true;
             }
         }
 
-        int res=0;
+        int res = 0;
 
         switch (cnt) {
             case 6:
-                res=1;
+                res = 1;
                 break;
             case 5:
                 res = bonus ? 2 : 3;
                 break;
             case 4:
-                res=4;
+                res = 4;
                 break;
             case 3:
-                res=5;
+                res = 5;
                 break;
             default:
-                res=0;
+                res = 0;
                 break;
         }
         System.out.println(res);
@@ -242,60 +244,107 @@ public class Main {
             res = "정삼각형";
         } else if ((sam[0] == sam[1] || sam[1] == sam[2])) {
             res = "이등변삼각형";
-        }else if(Math.pow(sam[0],2)+Math.pow(sam[1],2)==Math.pow(sam[2],2)){
+        } else if (Math.pow(sam[0], 2) + Math.pow(sam[1], 2) == Math.pow(sam[2], 2)) {
             res = "직각삼각형";
-        }else{
+        } else {
             res = "삼각형";
         }
 
         System.out.println(res);
     }
 
-    public void codeUp1283(){
+    public void codeUp1283() {
         Scanner sc = new Scanner(System.in);
-        int a=sc.nextInt();
-        int b=sc.nextInt();
-        int[] c=new int[b];
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int[] c = new int[b];
 
-        double rev=0;
-        for(int i=0; i<c.length; i++){
-            c[i]=sc.nextInt();
+        double rev = 0;
+        for (int i = 0; i < c.length; i++) {
+            c[i] = sc.nextInt();
 
             if (c[i] > 0) {
-                rev =a + (c[i]/100*a);
+                rev = a + (c[i] / 100 * a);
             } else {
-                rev+= a +(-1*(c[i]/100*a));
+                rev += a + (-1 * (c[i] / 100 * a));
             }
         }
-        double res = rev-a;
-        System.out.println(String.format("%.0f",res));
-        String s=(res>0)?"good":(res==0)?"same":"bad";
+        double res = rev - a;
+        System.out.println(String.format("%.0f", res));
+        String s = (res > 0) ? "good" : (res == 0) ? "same" : "bad";
         System.out.println(s);
 
     }
-    public void codeUp1228(){
+
+    public void codeUp1228() {
         Scanner sc = new Scanner(System.in);
 
-        double height=0.0d;
-        double weight=0.0d;
+        double height = 0.0d;
+        double weight = 0.0d;
 
         height = sc.nextDouble();
         weight = sc.nextDouble();
 
-        double pyo = (height-100)*0.9;
-        double bmi = (weight-pyo)*100 / pyo;
+        double pyo = (height - 100) * 0.9;
+        double bmi = (weight - pyo) * 100 / pyo;
 
-        String res="";
+        String res = "";
         if (bmi <= 10) {
             res = "정상";
         } else if (bmi <= 20) {
             res = "과체중";
-        }else {
+        } else {
             res = "비만";
         }
 
         System.out.println(res);
 
+    }
+
+    public void codeUp3015() {
+        Scanner sc = new Scanner(System.in);
+
+        int dataCount;
+        int printNum;
+
+        dataCount = sc.nextInt();
+        printNum = sc.nextInt();
+
+        Student[] students = new Student[dataCount];
+
+        for (int i = 0; i < students.length; i++) {
+            String name = sc.next();
+            int score = sc.nextInt();
+
+            students[i] = new Student(name, score);
+
+        }
+        for (int i = 0; i < students.length; i++) {
+            for (int j = i; j < students.length; j++) {
+                if (students[i].getScore() < students[j].getScore()) {
+                    Student tempStudent = students[i];
+                    students[i]=students[j];
+                    students[j]=tempStudent;
+
+//                    String tempName = students[i].getName();
+//                    int tempScore = students[i].getScore();
+//
+//
+//                    students[i].setName(students[j].getName());
+//                    students[i].setScore(students[j].getScore());
+//
+//                    students[j].setName(tempName);
+//                    students[j].setScore(tempScore);
+                }
+            }
+        }
+
+
+
+
+        for (int i = 0; i < printNum; i++) {
+            System.out.println(students[i].getName());
+        }
     }
 
 }
