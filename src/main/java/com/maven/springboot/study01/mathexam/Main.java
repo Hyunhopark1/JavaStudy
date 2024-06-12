@@ -1,17 +1,21 @@
 package com.maven.springboot.study01.mathexam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-
+    String name = "aaa";
+    int score = 10;
 
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.codeUp3015();
+        main.aaa();
+
+
     }
 
-    public long pow(int a, int b) {
+    public static long pow(int a, int b) {
         if (b == 0) {
             return 1;
         }
@@ -28,14 +32,19 @@ public class Main {
         } else {
             return half * half * a;
         }
+
     }
 
-    public void even(int n) {
-        while (n-- >= 1) {
+    public static void even(int n) throws Exception {
+        while (n >= 1) {
             if (!(n % 2 == 0)) {
+                n--;
                 continue;
+
             }
+
             System.out.println(n);
+            n--;
         }
     }
 
@@ -301,7 +310,7 @@ public class Main {
 
     }
 
-    public void codeUp3015() {
+    public void codeUp3015() throws Exception {
         Scanner sc = new Scanner(System.in);
 
         int dataCount;
@@ -323,8 +332,8 @@ public class Main {
             for (int j = i; j < students.length; j++) {
                 if (students[i].getScore() < students[j].getScore()) {
                     Student tempStudent = students[i];
-                    students[i]=students[j];
-                    students[j]=tempStudent;
+                    students[i] = students[j];
+                    students[j] = tempStudent;
 
 //                    String tempName = students[i].getName();
 //                    int tempScore = students[i].getScore();
@@ -338,13 +347,17 @@ public class Main {
                 }
             }
         }
-
-
-
-
         for (int i = 0; i < printNum; i++) {
             System.out.println(students[i].getName());
         }
+
     }
 
+    public void aaa() throws Exception {
+        //클래스 메서드사용
+        long s = Main.pow(2, 4);
+        System.out.println(s);
+        //클래스 메서드사용
+        even(9);
+    }
 }

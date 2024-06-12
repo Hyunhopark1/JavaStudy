@@ -10,15 +10,22 @@ public class Student {
     private String name;
     private int score;
 
+    public static int a;
+    public static int b;
+
 
     public Student(String name, int score) {
         this.name=name;
         this.score=score;
+
+
     }
 
 
     @Override
     public String toString() {
+
         return String.format("이름 : %s, 점수 : %d", name, score);
+
     }
 }
