@@ -10,8 +10,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.aaa();
 
+        Account2 a =new Account2();
+        a.setBalance(10000);
+        System.out.println(a.getBalance());
+        a.setBalance(-1);
+        System.out.println(a.getBalance());
+
+        main.name="3";
 
     }
 
