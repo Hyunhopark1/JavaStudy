@@ -14,13 +14,18 @@ public class Main {
         Account2 a =new Account2();
 
         MemberService memberService = new MemberService();
-        boolean result = memberService.login("hong", "12345");
-        if (result) {
-            System.out.println("로그인 되었습니다.");
-            memberService.logout("hong");
-        } else {
-            System.out.println("id 또는 password가 올바르지 않습니다.");
-        }
+//        boolean result = memberService.login("hong", "12345");
+//        if (result) {
+//            System.out.println("로그인 되었습니다.");
+//            memberService.logout("hong");
+//        } else {
+//            System.out.println("id 또는 password가 올바르지 않습니다.");
+//        }
+
+        Printer.println(10);
+        Printer.println(true);
+        Printer.println(5.7);
+        Printer.println("홍길동");
 
     }
 
