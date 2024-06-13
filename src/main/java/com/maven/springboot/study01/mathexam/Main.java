@@ -12,12 +12,15 @@ public class Main {
         Main main = new Main();
 
         Account2 a =new Account2();
-        a.setBalance(10000);
-        System.out.println(a.getBalance());
-        a.setBalance(-1);
-        System.out.println(a.getBalance());
 
-        main.name="3";
+        MemberService memberService = new MemberService();
+        boolean result = memberService.login("hong", "12345");
+        if (result) {
+            System.out.println("로그인 되었습니다.");
+            memberService.logout("hong");
+        } else {
+            System.out.println("id 또는 password가 올바르지 않습니다.");
+        }
 
     }
 
