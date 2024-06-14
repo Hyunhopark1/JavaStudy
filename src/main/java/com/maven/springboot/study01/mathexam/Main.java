@@ -1,9 +1,12 @@
 package com.maven.springboot.study01.mathexam;
 
-import java.util.ArrayList;
+import com.maven.springboot.study01.chapter06.MemberService;
+import com.maven.springboot.study01.chapter06.Printer;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
+//codeup문제집
 public class Main {
     String name = "aaa";
     int score = 10;
@@ -11,7 +14,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Main main = new Main();
 
-        Account2 a =new Account2();
+        Account2 a = new Account2();
 
         MemberService memberService = new MemberService();
 //        boolean result = memberService.login("hong", "12345");
@@ -367,11 +370,47 @@ public class Main {
 
     }
 
-    public void aaa() throws Exception {
-        //클래스 메서드사용
-        long s = Main.pow(2, 4);
-        System.out.println(s);
-        //클래스 메서드사용
-        even(9);
+    public void codeUp3108() throws Exception {
+        Scanner sc = new Scanner(System.in);
+
+        int inputCnt;
+        inputCnt = sc.nextInt();
+
+        StudentInfo[] infos = new StudentInfo[inputCnt];
+
+
+        for (int i = 0; i < inputCnt; i++) {
+            char code = sc.next().charAt(0);
+            int no = sc.nextInt();
+            String name = sc.next();
+
+            infos[i] = new StudentInfo(code, no, name);
+        }
+
+        for (int i = inputCnt - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (infos[j].getNo() > infos[j + 1].getNo()) {
+                    StudentInfo info=infos[j];
+                    infos[j]=infos[j+1];
+                    infos[j+1]=info;
+                }
+            }
+        }
+
+        for (int i = 0; i < inputCnt - 1; i++) {
+            if (infos[i].getNo() == infos[i + 1].getNo()) {
+                infos[i].setNo(0);
+            }
+        }
+
+        for (int i = 0; i < inputCnt; i++) {
+            if (infos[i].getCode() == 'D') {
+                infos[i].setNo(0);
+            }
+        }
+
+
     }
+
+
 }

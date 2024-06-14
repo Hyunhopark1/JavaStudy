@@ -10,9 +10,6 @@ public class Student {
     private String name;
     private int score;
 
-    public static int a;
-    public static int b;
-
 
     public Student(String name, int score) {
         this.name=name;

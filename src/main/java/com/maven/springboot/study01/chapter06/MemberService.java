@@ -1,4 +1,4 @@
-package com.maven.springboot.study01.mathexam;
+package com.maven.springboot.study01.chapter06;
 
 public class MemberService {
 
