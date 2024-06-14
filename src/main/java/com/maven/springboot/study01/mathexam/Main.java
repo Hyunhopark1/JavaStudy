@@ -14,7 +14,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Main main = new Main();
 
-        Account2 a = new Account2();
 
         MemberService memberService = new MemberService();
 //        boolean result = memberService.login("hong", "12345");
