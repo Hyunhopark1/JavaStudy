@@ -15,6 +15,7 @@ public class Account {
         if (!accountNum.chars().allMatch(Character::
                 isDigit)) {
             throw new Exception("계좌 번호는 숫자만 입력해 주세요");
+
         }
 
         this.accountNum = accountNum;

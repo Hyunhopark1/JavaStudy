@@ -28,6 +28,12 @@ public class AccountService {
         return this.accountList;
     }
 
+    /**
+     * Account 에 예금
+     * @param bankAccount 계좌번호
+     * @param money 인출액
+     * @return 성공하면 true 실패하면 false
+     */
     public boolean deposit(String bankAccount, int money) {
         Account account = this.findAccountByNumber(bankAccount);
         if ( account == null ) {
