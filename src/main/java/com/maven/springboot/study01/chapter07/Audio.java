@@ -23,6 +23,7 @@ public class Audio implements Remote {
             this.volume=volume;
         }
         System.out.println("현재 볼륨 : "+this.volume);
+        
     }
 
     @Override
@@ -35,5 +36,9 @@ public class Audio implements Remote {
             System.out.println("무음 해제합니다");
             setVolume(this.volume);
         }
+    }
+    
+    public void print() {
+        System.out.println("그냥 출력");
     }
 }

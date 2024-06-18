@@ -19,4 +19,10 @@ public interface Remote {
             System.out.println("무음 해제 합니다");
         }
     }
+
+    public static void main(String[] args) {
+        Remote a = new Audio();
+        a.turnOn();
+        a.turnOff();
+    }
 }
