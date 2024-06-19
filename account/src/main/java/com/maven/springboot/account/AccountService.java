@@ -59,6 +59,7 @@ public class AccountService {
 
         Account account = findAccountByNumber(accountNum);
         if (account == null) {
+            System.out.println("입력하신 계좌는 없는 계좌입니다");
             return false;
         }
         if (money > account.getBalance()) {
