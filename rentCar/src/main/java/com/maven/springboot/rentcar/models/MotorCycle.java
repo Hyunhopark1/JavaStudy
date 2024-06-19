@@ -1,16 +1,21 @@
 package com.maven.springboot.rentcar.models;
 
-public class Car implements Vehicle {
+public class MotorCycle implements Vehicle{
 
-    private Long id;
-    private String company;
-    private String model;
-    private int makeYear;
+    private Long id ;
+    private String  company;
+    private String  model;
+    private String  makeYear;
     private VehicleType type;
     private String color;
     private int totalKm;
     private String factoryNumber;
     private String registNumber;
+
+    @Override
+    public String cancel() {
+        return "";
+    }
 
     @Override
     public Long getId() {
@@ -69,11 +74,6 @@ public class Car implements Vehicle {
 
     @Override
     public String reserve() {
-        return "";
-    }
-
-    @Override
-    public String cancel() {
         return "";
     }
 

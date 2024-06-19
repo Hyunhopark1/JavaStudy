@@ -59,8 +59,13 @@ public class BankApplication {
         String money = sc.nextLine();
         int m = Integer.parseInt(money);
 
-        accountService.addAccount(accountNum, accountName, m);
-        System.out.println("결과 : 계좌가 생성되었습니다.");
+        if (accountService.addAccount(accountNum, accountName, m)) {
+            System.out.println("결과 : 계좌가 생성되었습니다.");
+        } else {
+            System.out.println("결과 : 계좌 생성 실패");
+        }
+        
+        
     }
     private void showAccounts() {
         System.out.println("--------");

@@ -16,23 +16,29 @@ public class AccountService {
         accounts.clear();
     }
 
-    public void addAccount(String num, String name, int money) {
+    public boolean addAccount(String num, String name, int money) {
+        if (money < 0) {
+            System.out.println("0 이상의 값을 입력해주세요");
+            return false;
+        }
         for (int i = 0; i < num.length(); i++) {
             if (!Character.isDigit(num.charAt(i))) {
                 System.out.println("계좌번호는 숫자만 입력해주세요");
-                return;
+                return false;
             }
         }
         accounts.add(new Account(num, name, money));
+        return true;
     }
 
     public ArrayList<Account> getAllAccount() {
         return accounts;
     }
 
-    public boolean deposit(String accountNum,int money) throws Exception{
+    public boolean deposit(String accountNum,int money){
         if (money < 0) {
-            throw new Exception("0이상의 값을 입력해주세요");
+            System.out.println("0 이상의 값을 입력해주세요");
+            return false;
         }
         Account account = findAccountByNumber(accountNum);
         if (account == null) {
@@ -45,9 +51,10 @@ public class AccountService {
 
     }
 
-    public boolean withdraw(String accountNum,int money) throws Exception{
+    public boolean withdraw(String accountNum,int money){
         if (money < 0) {
-            throw new Exception("0이상의 값을 입력해주세요");
+            System.out.println("0 이상의 값을 입력해주세요");
+            return false;
         }
 
         Account account = findAccountByNumber(accountNum);
