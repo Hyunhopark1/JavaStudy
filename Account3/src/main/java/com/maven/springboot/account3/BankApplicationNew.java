@@ -1,18 +1,10 @@
 package com.maven.springboot.account3;
 
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.nio.charset.Charset;
 import java.util.Scanner;
 
 public class BankApplicationNew {
     private AccountService accountService = new AccountService();
-
     AccountRepository repository=new AccountRepository();
     public static void main(String[] args) {
         try {
@@ -140,7 +132,7 @@ public class BankApplicationNew {
         System.out.print("파일이름:");
         String fileName = input.nextLine();
 
-        repository.loadJson(fileName);
+        repository.loadJson(accountService.getAllAccount());
 
     }
 
@@ -152,7 +144,7 @@ public class BankApplicationNew {
         System.out.print("파일이름:");
         String fileName = input.nextLine();
 
-        repository.saveJson(fileName);
+        repository.saveJson(accountService.getAllAccount());
     }
 
 

@@ -7,39 +7,38 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.charset.Charset;
-import java.util.Scanner;
+import java.util.List;
+
 
 public class AccountRepository {
-    AccountService accountService=new AccountService();
 
-    public void loadJson(String fileName) throws Exception {
+    public static final String fileName = "data.json";
 
-        if (fileName == null || fileName.isEmpty()) {
-            return;
-        }
+    public void loadJson(List<Account> accountList) throws Exception {
+
+
         JSONParser parser = new JSONParser();
         FileReader reader = new FileReader(fileName, Charset.defaultCharset());
-        Object jobj = parser.parse(reader);
+        JSONObject jsonObject = (JSONObject)parser.parse(reader);
 
-        JSONObject jsonObject = (JSONObject) jobj;
         reader.close();
         System.out.print(jsonObject);
 
         JSONArray jsonArray = (JSONArray) jsonObject.get("accounts");
-        this.accountService.clear();
+        accountList.clear();
         for (Object obj : jsonArray) {
             JSONObject element = (JSONObject) obj;
             String name = (String) element.get("name");
             String bankAccount = (String) element.get("bankAccount");
             Long current = (Long) element.get("current");
-            this.accountService.addAccount(new Account(name, bankAccount, current.intValue()));
+            accountList.add(new Account(name, bankAccount, current.intValue()));
         }
     }
 
-    public void saveJson(String fileName) throws Exception {
+    public void saveJson(List<Account> accountList) throws Exception {
 
         JSONArray jsonArray = new JSONArray();
-        for (Account account : this.accountService.getAllAccount()) {
+        for (Account account : accountList) {
             JSONObject jobj = new JSONObject();
             jobj.put("name", account.getName());
             jobj.put("bankAccount", account.getBankNumber());
