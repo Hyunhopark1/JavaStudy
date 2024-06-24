@@ -7,4 +7,6 @@ public class Member {
    private String birthDay;
    private String nation;
    private MemberLevel level;
+
+
 }

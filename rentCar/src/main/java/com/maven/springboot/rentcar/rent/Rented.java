@@ -20,4 +20,15 @@ public class Rented {
     private RentStatus status;
     private Reserved reserved;
 
+    public boolean rentVehicle(Vehicle vehicle, Member member, Date startDate, String startPoint, int money, Date rentDate, RentStatus status) {
+        return false;
+    }
+
+    public boolean returnVehicle(Vehicle vehicle, Member member, Date endDate, String endPoint, Date returnDate) {
+        return false;
+    }
+
+    public boolean brokenVehicle(Vehicle vehicle, Member member, Date brokenDate) {
+        return false;
+    }
 }

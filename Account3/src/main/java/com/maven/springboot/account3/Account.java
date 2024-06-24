@@ -10,12 +10,18 @@ public class Account {
     private String bankNumber;
     private int current;
 
+    public Account() {
+        this.name = "";
+        this.bankNumber = "";
+        this.current = 0;
+    }
     /**
      * 계좌 (Account) 를 생성하는 사용자 정의 생성자
      * @param name : 계좌 대표명
      * @param bankNumber : 계좌번호
      * @param current : 현재 금액
      */
+
     public Account(String name, String bankNumber, int current) {
         this.name = name;
         this.bankNumber = bankNumber;
