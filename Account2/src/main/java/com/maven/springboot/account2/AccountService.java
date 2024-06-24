@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class AccountService {
 
-    ArrayList<Account> accounts =new ArrayList<>();
+    private ArrayList<Account> accounts = new ArrayList<>();
 
     public int size() {
         return accounts.size();
     }
+
     public void clear() {
         accounts.clear();
     }
@@ -25,9 +26,17 @@ public class AccountService {
                 return false;
             }
         }
+        for (int i = 0; i < accountNum.length(); i++) {
+            if (!Character.isDigit(accountNum.charAt(i)) || accountNum.length()>6) {
+                System.out.println("계좌번호는 6자리의 숫자만 입력해주세요");
+                return false;
+            }
+        }
+
         accounts.add(new Account(accountNum, accountName, money));
         return true;
     }
+
     public ArrayList<Account> getAllAccount() {
         return accounts;
     }
@@ -39,10 +48,10 @@ public class AccountService {
         }
         Account account = findAccountByNumber(accountNum);
         if (account == null) {
-            System.out.println("["+accountNum+"] 계좌는 없는계좌입니다.");
+            System.out.println("[" + accountNum + "] 계좌는 없는계좌입니다.");
             return false;
         }
-        account.setBalance(account.getBalance()+money);
+        account.setBalance(account.getBalance() + money);
         return true;
     }
 
@@ -54,7 +63,7 @@ public class AccountService {
 
         Account account = findAccountByNumber(accountNum);
         if (account == null) {
-            System.out.println("["+accountNum+"] 계좌는 없는계좌입니다.");
+            System.out.println("[" + accountNum + "] 계좌는 없는계좌입니다.");
             return false;
         }
         if (money > account.getBalance()) {
@@ -62,11 +71,12 @@ public class AccountService {
             return false;
         }
 
-        account.setBalance(account.getBalance()-money);
+        account.setBalance(account.getBalance() - money);
         return true;
     }
+
     public Account findAccountByNumber(String accountNum) {
-        if (accounts.isEmpty() || accountNum==null) {
+        if (accounts.isEmpty() || accountNum == null) {
             return null;
         }
         for (Account account : accounts) {
@@ -75,5 +85,14 @@ public class AccountService {
             }
         }
         return null;
+    }
+    public boolean deleteAccount(String accountNum) {
+        Account account = findAccountByNumber(accountNum);
+        if (account == null) {
+            System.out.println("[" + accountNum + "] 계좌는 없는계좌입니다.");
+            return false;
+        }
+        accounts.remove(account);
+        return true;
     }
 }

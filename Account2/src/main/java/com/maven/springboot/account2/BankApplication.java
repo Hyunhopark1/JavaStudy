@@ -30,6 +30,9 @@ public class BankApplication {
                     case 5:
                         System.out.println("프로그램 종료");
                         return;
+                    case 6:
+                        bApp.deleteAccount();
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -38,7 +41,7 @@ public class BankApplication {
     }
     private void showMenu() {
         System.out.println("=============================================");
-        System.out.println("1.계좌생성 | 2.계좌목록 | 3.예금 | 4.출금 | 5.종료");
+        System.out.println("1.계좌생성 | 2.계좌목록 | 3.예금 | 4.출금 | 5.종료 | 6. 계좌삭제");
         System.out.println("=============================================");
     }
 
@@ -54,7 +57,7 @@ public class BankApplication {
         System.out.println("계좌생성");
         System.out.println("=============================================");
 
-        System.out.print("계좌번호 : ");
+        System.out.print("계좌번호(6자리 이내의 숫자입력) : ");
         String accountNum=sc.nextLine();
         System.out.print("계좌주 : ");
         String accountName=sc.nextLine();
@@ -128,4 +131,24 @@ public class BankApplication {
         }
     }
 
+    private void deleteAccount() {
+        System.out.println("=============================================");
+        System.out.println("계좌 삭제");
+        System.out.println("=============================================");
+
+        System.out.print("계좌 번호 :");
+        String accountNum = sc.nextLine();
+        System.out.println("해당 계좌 삭제를 원하시면 '삭제'를 입력하시오");
+        String delete = sc.nextLine();
+
+        if (delete.equals("삭제")) {
+            if (accountService.deleteAccount(accountNum)) {
+                System.out.println("결과 : "+accountNum+ " 계좌가 삭제되었습니다.");
+            }else{
+                System.out.println("결과 : 계좌 삭제 실패하였습니다");
+            }
+        }else{
+            System.out.println("계좌 삭제 취소");
+        }
+    }
 }
