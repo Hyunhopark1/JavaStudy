@@ -3,9 +3,13 @@ package com.maven.springboot.rentcar.repository;
 import com.maven.springboot.rentcar.models.Vehicle;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -48,11 +52,14 @@ public class VehicleJSONRepository implements VehicleRepository {
         return false;
     }
     @Override
-    public boolean load(List<Vehicle> vehicleList) {
+    public boolean load(List<Vehicle> vehicleList) throws Exception {
         if (vehicleList == null) {
             return false;
         }
-        
+        JSONParser jsonParser = new JSONParser();
+        FileReader fileReader = new FileReader("a", Charset.defaultCharset());
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);
+
         return false;
     }
 }

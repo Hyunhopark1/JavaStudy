@@ -1,0 +1,157 @@
+package com.maven.springboot.sbtest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
+
+    private List<IPhoneBook> list = new ArrayList<>();
+    private final IPhoneBookRepository<IPhoneBook> phoneBookRepository;
+
+    public PhoneBookServiceImpl(String arg1, String fileName) throws Exception {
+        if ("-j".equals(arg1)) {
+            this.phoneBookRepository = new PhoneBookJsonRepository(fileName);
+        } else if ("-t".equals(arg1)) {
+            this.phoneBookRepository = new PhoneBookTextRepository(fileName);
+        }else{
+            throw new Exception("Error : You need program arguments (-j / -t) (filename) !");
+        }
+    }
+
+
+
+    @Override
+    public int size() {
+        return this.list.size();
+    }
+
+    @Override
+    public Long getMaxId() {
+        Long max=0L;
+
+        for (IPhoneBook list : list) {
+            if (max < list.getId()) {
+                max=list.getId();
+            }
+        }
+        return ++max;
+    }
+
+    @Override
+    public IPhoneBook findById(Long id) {
+
+        for (IPhoneBook list : list) {
+            if (id.equals(list.getId())) {
+                return list;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<IPhoneBook> getAllList() {
+        return this.list;
+    }
+
+    @Override
+    public List<IPhoneBook> getListFromEmail(String findEmail) {
+        List<IPhoneBook> findArr = new ArrayList<>();
+        for ( IPhoneBook phoneBook : this.list ) {
+            if (phoneBook.getEmail().contains(findEmail)) {
+                findArr.add(phoneBook);
+            }
+        }
+        return findArr;
+    }
+
+    @Override
+    public List<IPhoneBook> getListFromGroup(EPhoneGroup phoneGroup) {
+        List<IPhoneBook> findArr = new ArrayList<>();
+        for ( IPhoneBook phoneBook : this.list ) {
+            if (phoneGroup.equals(phoneBook.getGroup())) {
+                findArr.add(phoneBook);
+            }
+        }
+        return findArr;
+    }
+
+    @Override
+    public List<IPhoneBook> getListFromName(String findName) {
+        List<IPhoneBook> findArr = new ArrayList<>();
+        for ( IPhoneBook phoneBook : this.list ) {
+            if (phoneBook.getName().contains(findName)) {
+                findArr.add(phoneBook);
+            }
+        }
+        return findArr;
+    }
+
+    @Override
+    public List<IPhoneBook> getListFromPhoneNumber(String findPhone) {
+        List<IPhoneBook> findArr = new ArrayList<>();
+        for ( IPhoneBook phoneBook : this.list ) {
+            if (phoneBook.getPhoneNumber().contains(findPhone)) {
+                findArr.add(phoneBook);
+            }
+        }
+        return findArr;
+    }
+
+
+
+    @Override
+    public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
+        IPhoneBook phoneBook =PhoneBook.builder()
+                .id(this.getMaxId())
+                .name(name)
+                .group(group)
+                .phoneNumber(phoneNumber)
+                .email(email).build();
+
+        list.add(phoneBook);
+        return true;
+    }
+
+    @Override
+    public boolean insert(IPhoneBook phoneBook) throws Exception {
+        list.add(phoneBook);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean remove(Long id) throws Exception {
+        IPhoneBook phoneBook = findById(id);
+        if (phoneBook == null) {
+            System.out.println("입력하신 id에 해당하는 연락처가 없습니다");
+            return false;
+        }
+        list.remove(phoneBook);
+        return true;
+    }
+
+    private int findIndexById(Long id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (id.equals(list.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    @Override
+    public boolean update(Long id, IPhoneBook phoneBook) throws Exception {
+        return false;
+    }
+
+    @Override
+    public void loadData() throws Exception {
+        phoneBookRepository.loadData(list);
+    }
+    @Override
+    public void saveData() throws Exception {
+        phoneBookRepository.saveData(list);
+    }
+
+
+}

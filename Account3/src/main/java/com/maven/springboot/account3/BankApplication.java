@@ -1,12 +1,11 @@
 package com.maven.springboot.account3;
 
+
 import java.util.Scanner;
 
 public class BankApplication {
-    private AccountService accountService = new AccountService();
-    private AccountRepository accountRepository;
-    private AccountJSONRepository accountJsonRepository = new AccountJSONRepository();
-    private AccountFileRepository accountFileRepository = new AccountFileRepository();
+
+    private AccountService accountService;
 
     private void printHeader() {
         System.out.println("=====================================");
@@ -88,19 +87,30 @@ public class BankApplication {
     }
 
     private void loadFile() throws Exception {
-        accountRepository.loadJson(accountService.getAllAccount());
+        accountService.loadData(accountService.getAllAccount());
     }
 
     private void saveFile() throws Exception {
-        accountRepository.saveJson(accountService.getAllAccount());
+        accountService.saveData(accountService.getAllAccount());
     }
 
     public static void main(String[] args) {
+
+        if (args.length < 2) {
+            System.out.println("Execute BankApplication -j / -t filename");
+            return;
+        }
+
+        String fileType=args[0];
+        String fileName=args[1];
+
         BankApplication bapp = new BankApplication();
+
         Scanner input = new Scanner(System.in);
         boolean run = true;
 
         try {
+            bapp.accountService = new AccountServiceimpl(fileType, fileName);
             bapp.loadFile();
         } catch (Exception e) {
             throw new RuntimeException("File Open Error !");
@@ -124,6 +134,12 @@ public class BankApplication {
                         break;
                     case 5:
                         run = false;
+                        break;
+                    case 6:
+                        bapp.loadFile();
+                        break;
+                    case 7:
+                        bapp.saveFile();
                         break;
                     default:
                         System.out.println("!!! 잘못된 입력입니다. !!!");

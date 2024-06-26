@@ -1,8 +1,7 @@
 package com.maven.springboot.account3;
 
-import com.fasterxml.jackson.core.JsonParser;
 import org.apache.tomcat.util.json.ParseException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +54,7 @@ class AccountJSONRepositoryTest {
         }
         JSONObject jsonObject = getJsonFromObject(account);
 
-        String str = jsonObject.toString();
+
 
     }
 
