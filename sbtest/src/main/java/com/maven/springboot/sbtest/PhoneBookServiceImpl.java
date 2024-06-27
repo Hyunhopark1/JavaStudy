@@ -79,12 +79,18 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     }
 
     @Override
+    //전화번호,이메일이 빈 값이면 "-" 대입
     public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
 
         if (name == null || name.isEmpty()) {
-            throw new Exception("이름이 입력되지 않았습니다.");
+            throw new Exception("이름은 반드시 입력되어야 합니다.");
         }
-
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            phoneNumber = "-";
+        }
+        if (email == null || email.isEmpty()) {
+            email = "-";
+        }
         IPhoneBook phoneBook = PhoneBook.builder()
                 .id(this.getMaxId())
                 .name(name)
@@ -103,6 +109,8 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     }
 
     @Override
+    //id, 업데이트하기전 객체와 업데이트한값을 넣은 객체를 받아옴
+    //수정할 필드가 비어있으면 원래의 필드값을 업데이트한 객체에 넣는다
     public boolean update(Long id,IPhoneBook beforePhoneBook, IPhoneBook updatePhoneBook) throws Exception {
 
         int findIndex = this.findIndexById(id);

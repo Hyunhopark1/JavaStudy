@@ -4,12 +4,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class PhoneBookJsonRepositoryTest {
+class PhoneBookRepositoryTest {
 
 
     @Test
