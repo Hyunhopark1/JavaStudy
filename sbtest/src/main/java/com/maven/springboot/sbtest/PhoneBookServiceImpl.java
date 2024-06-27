@@ -3,8 +3,10 @@ package com.maven.springboot.sbtest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
+public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
 
     private List<IPhoneBook> list = new ArrayList<>();
     private final IPhoneBookRepository<IPhoneBook> phoneBookRepository;
@@ -14,11 +16,10 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
             this.phoneBookRepository = new PhoneBookJsonRepository(fileName);
         } else if ("-t".equals(arg1)) {
             this.phoneBookRepository = new PhoneBookTextRepository(fileName);
-        }else{
+        } else {
             throw new Exception("Error : You need program arguments (-j / -t) (filename) !");
         }
     }
-
 
 
     @Override
@@ -28,12 +29,12 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
 
     @Override
     public Long getMaxId() {
-        Long max=0L;
+        Long max = 0L;
 
-        for (IPhoneBook list : list) {
-            if (max < list.getId()) {
-                max=list.getId();
-            }
+        if (!list.isEmpty()) {
+            int finishIndex = list.size() - 1;
+            Long newmax = list.get(finishIndex).getId();
+            return ++newmax;
         }
         return ++max;
     }
@@ -41,17 +42,37 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
     @Override
     public IPhoneBook findById(Long id) {
 
-        for (IPhoneBook list : list) {
-            if (id.equals(list.getId())) {
-                return list;
+        int start = 0;
+        int finish = list.size() - 1;
+
+        while (start <= finish) {
+            int mid = (start + finish) / 2;
+            IPhoneBook phoneBook = list.get(mid);
+
+            if (id.equals(phoneBook.getId())) {
+                return phoneBook;
+            } else if (id < phoneBook.getId()) {
+                finish = mid - 1;
+            } else {
+                start = mid + 1;
             }
         }
         return null;
     }
+
     private int findIndexById(Long id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (id.equals(list.get(i).getId())) {
-                return i;
+        int start = 0;
+        int finish = list.size() - 1;
+        while (start <= finish) {
+            int mid = (start + finish) / 2;
+            IPhoneBook phoneBook = list.get(mid);
+
+            if (id.equals(phoneBook.getId())) {
+                return mid;
+            } else if (id < phoneBook.getId()) {
+                finish = mid - 1;
+            } else {
+                start = mid + 1;
             }
         }
         return -1;
@@ -67,7 +88,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
             return false;
         }
 
-        IPhoneBook phoneBook =PhoneBook.builder()
+        IPhoneBook phoneBook = PhoneBook.builder()
                 .id(this.getMaxId())
                 .name(name)
                 .group(group)
@@ -83,37 +104,40 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
         list.add(phoneBook);
         return true;
     }
-    @Override
-    public boolean update(Long id, IPhoneBook phoneBook) throws Exception {
 
-        int index = this.findIndexById(id);
-        if (index < 0) {
+    @Override
+    public boolean update(Long id,IPhoneBook beforePhoneBook, IPhoneBook updatePhoneBook) throws Exception {
+
+        int findIndex = this.findIndexById(id);
+        if (findIndex < 0) {
             return false;
         }
-        phoneBook.setId(id);
-        this.list.set(index, phoneBook);
+        if (updatePhoneBook.getName().isEmpty()) {
+            updatePhoneBook.setName(beforePhoneBook.getName());
+        } if (updatePhoneBook.getGroup()==null) {
+            updatePhoneBook.setGroup(beforePhoneBook.getGroup());
+        } if (updatePhoneBook.getPhoneNumber().isEmpty()) {
+            updatePhoneBook.setPhoneNumber(beforePhoneBook.getPhoneNumber());
+        } if (updatePhoneBook.getEmail().isEmpty()) {
+            updatePhoneBook.setEmail(beforePhoneBook.getEmail());
+        }
+
+        this.list.set(findIndex, updatePhoneBook);
         return true;
     }
 
     @Override
     public boolean remove(Long id) throws Exception {
+
         IPhoneBook phoneBook = findById(id);
+
         if (phoneBook == null) {
             System.out.println("입력하신 id에 해당하는 연락처가 없습니다");
             return false;
         }
 
         list.remove(phoneBook);
-        reassignId();
         return true;
-    }
-
-    // 연락처가 삭제될 때 ID값을 다시 할당
-    private void reassignId() {
-        long id = 1L;
-        for (IPhoneBook phoneBook : list) {
-            phoneBook.setId(id++);
-        }
     }
 
 
@@ -124,52 +148,43 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
 
     @Override
     public List<IPhoneBook> getListFromEmail(String findEmail) {
-        List<IPhoneBook> findArr = new ArrayList<>();
-        for ( IPhoneBook phoneBook : this.list ) {
-            if (phoneBook.getEmail().contains(findEmail)) {
-                findArr.add(phoneBook);
-            }
-        }
-        return findArr;
+
+        Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getEmail().contains(findEmail));
+
+        return stream.collect(Collectors.toList());
+
+
     }
 
     @Override
     public List<IPhoneBook> getListFromGroup(EPhoneGroup phoneGroup) {
-        List<IPhoneBook> findArr = new ArrayList<>();
-        for ( IPhoneBook phoneBook : this.list ) {
-            if (phoneGroup.equals(phoneBook.getGroup())) {
-                findArr.add(phoneBook);
-            }
-        }
-        return findArr;
+
+        Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getGroup().equals(phoneGroup));
+
+        return stream.collect(Collectors.toList());
     }
 
     @Override
     public List<IPhoneBook> getListFromName(String findName) {
-        List<IPhoneBook> findArr = new ArrayList<>();
-        for ( IPhoneBook phoneBook : this.list ) {
-            if (phoneBook.getName().contains(findName)) {
-                findArr.add(phoneBook);
-            }
-        }
-        return findArr;
+
+        Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getName().contains(findName));
+
+        return stream.collect(Collectors.toList());
     }
 
     @Override
     public List<IPhoneBook> getListFromPhoneNumber(String findPhone) {
-        List<IPhoneBook> findArr = new ArrayList<>();
-        for ( IPhoneBook phoneBook : this.list ) {
-            if (phoneBook.getPhoneNumber().contains(findPhone)) {
-                findArr.add(phoneBook);
-            }
-        }
-        return findArr;
+
+        Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getPhoneNumber().contains(findPhone));
+
+        return stream.collect(Collectors.toList());
     }
 
     @Override
     public boolean loadData() throws Exception {
         return phoneBookRepository.loadData(list);
     }
+
     @Override
     public boolean saveData() throws Exception {
         return phoneBookRepository.saveData(list);

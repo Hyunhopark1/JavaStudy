@@ -80,6 +80,44 @@ public class ConsoleApplication {
             }
         } while (doWhile);
         return eGroup;
+    }private EPhoneGroup getUpdateGroupFromScanner(Scanner input, String title) {
+        boolean doWhile = false;
+        EPhoneGroup eGroup = EPhoneGroup.Friends;
+        do {
+            System.out.print(title + " 연락처 그룹{Friends(1),Families(2),Schools(3),Jobs(4),Hobbies(5)} 선택:");
+            String group = input.nextLine();
+            switch (group) {
+                case "1":
+                    eGroup = EPhoneGroup.Friends;
+                    doWhile = false;
+                    break;
+                case "2":
+                    eGroup = EPhoneGroup.valueOf("Families");
+                    doWhile = false;
+                    break;
+                case "3":
+                    eGroup = EPhoneGroup.Schools;
+                    doWhile = false;
+                    break;
+                case "4":
+                    eGroup = EPhoneGroup.Jobs;
+                    doWhile = false;
+                    break;
+                case "5":
+                    eGroup = EPhoneGroup.Hobbies;
+                    doWhile = false;
+                    break;
+                case "":
+                    eGroup = null;
+                    doWhile = false;
+                    break;
+                default:
+                    doWhile = true;
+                    System.out.println("Friends(1),Families(2),Schools(3),Jobs(4),Hobbies(5) 1~5사이에 입력");
+                    break;
+            }
+        } while (doWhile);
+        return eGroup;
     }
 
     public void insert(Scanner input) throws Exception {
@@ -119,10 +157,10 @@ public class ConsoleApplication {
     private String emailValidity(Scanner input) {
 
         boolean emailNotVal = false;
-        String emailPattern = "[a-zA-Z]+@.+";
+        String emailPattern = ".+@.+";
         String email;
         do {
-            System.out.print("이메일 [ 대소문자 @ 문자 ] 형식으로 입력 :");
+            System.out.print("이메일 [ 문자 @ 문자 ] 형식으로 입력 :");
             email = input.nextLine();
             if (!Pattern.matches(emailPattern, email)) {
                 emailNotVal = true;
@@ -135,23 +173,27 @@ public class ConsoleApplication {
     }
 
     public void update(Scanner input) throws Exception {
+        System.out.println("===========================================================");
+        System.out.println("연락처 수정 : 수정을 원치 않는 정보는 엔터키를 눌러 다음으로 넘겨주세요");
+        System.out.println("===========================================================");
         IPhoneBook result = getFindIdConsole(input, "수정할");
         if (result == null) {
             System.out.println("에러: ID 데이터 가 존재하지 않습니다.");
             return;
         }
-        System.out.print("연락처 이름 :");
+        System.out.print("[ 현재 이름 : "+ result.getName() +" ] -> 수정할 이름 :");
         String name = input.nextLine();
-        EPhoneGroup group = this.getGroupFromScanner(input, "");
-        System.out.print("전화번호 :");
+        System.out.println("[ 현재 그룹 : "+result.getGroup()  +"]");
+        EPhoneGroup group = this.getUpdateGroupFromScanner(input, "수정할");
+        System.out.print("[ 현재 전화번호 : : "+ result.getPhoneNumber() +" ] -> 수정할 전화번호 :");
         String phone = input.nextLine();
-        System.out.print("이메일 :");
+        System.out.print("[ 현재 이메일 : "+ result.getEmail() +" ] -> 수정할 이메일 :");
         String email = input.nextLine();
         IPhoneBook update = PhoneBook.builder()
                 .id(result.getId()).name(name)
                 .group(group)
                 .phoneNumber(phone).email(email).build();
-        if (this.phoneBookService.update(update.getId(), update)) {
+        if (this.phoneBookService.update(update.getId(),result, update)) {
             this.phoneBookService.saveData();
             System.out.println("결과: 데이터 수정 성공되었습니다.");
         }
@@ -205,8 +247,6 @@ public class ConsoleApplication {
     public void searchByPhone(Scanner input) {
         System.out.print("찾을 번호 :");
         String findPhone = input.nextLine();
-
-
 
         List<IPhoneBook> list = this.phoneBookService.getListFromPhoneNumber(findPhone);
         this.printList(list);

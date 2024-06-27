@@ -75,7 +75,7 @@ public class PhoneBookJsonRepository implements IPhoneBookRepository<IPhoneBook>
 
     @Override
     public boolean saveData(List<IPhoneBook> listData) throws Exception {
-        if ( listData == null || listData.size() <= 0 ) {
+        if ( listData == null) {
             return false;
         }
         JSONArray jsonArray = new JSONArray();
