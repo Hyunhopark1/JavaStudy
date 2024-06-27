@@ -81,11 +81,8 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     @Override
     public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
 
-        String phoneNumberPattern = "\\d{3}-\\d{4}-\\d{4}";
-
-        if (!Pattern.matches(phoneNumberPattern, phoneNumber)) {
-            System.out.println("000-0000-0000 형식으로 입력");
-            return false;
+        if (name == null || name.isEmpty()) {
+            throw new Exception("이름이 입력되지 않았습니다.");
         }
 
         IPhoneBook phoneBook = PhoneBook.builder()

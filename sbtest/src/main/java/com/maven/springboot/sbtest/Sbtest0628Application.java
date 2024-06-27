@@ -58,7 +58,7 @@ public class Sbtest0628Application {
                         break;
                 }
             } catch (Exception ex) {
-                System.out.println("정수만 입력해 주세요!");
+                System.out.println("1 ~ 9 까지의 정수만 입력해 주세요!");
             }
         }
     }
