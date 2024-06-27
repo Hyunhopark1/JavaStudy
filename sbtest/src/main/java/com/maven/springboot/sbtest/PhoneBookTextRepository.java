@@ -17,7 +17,7 @@ public class PhoneBookTextRepository implements IPhoneBookRepository<IPhoneBook>
             throw new Exception("Error : Input str is null");
         }
         IPhoneBook object = new PhoneBook();
-        String[] items = str.split(",");
+        String[] items = str.split(" ");
         object.setId(Long.parseLong(items[0]));
         object.setName(items[1]);
         object.setGroup(EPhoneGroup.valueOf(items[2]));
@@ -31,7 +31,7 @@ public class PhoneBookTextRepository implements IPhoneBookRepository<IPhoneBook>
         if (object == null) {
             throw new Exception("Error : Input object is null");
         }
-        String str = String.format("%d %s %s %s %s"
+        String str = String.format("%d %s %s %s %s\n"
                 ,object.getId(),object.getName(),object.getGroup()
                 ,object.getPhoneNumber(),object.getEmail());
         return str;

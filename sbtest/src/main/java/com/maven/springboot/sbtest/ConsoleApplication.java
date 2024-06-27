@@ -4,6 +4,7 @@ package com.maven.springboot.sbtest;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ConsoleApplication {
 
@@ -32,8 +33,17 @@ public class ConsoleApplication {
     }
 
     public void printList() {
-
+        
         this.printList(this.phoneBookService.getAllList());
+    }
+
+    private void printList(List<IPhoneBook> array) {
+        if (array.isEmpty()) {
+            System.out.println("현재 등록된 연락처가 없습니다");
+        }
+        for (IPhoneBook object : array) {
+            System.out.println(object.toString());
+        }
     }
 
     private EPhoneGroup getGroupFromScanner(Scanner input, String title) {
@@ -79,15 +89,49 @@ public class ConsoleApplication {
         System.out.print("연락처 이름 :");
         String name = input.nextLine();
         EPhoneGroup group = this.getGroupFromScanner(input, "");
-        System.out.print("전화번호 :");
-        String phone = input.nextLine();
-        System.out.print("이메일 :");
-        String email = input.nextLine();
+        String phone = this.phoneValidity(input);
+        String email = this.emailValidity(input);
 
         if (this.phoneBookService.insert(name, group, phone, email)) {
             this.phoneBookService.saveData();
             System.out.println("결과: 데이터 추가 성공되었습니다.");
         }
+    }
+
+    private String phoneValidity(Scanner input) {
+
+        boolean phoneNotVal=false;
+        String phoneNumberPattern = "\\d{3}-\\d{4}-\\d{4}";
+        String phone;
+        do {
+            System.out.print("전화번호 [ 000 - 0000 - 0000 ] 형식으로 입력 :");
+            phone = input.nextLine();
+            if (!Pattern.matches(phoneNumberPattern, phone)) {
+                phoneNotVal=true;
+                System.out.println("전화번호 형식 오류 : 다시 입력해 주세요");
+            }else {
+                phoneNotVal=false;
+            }
+        }while (phoneNotVal);
+        return phone;
+    }
+
+    private String emailValidity(Scanner input) {
+
+        boolean emailNotVal = false;
+        String emailPattern = "[a-zA-Z]+@.+";
+        String email;
+        do {
+            System.out.print("이메일 [ 대소문자 @ 문자 ] 형식으로 입력 :");
+            email = input.nextLine();
+            if (!Pattern.matches(emailPattern, email)) {
+                emailNotVal = true;
+                System.out.println("이메일 형식 오류 : 다시 입력해 주세요");
+            } else {
+                emailNotVal = false;
+            }
+        } while (emailNotVal);
+        return email;
     }
 
     public void update(Scanner input) throws Exception {
@@ -108,17 +152,20 @@ public class ConsoleApplication {
                 .group(group)
                 .phoneNumber(phone).email(email).build();
         if (this.phoneBookService.update(update.getId(), update)) {
+            this.phoneBookService.saveData();
             System.out.println("결과: 데이터 수정 성공되었습니다.");
         }
     }
 
     public void delete(Scanner input) throws Exception {
+
         IPhoneBook result = getFindIdConsole(input, "삭제할");
         if (result == null) {
             System.out.println("에러: ID 데이터 가 존재하지 않습니다.");
             return;
         }
         if (this.phoneBookService.remove(result.getId())) {
+            this.phoneBookService.saveData();
             System.out.println("결과: 데이터 삭제 성공되었습니다.");
         } else {
             System.out.println("결과: 데이터 삭제 실패되었습니다.");
@@ -140,12 +187,6 @@ public class ConsoleApplication {
         return iPhoneBook;
     }
 
-    private void printList(List<IPhoneBook> array) {
-        for (IPhoneBook object : array) {
-            System.out.println(object.toString());
-        }
-    }
-
     public void searchByName(Scanner input) {
         System.out.print("찾을 이름 :");
         String name = input.nextLine();
@@ -165,8 +206,11 @@ public class ConsoleApplication {
         System.out.print("찾을 번호 :");
         String findPhone = input.nextLine();
 
+
+
         List<IPhoneBook> list = this.phoneBookService.getListFromPhoneNumber(findPhone);
         this.printList(list);
+
     }
 
     public void searchByEmail(Scanner input) {

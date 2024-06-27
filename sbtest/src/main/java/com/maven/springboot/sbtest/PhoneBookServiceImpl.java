@@ -2,6 +2,7 @@ package com.maven.springboot.sbtest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
 
@@ -47,6 +48,74 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
         }
         return null;
     }
+    private int findIndexById(Long id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (id.equals(list.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
+
+        String phoneNumberPattern = "\\d{3}-\\d{4}-\\d{4}";
+
+        if (!Pattern.matches(phoneNumberPattern, phoneNumber)) {
+            System.out.println("000-0000-0000 형식으로 입력");
+            return false;
+        }
+
+        IPhoneBook phoneBook =PhoneBook.builder()
+                .id(this.getMaxId())
+                .name(name)
+                .group(group)
+                .phoneNumber(phoneNumber)
+                .email(email).build();
+
+        list.add(phoneBook);
+        return true;
+    }
+
+    @Override
+    public boolean insert(IPhoneBook phoneBook) throws Exception {
+        list.add(phoneBook);
+        return true;
+    }
+    @Override
+    public boolean update(Long id, IPhoneBook phoneBook) throws Exception {
+
+        int index = this.findIndexById(id);
+        if (index < 0) {
+            return false;
+        }
+        phoneBook.setId(id);
+        this.list.set(index, phoneBook);
+        return true;
+    }
+
+    @Override
+    public boolean remove(Long id) throws Exception {
+        IPhoneBook phoneBook = findById(id);
+        if (phoneBook == null) {
+            System.out.println("입력하신 id에 해당하는 연락처가 없습니다");
+            return false;
+        }
+
+        list.remove(phoneBook);
+        reassignId();
+        return true;
+    }
+
+    // 연락처가 삭제될 때 ID값을 다시 할당
+    private void reassignId() {
+        long id = 1L;
+        for (IPhoneBook phoneBook : list) {
+            phoneBook.setId(id++);
+        }
+    }
+
 
     @Override
     public List<IPhoneBook> getAllList() {
@@ -97,60 +166,13 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook>{
         return findArr;
     }
 
-
-
     @Override
-    public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
-        IPhoneBook phoneBook =PhoneBook.builder()
-                .id(this.getMaxId())
-                .name(name)
-                .group(group)
-                .phoneNumber(phoneNumber)
-                .email(email).build();
-
-        list.add(phoneBook);
-        return true;
-    }
-
-    @Override
-    public boolean insert(IPhoneBook phoneBook) throws Exception {
-        list.add(phoneBook);
-        return true;
-    }
-
-
-
-    @Override
-    public boolean remove(Long id) throws Exception {
-        IPhoneBook phoneBook = findById(id);
-        if (phoneBook == null) {
-            System.out.println("입력하신 id에 해당하는 연락처가 없습니다");
-            return false;
-        }
-        list.remove(phoneBook);
-        return true;
-    }
-
-    private int findIndexById(Long id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (id.equals(list.get(i).getId())) {
-                return i;
-            }
-        }
-        return -1;
+    public boolean loadData() throws Exception {
+        return phoneBookRepository.loadData(list);
     }
     @Override
-    public boolean update(Long id, IPhoneBook phoneBook) throws Exception {
-        return false;
-    }
-
-    @Override
-    public void loadData() throws Exception {
-        phoneBookRepository.loadData(list);
-    }
-    @Override
-    public void saveData() throws Exception {
-        phoneBookRepository.saveData(list);
+    public boolean saveData() throws Exception {
+        return phoneBookRepository.saveData(list);
     }
 
 
