@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface IPhoneBookService<T> {
     int size();
+    void clear();
     Long getMaxId();
     T findById(Long id);
     List<T> getAllList();
@@ -17,4 +18,5 @@ public interface IPhoneBookService<T> {
     List<T> getListFromEmail(String findEmail);
     boolean loadData() throws Exception;
     boolean saveData() throws Exception;
+
 }

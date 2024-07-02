@@ -2,12 +2,11 @@ package com.maven.springboot.sbtest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
 
+public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     private List<IPhoneBook> list = new ArrayList<>();
     private final IPhoneBookRepository<IPhoneBook> phoneBookRepository;
 
@@ -21,10 +20,14 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         }
     }
 
-
     @Override
     public int size() {
         return this.list.size();
+    }
+
+    @Override
+    public void clear() {
+        this.list.clear();
     }
 
     @Override
@@ -41,14 +44,11 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
 
     @Override
     public IPhoneBook findById(Long id) {
-
         int start = 0;
         int finish = list.size() - 1;
-
         while (start <= finish) {
             int mid = (start + finish) / 2;
             IPhoneBook phoneBook = list.get(mid);
-
             if (id.equals(phoneBook.getId())) {
                 return phoneBook;
             } else if (id < phoneBook.getId()) {
@@ -60,13 +60,12 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         return null;
     }
 
-    private int findIndexById(Long id) {
+    public int findIndexById(Long id) {
         int start = 0;
         int finish = list.size() - 1;
         while (start <= finish) {
             int mid = (start + finish) / 2;
             IPhoneBook phoneBook = list.get(mid);
-
             if (id.equals(phoneBook.getId())) {
                 return mid;
             } else if (id < phoneBook.getId()) {
@@ -79,11 +78,9 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     }
 
     @Override
-    //전화번호,이메일이 빈 값이면 "-" 대입
     public boolean insert(String name, EPhoneGroup group, String phoneNumber, String email) throws Exception {
-
         if (name == null || name.isEmpty()) {
-            throw new Exception("이름은 반드시 입력되어야 합니다.");
+            return false;
         }
         if (phoneNumber == null || phoneNumber.isEmpty()) {
             phoneNumber = "-";
@@ -91,13 +88,7 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
         if (email == null || email.isEmpty()) {
             email = "-";
         }
-        IPhoneBook phoneBook = PhoneBook.builder()
-                .id(this.getMaxId())
-                .name(name)
-                .group(group)
-                .phoneNumber(phoneNumber)
-                .email(email).build();
-
+        IPhoneBook phoneBook = PhoneBook.builder().id(this.getMaxId()).name(name).group(group).phoneNumber(phoneNumber).email(email).build();
         list.add(phoneBook);
         return true;
     }
@@ -109,39 +100,44 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     }
 
     @Override
-    //id, 업데이트하기전 객체와 업데이트한값을 넣은 객체를 받아옴
-    //수정할 필드가 비어있으면 원래의 필드값을 업데이트한 객체에 넣는다
-    public boolean update(Long id,IPhoneBook beforePhoneBook, IPhoneBook updatePhoneBook) throws Exception {
-
+    public boolean update(Long id, IPhoneBook beforePhoneBook, IPhoneBook updatePhoneBook) throws Exception {
         int findIndex = this.findIndexById(id);
         if (findIndex < 0) {
             return false;
         }
-        if (updatePhoneBook.getName().isEmpty()) {
+        if (updatePhoneBook.getName() != null && updatePhoneBook.getName().isEmpty()) {
             updatePhoneBook.setName(beforePhoneBook.getName());
-        } if (updatePhoneBook.getGroup()==null) {
+        }
+        if (updatePhoneBook.getGroup() == null) {
             updatePhoneBook.setGroup(beforePhoneBook.getGroup());
-        } if (updatePhoneBook.getPhoneNumber().isEmpty()) {
+        }
+        if (updatePhoneBook.getPhoneNumber() != null && updatePhoneBook.getPhoneNumber().isEmpty()) {
             updatePhoneBook.setPhoneNumber(beforePhoneBook.getPhoneNumber());
-        } if (updatePhoneBook.getEmail().isEmpty()) {
+        }
+        if (updatePhoneBook.getEmail() != null && updatePhoneBook.getEmail().isEmpty()) {
             updatePhoneBook.setEmail(beforePhoneBook.getEmail());
         }
-
         this.list.set(findIndex, updatePhoneBook);
         return true;
     }
 
     @Override
     public boolean remove(Long id) throws Exception {
-
-        IPhoneBook phoneBook = findById(id);
-
-        if (phoneBook == null) {
-            System.out.println("입력하신 id에 해당하는 연락처가 없습니다");
+        //객체로 remove
+//        IPhoneBook phoneBook = findById(id);
+//        if (phoneBook == null) {
+//            System.out.println("입력하신id에 해당하는 연락처가 없습니다");
+//            return false;
+//        }
+//        list.remove(phoneBook);
+//        return true;
+        //index로 remove
+        int findIndex = findIndexById(id);
+        if (findIndex < 0) {
+            System.out.println("해당 id를 찾을 수 없습니다");
             return false;
         }
-
-        list.remove(phoneBook);
+        list.remove(findIndex);
         return true;
     }
 
@@ -153,35 +149,25 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
 
     @Override
     public List<IPhoneBook> getListFromEmail(String findEmail) {
-
         Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getEmail().contains(findEmail));
-
         return stream.collect(Collectors.toList());
-
-
     }
 
     @Override
     public List<IPhoneBook> getListFromGroup(EPhoneGroup phoneGroup) {
-
         Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getGroup().equals(phoneGroup));
-
         return stream.collect(Collectors.toList());
     }
 
     @Override
     public List<IPhoneBook> getListFromName(String findName) {
-
         Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getName().contains(findName));
-
         return stream.collect(Collectors.toList());
     }
 
     @Override
     public List<IPhoneBook> getListFromPhoneNumber(String findPhone) {
-
         Stream<IPhoneBook> stream = this.list.stream().filter(phoneBook -> phoneBook.getPhoneNumber().contains(findPhone));
-
         return stream.collect(Collectors.toList());
     }
 
@@ -194,6 +180,4 @@ public class PhoneBookServiceImpl implements IPhoneBookService<IPhoneBook> {
     public boolean saveData() throws Exception {
         return phoneBookRepository.saveData(list);
     }
-
-
 }

@@ -53,6 +53,9 @@ public class Sbtest0628Application {
                     case 9:
                         run = false;
                         break;
+                    case 10:
+                        application.allClear();
+                        break;
                     default:
                         System.out.println("!!! 잘못된 입력입니다. !!!");
                         break;

@@ -3,6 +3,7 @@ package com.maven.springboot.sbtest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,6 +12,8 @@ public class PhoneBookServiceTests {
     public void phoneBookServiceImplTest() throws Exception {
         IPhoneBookService<IPhoneBook> jsonService = new PhoneBookServiceImpl("-j", "test.json");
         IPhoneBookService<IPhoneBook> textService = new PhoneBookServiceImpl("-t", "test.txt");
+
+
         File jsonFile = new File("test.json");
         File textFile = new File("test.txt");
         jsonFile.delete();
@@ -38,6 +41,11 @@ public class PhoneBookServiceTests {
         jsonService.insert(add3);
         textService.insert(add2);
         textService.insert(add3);
+
+        //insert -> name 공백입력 test
+        boolean result1 =jsonService.insert("",EPhoneGroup.Families,"010-1111-2222","aaa@naver.com");
+        assertThat(result1).isEqualTo(false);
+
         // size test
         assertThat(jsonService.size()).isEqualTo(3);
         assertThat(textService.size()).isEqualTo(3);
