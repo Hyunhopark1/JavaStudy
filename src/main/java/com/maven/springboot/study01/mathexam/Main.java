@@ -8,26 +8,14 @@ import java.util.Scanner;
 
 //codeup문제집
 public class Main {
-    String name = "aaa";
-    int score = 10;
-
     public static void main(String[] args) throws Exception {
         Main main = new Main();
 
 
-        MemberService memberService = new MemberService();
-//        boolean result = memberService.login("hong", "12345");
-//        if (result) {
-//            System.out.println("로그인 되었습니다.");
-//            memberService.logout("hong");
-//        } else {
-//            System.out.println("id 또는 password가 올바르지 않습니다.");
-//        }
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
 
-        Printer.println(10);
-        Printer.println(true);
-        Printer.println(5.7);
-        Printer.println("홍길동");
+        System.out.println(main.codeUp1953(1,1,n));
 
     }
 
@@ -411,5 +399,17 @@ public class Main {
 
     }
 
-
+    public int codeUp1953(int start,int line,int n) {
+        System.out.print("*");
+        if (start == line && line == n) {
+            return 0;
+        }else{
+            if (start == line) {
+                System.out.println();
+                return codeUp1953(1, line + 1, n);
+            }else{
+                return codeUp1953(start + 1, line, n);
+            }
+        }
+    }
 }
