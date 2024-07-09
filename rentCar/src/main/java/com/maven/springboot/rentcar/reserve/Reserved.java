@@ -1,12 +1,12 @@
 package com.maven.springboot.rentcar.reserve;
 
 import com.maven.springboot.rentcar.members.Member;
-import com.maven.springboot.rentcar.models.Vehicle;
+import com.maven.springboot.rentcar.vehicle.IVehicle;
 
 import java.util.Date;
 
 public class Reserved {
-    private Vehicle vehicle;
+    private IVehicle vehicle;
     private Member member;
     private Date startDate;
     private String startPoint;
@@ -19,15 +19,15 @@ public class Reserved {
     private Date cancelDate;
     private ReserveStatus status;
 
-    public boolean reserveVehicle(Vehicle vehicle, Member member, Date startDate, String startPoint, Date endDate, String endPoint, int money, Date reserverDate, Date untilDate, ReserveStatus status) {
+    public boolean reserveVehicle(IVehicle vehicle, Member member, Date startDate, String startPoint, Date endDate, String endPoint, int money, Date reserverDate, Date untilDate, ReserveStatus status) {
         return false;
     }
 
-    public boolean reserveVehicle(Vehicle vehicle, Member member, Date startDate, String startPoint, Date endDate, String endPoint, int money, Date reserverDate) {
+    public boolean reserveVehicle(IVehicle vehicle, Member member, Date startDate, String startPoint, Date endDate, String endPoint, int money, Date reserverDate) {
         return false;
     }
 
-    public boolean cancleVehicle(Vehicle vehicle, Member member, Date cancelDate) {
+    public boolean cancleVehicle(IVehicle vehicle, Member member, Date cancelDate) {
         return false;
     }
 }

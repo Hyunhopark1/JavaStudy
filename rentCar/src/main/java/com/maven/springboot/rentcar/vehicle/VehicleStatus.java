@@ -1,4 +1,4 @@
-package com.maven.springboot.rentcar.models;
+package com.maven.springboot.rentcar.vehicle;
 
 public enum VehicleStatus {
     Free,
