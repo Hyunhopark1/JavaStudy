@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping(value="/catweb")
+@RequestMapping(value = "/catweb")
 public class CateWebController {
 
     @Autowired
@@ -24,10 +24,10 @@ public class CateWebController {
     }
 
     @GetMapping("/category_list")
-    public String categoryList(Model model, @RequestParam int page, @RequestParam String name) {
+    public String categoryList(Model model, @RequestParam int page, @RequestParam String searchName) {
         try {
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .page(page).name(name).build();
+                    .page(page).searchName(searchName).build();
             int total = this.categoryService.countAllByNameContains(searchCategoryDto);
             List<ICategory> list = this.categoryService.findAllByNameContains(searchCategoryDto);
             searchCategoryDto.setTotal(total);
@@ -41,36 +41,41 @@ public class CateWebController {
 
 
     @GetMapping("/category_add")
-    public String categoryAdd(){
+    public String categoryAdd(Model model) {
+        try {
+
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
         return "catweb/category_add";
     }
 
     @PostMapping("/category_insert")
-    public String categoryInsert(@ModelAttribute CategoryDto dto,Model model){
+    public String categoryInsert(@ModelAttribute CategoryDto dto, Model model) {
         try {
-            if (dto == null || dto.getName() == null || dto.getName().isEmpty()) {
-                model.addAttribute("error_message", "이름이 비었습니다.");
-                return "error/error_bad";  // resources/templates 폴더안의 화면파일
+            if (dto.getName() == null || dto.getName().isEmpty()) {
+                model.addAttribute("error_message", "이름은 비어있을 수 없습니다.");
+                return "error/error_bad";
             }
             this.categoryService.insert(dto);
 
         } catch (Exception ex) {
             log.error(ex.toString());
-            model.addAttribute("error_message", dto.getName() + " 중복입니다.");
-            return "error/error_save";  // resources/templates 폴더안의 화면파일
+            model.addAttribute("error_message", dto.getName()+"중복입니다.");
+            return "error/error/bad";
         }
-        return "redirect:category_list?page=1&name=";  // 브라우저 주소를 redirect 한다.
+        return "redirect:category_list?page=1&searchName=";  // 브라우저 주소를 redirect 한다.
     }
 
     @GetMapping("/category_view")    // 브라우저의 URL 주소
     public String categoryOldView(Model model, @RequestParam Long id) {
         try {
-            if ( id == null || id <= 0 ) {
+            if (id == null || id <= 0) {
                 model.addAttribute("error_message", "ID는 1보다 커야 합니다.");
                 return "error/error_bad";  // resources/templates 폴더안의 화면파일
             }
             ICategory find = this.categoryService.findById(id);
-            if ( find == null ) {
+            if (find == null) {
                 model.addAttribute("error_message", id + " 데이터가 없습니다.");
                 return "error/error_find";
             }
@@ -101,7 +106,7 @@ public class CateWebController {
             model.addAttribute("error_message", "서버 에러입니다. 관리자에게 문의 하세요.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:category_list?page=1&name=";
+        return "redirect:category_list?page=1&searchName=";
     }
 
     @PostMapping("/category/update")
@@ -117,12 +122,12 @@ public class CateWebController {
                 return "error/error_find";
             }
             this.categoryService.update(dto.getId(), dto);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", dto.getName() + " 중복입니다.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:/catweb/category_list?page=1&name=";
+        return "redirect:/catweb/category_list?page=1&searchName=";
     }
 
 

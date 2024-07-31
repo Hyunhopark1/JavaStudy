@@ -31,9 +31,9 @@ public class CategoryController {
                 return ResponseEntity.badRequest().build();
             }
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            return ResponseEntity.notFound().build();
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -42,9 +42,9 @@ public class CategoryController {
         try {
             List<ICategory> result = this.categoryService.getAllList();
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            return ResponseEntity.notFound().build();
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -57,9 +57,9 @@ public class CategoryController {
             }
             Boolean result = this.categoryService.delete(id);
             return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            return ResponseEntity.notFound().build();
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -69,14 +69,14 @@ public class CategoryController {
             if (id == null || dto == null) {
                 return ResponseEntity.badRequest().build();
             }
-            ICategory result = this.categoryService.update(id,dto);
-            if (result == null) {
-                return ResponseEntity.badRequest().build();
+            ICategory result = this.categoryService.update(id, dto);
+            if ( result == null ) {
+                return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(result);
-        }catch (Exception e) {
-            logger.error(e.toString());
-            return ResponseEntity.notFound().build();
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
         }
     }
     @GetMapping("/{id}")
@@ -97,15 +97,32 @@ public class CategoryController {
     }
 
     @GetMapping("/nm/{name}")
-    public ResponseEntity<List<ICategory>> findAllByNameContains(@PathVariable String name) {
+    public ResponseEntity<List<ICategory>> findAllByNameContains(@PathVariable String searchName) {
         try {
-            if ( name == null || name.isEmpty() ) {
+            if ( searchName == null || searchName.isEmpty() ) {
                 return ResponseEntity.badRequest().build();
             }
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .name(name).page(1).build();
+                    .searchName(searchName).page(1).build();
             List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
             if ( result == null || result.size() <= 0 ) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/searchName")
+    public ResponseEntity<List<ICategory>> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+        try {
+            if ( searchCategoryDto == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
+            if ( result == null ) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(result);

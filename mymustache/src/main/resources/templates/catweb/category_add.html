@@ -21,33 +21,45 @@
             color:lightgrey;
             padding:30px 200px;
         }
+        .form-container{
+            width: 100%;
+            text-align: center;
+            font-family: cursive;
+            margin-bottom: 60px;
+        }
         #add-form{
             display:flex;
             flex-direction : row;
             text-align : center;
+            align-items:center;
         }
         #add-form label{
             flex:1;
             float: left;
             font-size: 20px;
             font-weight: 800;
+            padding: 40px;
             border:1px solid black;
         }
-        #add-form input[type=text]{
-            flex:2;
-            float: left;
+        #add-form input{
+            flex:1;
             font-size: 20px;
             font-weight: 800;
+            padding: 40px;
+            margin:15px;
         }
-        #add-form button{
+        #add-form a{
             flex:1;
             float: left;
+            padding: 40px;
             font-size: 20px;
             font-weight: 800;
-        }
-        button a{
             color:#ffffff;
         }
+        .buttons .btn{
+            margin:15px;
+        }
+
     </style>
     <script>
         //$(document).ready(function(){
@@ -73,7 +85,7 @@
             <label for="name">이름</label>
             <input type="text" id="name" name="name" placeholder="추가할 이름 입력" autofocus/>
             <div class="buttons">
-                <button class="btn btn-light"><a href="/catweb/category_list?page=1&name=">뒤로</a></button>
+                <a href="/catweb/category_list?page=1&name=" class="btn btn-light">뒤로</a>
                 <input class="btn btn-primary" type="submit" value="추가"/>
             </div>
         </form>

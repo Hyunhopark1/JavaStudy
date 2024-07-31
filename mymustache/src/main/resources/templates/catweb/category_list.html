@@ -13,23 +13,23 @@
             let page = {{searchCategoryDto.page}};
             let startPage = getStartPage(page);
             let endPage = getEndPage(startPage);
-            let searchName = '{{searchCategoryDto.name}}';
+            let searchName = '{{searchCategoryDto.searchName}}';
             let sClass = "btn btn-success rounded-pill";
             let prev = (page-1) < 1 ? 1 : page-1;
             let next = (page+1) >= totPage ? totPage : page+1;
 
             $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + prev +
-                "&name=" + searchName + "'>Prev</a> ");
+                "&searchName=" + searchName + "'>Prev</a> ");
             for (let i = startPage; i <= endPage; i++) {
                 if (page == i) {
                     sClass = "btn btn-primary rounded-pill";
                 }
                 $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + i +
-                    "&name=" + searchName + "'>" + i + "</a> ");
+                    "&searchName=" + searchName + "'>" + i + "</a> ");
                 sClass = "btn btn-success rounded-pill";
             }
             $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + next +
-                "&name=" + searchName + "'>Next</a> ");
+                "&searchName=" + searchName + "'>Next</a> ");
         });
 
         function getStartPage(page) {
@@ -65,7 +65,6 @@
         }
         #search-form > input {
             float: left;
-            border: 1px solid black;
             padding: 40px 100px;
             margin: 10px;
             font-size: 20px;
@@ -75,11 +74,11 @@
         #search-form input[type="text"] {
             flex: 2;
             width: 100%;
+            border: 1px solid black;
         }
         #search-form input[type="submit"] {
-            flex: 1;
-            border-radius: 30px;
-            background: dodgerblue;
+            border : 1px solid transparent;
+            background: lightpink;
             color: #ffffff;
             cursor: pointer;
         }
@@ -163,7 +162,7 @@
 <div class="form-container">
     <form id="search-form" name="search-form" method="get" action="category_list">
         <label for="search-name">이름</label>
-        <input type="text" id="search-name" name="name" placeholder="검색할 이름 입력" autofocus value="{{searchCategoryDto.name}}"/>
+        <input type="text" id="search-name" name="searchName" placeholder="검색할 이름 입력" autofocus value="{{searchCategoryDto.searchName}}"/>
         <input type="hidden" id="page" name="page" value="{{searchCategoryDto.page}}"/>
         <input type="submit" value="검색"/>
     </form>
