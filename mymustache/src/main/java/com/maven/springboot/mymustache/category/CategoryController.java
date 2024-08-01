@@ -14,20 +14,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/ct")
 public class CategoryController {
-
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
+//    private CategoryServiceImpl categoryService;
     private CategoryServiceImpl categoryService;
 
     @PostMapping
-    public ResponseEntity<ICategory> insertPB(@RequestBody CategoryDto dto) {
+    public ResponseEntity<ICategory> insert(@RequestBody CategoryDto dto) {
         try {
-            if (dto == null) {
+            if ( dto == null ) {
                 return ResponseEntity.badRequest().build();
             }
             ICategory result = this.categoryService.insert(dto);
-            if (result == null) {
+            if ( result == null ) {
                 return ResponseEntity.badRequest().build();
             }
             return ResponseEntity.ok(result);
@@ -48,11 +48,10 @@ public class CategoryController {
         }
     }
 
-    // Long 처럼 박스형 클래스는 null이 될수있어서 검사해야한다. 하지만 long 처럼 기본변수타입은 null이 될수없다
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
         try {
-            if (id == null) {
+            if ( id == null ) {
                 return ResponseEntity.badRequest().build();
             }
             Boolean result = this.categoryService.delete(id);
@@ -65,8 +64,8 @@ public class CategoryController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ICategory> update(@PathVariable Long id, @RequestBody CategoryDto dto) {
-        try{
-            if (id == null || dto == null) {
+        try {
+            if ( id == null || dto == null ) {
                 return ResponseEntity.badRequest().build();
             }
             ICategory result = this.categoryService.update(id, dto);
@@ -79,6 +78,7 @@ public class CategoryController {
             return ResponseEntity.badRequest().build();
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ICategory> findById(@PathVariable Long id) {
         try {
@@ -116,16 +116,33 @@ public class CategoryController {
     }
 
     @PostMapping("/searchName")
-    public ResponseEntity<List<ICategory>> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+    public ResponseEntity<SearchCategoryDto> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
         try {
             if ( searchCategoryDto == null ) {
                 return ResponseEntity.badRequest().build();
             }
-            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
-            if ( result == null ) {
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            List<ICategory> list = this.categoryService.findAllByNameContains(searchCategoryDto);
+            if ( list == null ) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(result);
+            searchCategoryDto.setTotal(total);
+            searchCategoryDto.setDataList(list);
+            return ResponseEntity.ok(searchCategoryDto);
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/countName")
+    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+        try {
+            if ( searchCategoryDto == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            return ResponseEntity.ok(total);
         } catch ( Exception ex ) {
             logger.error(ex.toString());
             return ResponseEntity.badRequest().build();
