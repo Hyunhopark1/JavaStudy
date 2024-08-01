@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maven.springboot.mymustache.category.CategoryMybatisMapper">
+<!-- mapper namespace는 @mapper로 선언된 클래스의 풀 패키지.클래스명 -->
 
+    <!-- id는 mapper클래스의 insert메소드-->
+    <!--parameterType="CategoryDto" insert 메소드의 파라미터 타입, 매개변수 1개 -->
+    <!-- useGeneratedKeys="true" keyProperty="id컬럼명" id컬럼명의 번호를 증가해주고 리턴도 해준다-->
     <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO category_tbl (name)
         VALUES (#{name})
     </insert>
+
+    <!-- id는 mapper클래스의 update메소드-->
+    <!--parameterType="CategoryDto" update 메소드의 파라미터 타입, 매개변수 1개 -->
     <update id="update" parameterType="CategoryDto">
         UPDATE category_tbl SET name = #{name}
         WHERE id = #{id}
     </update>
+
+    <!-- id는 mapper클래스의 deleteById메소드-->
+    <!--parameterType="CategoryDto" deleteById 메소드의 파라미터 타입, 매개변수 1개 -->
     <delete id="deleteById">
         DELETE FROM category_tbl
         WHERE id = #{id}
     </delete>
+
+    <!-- id는 mapper클래스의 findById메소드-->
+    <!-- resultType="CategoryDto"  findById 메소드의 return 데이터 타입 또는 List<데이터형> -->
     <select id="findById" resultType="CategoryDto">
         SELECT id, name
         FROM category_tbl
-        WHERE ID = #{id}
+        WHERE ID = #{id}    <!-- #{id} : CategoryDto 클래스의 멤버변수 id -->
     </select>
+
     <select id="findByName" resultType="CategoryDto">
         SELECT id
              , name
         FROM category_tbl
-        WHERE name = #{name}
+        WHERE name = #{name}  <!-- #{name} : CategoryDto 클래스의 멤버변수 name -->
     </select>
 
     <select id="findAll" resultType="CategoryDto">
@@ -32,6 +46,7 @@
              , name
         FROM category_tbl
     </select>
+
     <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
         SELECT count(*)
         FROM category_tbl

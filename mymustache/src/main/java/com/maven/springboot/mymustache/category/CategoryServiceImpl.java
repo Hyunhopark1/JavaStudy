@@ -103,13 +103,9 @@ public class CategoryServiceImpl implements ICategoryService {
             //return List.of();
             return new ArrayList<>();
         }
-        String sOrer = "";
-        if ( dto.getSortColumn() == null ) {
-            sOrer = "id";
-        } else {
-            sOrer = dto.getSortColumn();
-        }
-        dto.setOrderByWord( sOrer + " " + dto.getSortAscDsc() );
+
+        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
+        + " " +( dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC")) ;
         if ( dto.getRowsOnePage() == null ) {
             dto.setRowsOnePage(10);
         }

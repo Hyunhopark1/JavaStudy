@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@RestController
-@RequestMapping("/ct")
+@Slf4j  // log를 만들어준다.
+@RestController // Restfull API 용 Controller이다. JSON 문자형식으로 요청/응답 한다.
+@RequestMapping("/ct") // 컨트롤러가 처리할 url의 앞부분
 public class CategoryController {
-    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
-    @Autowired
+    @Autowired  //Springboot가  CategoryServiceImpl 데이터형으로 객체를 자동 생성
 //    private CategoryServiceImpl categoryService;
     private CategoryServiceImpl categoryService;
 
-    @PostMapping
+    @PostMapping  //POST method , url : /ct
     public ResponseEntity<ICategory> insert(@RequestBody CategoryDto dto) {
         try {
             if ( dto == null ) {
@@ -32,7 +31,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -43,7 +42,7 @@ public class CategoryController {
             List<ICategory> result = this.categoryService.getAllList();
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -57,7 +56,7 @@ public class CategoryController {
             Boolean result = this.categoryService.delete(id);
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -74,7 +73,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -91,12 +90,12 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/nm/{name}")
+    @GetMapping("/nm/{searchName}")
     public ResponseEntity<List<ICategory>> findAllByNameContains(@PathVariable String searchName) {
         try {
             if ( searchName == null || searchName.isEmpty() ) {
@@ -110,7 +109,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -130,7 +129,7 @@ public class CategoryController {
             searchCategoryDto.setDataList(list);
             return ResponseEntity.ok(searchCategoryDto);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -144,7 +143,7 @@ public class CategoryController {
             int total = this.categoryService.countAllByNameContains(searchCategoryDto);
             return ResponseEntity.ok(total);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
