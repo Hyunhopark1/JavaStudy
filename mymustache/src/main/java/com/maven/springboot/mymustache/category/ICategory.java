@@ -1,12 +1,7 @@
 package com.maven.springboot.mymustache.category;
 
-
-import java.io.Serializable;
-
-
-//메소드 프토토타입만 선언하고 실행하는 몸체는 없는 인터페이스, 일반화, 추상화, 다형성, 객체지향의 중심
-public interface ICategory extends Serializable {
-
+// 메소드 프로토타입만 선언하고 실행하는 몸체는 없는 인터페이스, 일반화, 추상화, 다형성, 객체지향의중심
+public interface ICategory {
     Long getId();
     void setId(Long id);
 
