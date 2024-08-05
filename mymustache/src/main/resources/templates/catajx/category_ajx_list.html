@@ -3,15 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Category Ajax CRUD</title>
-    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
-    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <link href="/mazer/assets/compiled/css/app.css" rel="stylesheet">
+    <link href="/mazer/assets/compiled/css/app-dark.css" rel="stylesheet">
+    <link href="/mazer/assets/compiled/css/iconly.css" rel="stylesheet">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
-
-    <link rel="stylesheet" href="/ajx/modal.css">
     <style>
         .itemRow {
             width: fit-content;
+        }
+
+        .wrap {
+            /* 전체 화면의 스타일 */
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content {
+            /* 화면 안의 내용이 있는 곳의 스타일 */
+            width: 80%;
+            height: 150px;
+            margin: 20px auto;
+        }
+
+        #modal_box_add {
+            /* 모달 화면 안의 스타일, z-index: 값이 가장 크므로 화면의 상위에 표현된다.*/
+            width: 70%;
+            height: 150px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: azure;
+            display: flex;
+            flex-flow: column;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+        }
+
+        #modal_box_view {
+            /* 모달 화면 안의 스타일, z-index: 값이 가장 크므로 화면의 상위에 표현된다.*/
+            width: 70%;
+            height: 150px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: azure;
+            display: flex;
+            flex-flow: column;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+        }
+
+        #modal_box_add button {
+            width: 100px;
+            height: 30px;
+            border: none;
+            margin-top: 10px;
+            align-self: center;
+            cursor: pointer;
+        }
+
+        .modal_bg {
+            /* 모달 화면이 나타나면 화면 안의 내용 div id="content" 를 어둡게 만든다.
+                z-index 값을 content 보다 크므로 마우스 클릭시 modal_bg 에 클릭이 된다.
+             */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
         }
     </style>
     <script>
@@ -24,33 +92,10 @@
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 자동 최초 한번 실행한다.
         //});
         $(function () {
-
-
-
-            // Esc 키 눌렀을 때 모달 닫기
-            $(document).on('keydown', function (e) {
-                if (e.key === "Escape") {
-                    $('.dialog').hide();
-                }
-            });
-
-            //모달 닫기
-            $('.modal-close').on('click', function(e){
-                e.preventDefault();
-                const modal = $(this).parents('.dialog');
-                modal.hide();
-            });
-
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
             // HTML 문서 로딩이 완료되면 자동적으로 최초 한번 실행되는 jQuery 부분
             $.searchCategoryList(1);
 
-
-
-            $("#addButton").click(function () {
-                // id="updateButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
-                $.addInsert();
-            })
             $("#updateButton").click(function () {
                 // id="updateButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
                 $.update();
@@ -68,18 +113,30 @@
                     $.searchCategoryList(1);
                 }
             });
-            $("#rowsOnePage").change(function() {
+
+            $("#rowsOnePage").change(function () {
                 rowsOnePage = $("#rowsOnePage").val();
                 $.searchCategoryList(1);
             });
 
+            $('#showAddModalButton').click(function () {
+                // id="modal_box_add" 요소와 class="modal_bg" 요소를 1000ms 동안 서서히 보여준다.
+                $('#modal_box_add').fadeIn(1000);
+                $('.modal_bg').fadeIn(1000);
+            });
+
+            $('#showViewModalButton').click(function () {
+                // id="modal_box_view" 요소와 class="modal_bg" 요소를 1000ms 동안 서서히 보여준다.
+                $('#modal_box_view').fadeIn(1000);
+                $('.modal_bg').fadeIn(1000);
+            });
+            $('.modalCloseButton').click(function () {
+                // id="modal_box_add", id="modal_box_view" 요소와 class="modal_bg" 요소를 서서히 감춘다.
+                $('#modal_box_add').fadeOut();
+                $('#modal_box_view').fadeOut();
+                $('.modal_bg').fadeOut();
+            });
         });
-
-        //모달 열기
-        function modal(id){
-            $("#"+id).show()
-        }
-
 
         $.idAsc = function () {  // jQuery 함수 선언
             sortColumn = "id";
@@ -143,7 +200,7 @@
                 // errorThrown : error 를 던진 곳의 정보
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
                 alert("검색을 실패했습니다.");
-            })
+            });
         }
 
         $.showCategoryList = function (categoryList) {
@@ -185,24 +242,16 @@
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
                 alert("보기 실패했습니다.");
-            })
+            });
         }
 
         $.showCategoryInfo = function (item) {
             if (item == null) {
                 return;
             }
-            $("#add_id").val(item.id);
+            $("#id2").val(item.id);
             // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
-            $("#add_name").val(item.name);
-
-            $("#update_id").val(item.id);
-            // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
-            $("#update_name").val(item.name);
-            $("#delete_id").val(item.id);
-            // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
-            $("#delete_name").val(item.name);
-
+            $("#name2").val(item.name);
         }
 
         $.makePageUI = function (paramTotal, paramPage) {
@@ -253,7 +302,7 @@
         }
 
         $.addInsert = function () {
-            let name = $("#add_name").val();
+            let name = $("#name").val();
             if (!confirm(name + " 추가 하시겠습니까 ?")) {
                 return;
             }
@@ -268,18 +317,19 @@
                 // insert 완료시
                 $("#searchName").val("");
                 $.searchCategoryList(1);
-                $("#add_id").val("");
-                $("#add_name").val("");
-                $("#addModal").hide();
+                $("#id").val("");
+                $("#name").val("");
+                $(".modalCloseButton").trigger("click");
+                // class="modalCloseButton" 요소를 클릭하는 이벤트를 발생한다.
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
                 alert("추가를 실패했습니다.");
-            })
+            });
         }
 
         $.update = function () {
-            let id = $("#update_id").val();
-            let name = $("#update_name").val();
+            let id = $("#id2").val();
+            let name = $("#name2").val();
             if (!confirm(name + " 수정 하시겠습니까 ?")) {
                 return;
             }
@@ -293,18 +343,19 @@
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 // update 성공 완료시
                 $.searchCategoryList(page);
-                $("#update_id").val("");
-                $("#update_name").val("");
-                $("#updateModal").hide();
+                $("#id2").val("");
+                $("#name2").val("");
+                $(".modalCloseButton").trigger("click");
+                // class="modalCloseButton" 요소를 클릭하는 이벤트를 발생한다.
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
                 alert("수정를 실패했습니다.");
-            })
+            });
         }
 
         $.delete = function () {
-            let id = $("#delete_id").val();
-            let name = $("#delete_name").val();
+            let id = $("#id2").val();
+            let name = $("#name2").val();
             if (!confirm(name + " 삭제 하시겠습니까 ?")) {
                 return;
             }
@@ -317,7 +368,6 @@
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 // delete 성공 완료시
                 $.doneDelete();
-                $("#deleteModal").hide();
                 // 앞의 문장이 비동기 통신처리 하므로 앞의 문장이 끝날때까지 기다리지 않고 바로 실행하므로 아래의 로직이 제대로 동작하지 않는다.
                 // total = $.doneDelete();
                 // let totPage = ~~((total + rowsOnePage - 1) / rowsOnePage);
@@ -327,7 +377,7 @@
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
                 alert("삭제를 실패했습니다.");
-            })
+            });
         }
 
         $.doneDelete = function () {
@@ -349,110 +399,92 @@
                 }
                 // alert("delete : total=" + total + ", page=" + page);
                 $.searchCategoryList(page);
-                $("#id").val("");
-                $("#name").val("");
+                $("#id2").val("");
+                $("#name2").val("");
+                $(".modalCloseButton").trigger("click");
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-            })
+            });
         }
-
-
-
     </script>
 </head>
 <body>
 <div>
-    <label for="searchName">검색이름</label><input type="text" id="searchName" name="searchName" value=""/>
-    <input type="hidden" id="page" name="page" value=""/>
-    <button onclick="$.searchCategoryList(1);">검색</button>
-</div>
-<div>
-    Category Ajax List
-</div>
-<ul>
-    <li>
-        <span>id
-            <button onclick="$.idAsc();">△</button>
-            <button onclick="$.idDesc();">▽</button>
-        </span>
-        <span> : </span>
-        <span>name
-            <button onclick="$.nameAsc();">△</button>
-            <button onclick="$.nameDesc();">▽</button>
-        </span>
-        <span> : </span>
-        <span>
-            <label for="rowsOnePage">Row</label>
-            <select id="rowsOnePage">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-            </select>
-        </span>
-    </li>
-</ul>
-<ul id="categoryList">
-</ul>
-<div>total : <span id="total"></span></div>
-
-<button onclick="modal('addModal')">추가</button>
-<button onclick="modal('updateModal')">수정</button>
-<button onclick="modal('deleteModal')">삭제</button>
-<div id="pageDiv">
-</div>
-<!-- 추가 버튼 다이얼로그 띄우기-->
-<div class="dialog" id="addModal">
-    <div class="tb">
-        <div class="inner" style="max-width: 800px;">
-            <div class="top">
-                <div class="title">Category 추가</div>
-                <a href="#" class="modal-close">&times;</a>
+    <div class="wrap">
+        <div class="content">
+            <div>
+                <label for="searchName">검색이름</label><input id="searchName" name="searchName" type="text" value=""/>
+                <input id="page" name="page" type="hidden" value=""/>
+                <button onclick="$.searchCategoryList(1);">검색</button>
             </div>
-            <div class="ct">
-                <fieldset>
-                    <label for="add_id">ID</label> <input type="text" id="add_id" name="id" value="" readonly/>
-                    <label for="add_name">Name</label> <input type="text" id="add_name" name="name" value=""/>
-                </fieldset>
-                <button id="addButton">추가</button>
+            <div>
+                Category Ajax List
+            </div>
+            <ul>
+                <li>
+                    <span>id
+                        <button onclick="$.idAsc();">△</button>
+                        <button onclick="$.idDesc();">▽</button>
+                    </span>
+                    <span> : </span>
+                    <span>name
+                        <button onclick="$.nameAsc();">△</button>
+                        <button onclick="$.nameDesc();">▽</button>
+                    </span>
+                    <span> : </span>
+                    <span>
+                        <label for="rowsOnePage">Row</label>
+                        <select id="rowsOnePage">
+                            <option value="5">5</option>
+                            <option selected value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </span>
+                </li>
+            </ul>
+            <ul id="categoryList">
+            </ul>
+            <div>total : <span id="total"></span></div>
+            <button id="showAddModalButton">추가</button>
+            <button id="showViewModalButton">보기</button>
+            <div id="pageDiv">
             </div>
         </div>
-    </div>
-</div>
-<!-- 수정 버튼 다이얼로그 띄우기 -->
-<div class="dialog" id="updateModal">
-    <div class="tb">
-        <div class="inner" style="max-width: 800px;">
-            <div class="top">
-                <div class="title">Category 수정</div>
-                <a href="#" class="modal-close">&times;</a>
-            </div>
-            <div class="ct">
-                <fieldset>
-                    <label for="update_id">ID</label> <input type="text" id="update_id" name="id" value="" readonly/>
-                    <label for="update_name">Name</label> <input type="text" id="update_name" name="name" value=""/>
-                </fieldset>
-                <button id="updateButton">수정</button>
+        <div id="modal_box_add" style="display: none">
+            <h2>Category Add</h2>
+            <fieldset>
+                <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
+                <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
+            </fieldset>
+            <div class="row">
+                <div class="col-6">
+                    <button id="addButton" onclick="$.addInsert();">추가</button>
+                </div>
+                <div class="col-6">
+                    <button class="modalCloseButton">Close</button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- 닫기버튼 다이얼로그 띄우기 -->
-<div class="dialog" id="deleteModal">
-    <div class="tb">
-        <div class="inner" style="max-width: 800px;">
-            <div class="top">
-                <div class="title">Category 삭제</div>
-                <a href="#" class="modal-close">&times;</a>
-            </div>
-            <div class="ct">
-                <fieldset>
-                    <label for="delete_id">ID</label> <input type="text" id="delete_id" name="id" value="" readonly/>
-                    <label for="delete_name">Name</label> <input type="text" id="delete_name" name="name" value=""/>
-                </fieldset>
-                <button id="deleteButton">삭제</button>
+        <div id="modal_box_view" style="display: none">
+            <h2>Category Info</h2>
+            <fieldset>
+                <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
+                <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
+            </fieldset>
+            <div class="row">
+                <div class="col-4">
+                    <button id="updateButton">수정</button>
+                </div>
+                <div class="col-4">
+                    <button id="deleteButton">삭제</button>
+                </div>
+                <div class="col-4">
+                    <button class="modalCloseButton">Close</button>
+                </div>
             </div>
         </div>
+        <div class="modal_bg" style="display: none"></div>
     </div>
 </div>
 </body>
