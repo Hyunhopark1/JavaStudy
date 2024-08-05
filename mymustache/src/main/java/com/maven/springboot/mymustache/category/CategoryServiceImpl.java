@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService {
-
-    @Autowired
+public class CategoryServiceImpl implements ICategoryService<ICategory> {
+    @Autowired  // SpringBoot 가 CategoryMybatisMapper 데이터형으로 객체를 자동 생성한다.
     private CategoryMybatisMapper categoryMybatisMapper;
-
 
     @Override
     public ICategory findById(Long id) {
@@ -86,7 +84,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean delete(Long id) throws Exception {
+    public Boolean delete(Long id) throws Exception {
         ICategory find = this.findById(id);
         if ( find == null ) {
             return false;
