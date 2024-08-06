@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements ICategoryService {
             return null;
         }
         CategoryDto find = this.categoryMybatisMapper.findById(id);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <select id="findById" ¹®ÀåÀ» ½ÇÇàÇÑ °á°ú¸¦ ¸®ÅÏ ¹Ş´Â´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <select id="findById" ë¬¸ì¥ì„ ì‹¤í–‰í•œ ê²°ê³¼ë¥¼ ë¦¬í„´ ë°›ëŠ”ë‹¤.
         return find;
     }
 
@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements ICategoryService {
             return null;
         }
         CategoryDto find = this.categoryMybatisMapper.findByName(name);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <select id="findByName" ¹®ÀåÀ» ½ÇÇàÇÑ °á°ú¸¦ ¸®ÅÏ ¹Ş´Â´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <select id="findByName" ë¬¸ì¥ì„ ì‹¤í–‰í•œ ê²°ê³¼ë¥¼ ë¦¬í„´ ë°›ëŠ”ë‹¤.
         return find;
     }
 
@@ -37,7 +37,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<ICategory> getAllList() {
         List<ICategory> list = this.getICategoryList(
                 this.categoryMybatisMapper.findAll()
-                // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <select id="findAll" ¹®ÀåÀ» ½ÇÇàÇÑ °á°ú¸¦ ¸®ÅÏ ¹Ş´Â´Ù.
+                // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <select id="findAll" ë¬¸ì¥ì„ ì‹¤í–‰í•œ ê²°ê³¼ë¥¼ ë¦¬í„´ ë°›ëŠ”ë‹¤.
         );
         return list;
     }
@@ -55,9 +55,9 @@ public class CategoryServiceImpl implements ICategoryService {
         List<ICategory> result = list.stream()
                 .map(entity -> (ICategory)entity)
                 .toList();
-        // stream Java 1.8 µîÀåÇÑ ¹æ¹ı : ¹è¿­/Collection ÀÚ·áÇüÀ» Ã³¸®ÇÒ¶§
-        // stream À» »ç¿ëÇÏ¿© Ã³¸® ¼Óµµµµ Áõ°¡ÇÏ°í ¹®¹ıµµ °£°áÇÏ°Ô ¸¸µç´Ù.
-        // ¹è¿­°´Ã¼/ÄÃ·º¼ÇÀÚ·áÇü.stream() ~~~~ Á¤·Ä, Çüº¯È¯, ¿ø¼Ò¸¶´Ù ¶È°°Àº µ¿ÀÛÀ» Ã³¸®ÇÑ´Ù.
+        // stream Java 1.8 ë“±ì¥í•œ ë°©ë²• : ë°°ì—´/Collection ìë£Œí˜•ì„ ì²˜ë¦¬í• ë•Œ
+        // stream ì„ ì‚¬ìš©í•˜ì—¬ ì²˜ë¦¬ ì†ë„ë„ ì¦ê°€í•˜ê³  ë¬¸ë²•ë„ ê°„ê²°í•˜ê²Œ ë§Œë“ ë‹¤.
+        // ë°°ì—´ê°ì²´/ì»¬ë ‰ì…˜ìë£Œí˜•.stream() ~~~~ ì •ë ¬, í˜•ë³€í™˜, ì›ì†Œë§ˆë‹¤ ë˜‘ê°™ì€ ë™ì‘ì„ ì²˜ë¦¬í•œë‹¤.
 
         return result;
     }
@@ -71,8 +71,8 @@ public class CategoryServiceImpl implements ICategoryService {
         dto.copyFields(category);
         dto.setId(0L);
         this.categoryMybatisMapper.insert(dto);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <insert id="insert" ¹®ÀåÀ» ½ÇÇàÇÑ´Ù.
-        // dto.id ´Â ÀÚµ¿Áõ°¡µÈ id °ªÀÌ ¸®ÅÏµÈ´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <insert id="insert" ë¬¸ì¥ì„ ì‹¤í–‰í•œë‹¤.
+        // dto.id ëŠ” ìë™ì¦ê°€ëœ id ê°’ì´ ë¦¬í„´ëœë‹¤.
         return dto;
     }
 
@@ -92,7 +92,7 @@ public class CategoryServiceImpl implements ICategoryService {
             return false;
         }
         this.categoryMybatisMapper.deleteById(id);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <delete id="deleteById" ¹®ÀåÀ» ½ÇÇàÇÑ´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <delete id="deleteById" ë¬¸ì¥ì„ ì‹¤í–‰í•œë‹¤.
         return true;
     }
 
@@ -104,7 +104,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         find.copyFields(category);
         this.categoryMybatisMapper.update((CategoryDto) find);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <update id="update" ¹®ÀåÀ» ½ÇÇàÇÑ´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <update id="update" ë¬¸ì¥ì„ ì‹¤í–‰í•œë‹¤.
         return find;
     }
 
@@ -116,14 +116,14 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
                 + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        // SQL select ¹®ÀåÀÇ ORDER BY ±¸¹®À» ¸¸µé¾î ÁÖ´Â ¿ªÇÒ
+        // SQL select ë¬¸ì¥ì˜ ORDER BY êµ¬ë¬¸ì„ ë§Œë“¤ì–´ ì£¼ëŠ” ì—­í• 
         if ( dto.getRowsOnePage() == null ) {
-            // ÇÑ ÆäÀÌÁö´ç º¸¿©ÁÖ´Â ÇàÀÇ °¹¼ö
+            // í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì£¼ëŠ” í–‰ì˜ ê°¯ìˆ˜
             dto.setRowsOnePage(10);
         }
         List<ICategory> list = this.getICategoryList(
                 this.categoryMybatisMapper.findAllByNameContains(dto)
-                // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <select id="findAllByNameContains" ¹®ÀåÀ» ½ÇÇàÇÑ °á°ú¸¦ ¸®ÅÏÇÑ´Ù.
+                // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <select id="findAllByNameContains" ë¬¸ì¥ì„ ì‹¤í–‰í•œ ê²°ê³¼ë¥¼ ë¦¬í„´í•œë‹¤.
         );
         return list;
     }
@@ -131,6 +131,6 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public int countAllByNameContains(SearchCategoryDto searchCategoryDto) {
         return this.categoryMybatisMapper.countAllByNameContains(searchCategoryDto);
-        // CategoryMybatisMapper ÀÇ Äõ¸® XML ÆÄÀÏÀÇ <select id="categoryMybatisMapper" ¹®ÀåÀ» ½ÇÇàÇÑ °á°ú¸¦ ¸®ÅÏÇÑ´Ù.
+        // CategoryMybatisMapper ì˜ ì¿¼ë¦¬ XML íŒŒì¼ì˜ <select id="categoryMybatisMapper" ë¬¸ì¥ì„ ì‹¤í–‰í•œ ê²°ê³¼ë¥¼ ë¦¬í„´í•œë‹¤.
     }
 }
