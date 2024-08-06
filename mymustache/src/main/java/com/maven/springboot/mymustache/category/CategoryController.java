@@ -1,9 +1,8 @@
 package com.maven.springboot.mymustache.category;
 
 
+import com.maven.springboot.mymustache.SearchAjaxDto;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -124,9 +123,9 @@ public class CategoryController {
             if ( searchName == null || searchName.isEmpty() ) {
                 return ResponseEntity.badRequest().build(); // error 응답
             }
-            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+            SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .searchName(searchName).page(1).build();
-            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
+            List<ICategory> result = this.categoryService.findAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             // findAllByNameContains 쿼리 문장을 만들때 orderByWord, searchName, rowsOnePage, firstIndex 값을
             // 활용하여 쿼리 문장을 만들고 실행한다.
@@ -142,31 +141,31 @@ public class CategoryController {
     }
 
     @PostMapping("/searchName") // POST method : /ct/searchName
-    public ResponseEntity<SearchCategoryDto> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+    public ResponseEntity<SearchAjaxDto> findAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
         // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
-        // SearchCategoryDto 데이터형를 JSON 문자열로 표현하여 리턴한다.
-        // @RequestBody SearchCategoryDto searchCategoryDto : JSON 문자열로 요청을 받는다.
-        //      다만 JSON 문자열의 데이터가 SearchCategoryDto 데이터형이어야 한다.
+        // SearchAjaxDto 데이터형를 JSON 문자열로 표현하여 리턴한다.
+        // @RequestBody SearchAjaxDto searchAjaxDto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 SearchAjaxDto 데이터형이어야 한다.
         //      {"searchName":"값", "sortColumn":"값", "sortAscDsc":"값", "page":값}
         try {
-            if ( searchCategoryDto == null ) {
+            if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build();
             }
-            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            int total = this.categoryService.countAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             // 검색식의 searchName 으로 찾은 데이터 행수를 리턴받는다. 화면의 페이지 계산에 사용된다.
-            List<ICategory> list = this.categoryService.findAllByNameContains(searchCategoryDto);
+            List<ICategory> list = this.categoryService.findAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             // findAllByNameContains 쿼리 문장을 만들때 orderByWord, searchName, rowsOnePage, firstIndex 값을
             // 활용하여 쿼리 문장을 만들고 실행한다.
             if ( list == null ) {
                 return ResponseEntity.notFound().build(); // error 응답
             }
-            searchCategoryDto.setTotal(total);
-            // SearchCategoryDto 응답결과에 total 을 추가한다.
-            searchCategoryDto.setDataList(list);
-            // SearchCategoryDto 응답결과에 List<ICategory> 을 추가한다.
-            return ResponseEntity.ok(searchCategoryDto);
+            searchAjaxDto.setTotal(total);
+            // SearchAjaxDto 응답결과에 total 을 추가한다.
+            searchAjaxDto.setDataList(list);
+            // SearchAjaxDto 응답결과에 List<ICategory> 을 추가한다.
+            return ResponseEntity.ok(searchAjaxDto);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
@@ -175,16 +174,16 @@ public class CategoryController {
     }
 
     @PostMapping("/countName")  // POST method : /ct/countName
-    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
         // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
-        // @RequestBody SearchCategoryDto searchCategoryDto : JSON 문자열로 요청을 받는다.
-        //      다만 JSON 문자열의 데이터가 SearchCategoryDto 데이터형이어야 한다.
+        // @RequestBody SearchAjaxDto searchAjaxDto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 SearchAjaxDto 데이터형이어야 한다.
         //      {"searchName":"값"}
         try {
-            if ( searchCategoryDto == null ) {
+            if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build(); // error 응답
             }
-            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            int total = this.categoryService.countAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             // countAllByNameContains 쿼리 문장을 만들때 searchName 값을 활용하여 쿼리 문장을 만들고 실행한다.
             // 데이터 행수를 리턴한다.

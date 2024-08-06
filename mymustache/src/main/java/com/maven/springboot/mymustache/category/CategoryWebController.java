@@ -1,6 +1,7 @@
 package com.maven.springboot.mymustache.category;
 
 
+import com.maven.springboot.mymustache.SearchAjaxDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,16 +29,16 @@ public class CategoryWebController {
                 searchName = "";
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
-            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+            SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .searchName(searchName).page(page).build();
-            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
-            searchCategoryDto.setTotal(total);
-            List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
-            //뷰에 allList, searchCategoryDto 데이터를 전달
+            int total = this.categoryService.countAllByNameContains(searchAjaxDto);
+            searchAjaxDto.setTotal(total);
+            List<ICategory> allList = this.categoryService.findAllByNameContains(searchAjaxDto);
+            //뷰에 allList, searchAjaxDto 데이터를 전달
             model.addAttribute("allList", allList);
-            model.addAttribute("searchCategoryDto", searchCategoryDto);
+            model.addAttribute("searchAjaxDto", searchAjaxDto);
             // java 에서 html 문자를 만드는 고전적인 방법은 매우 안 좋다.
-            String sPages = this.getHtmlPageString(searchCategoryDto);
+            String sPages = this.getHtmlPageString(searchAjaxDto);
             model.addAttribute("pageHtml", sPages);
         } catch (Exception ex) {
             log.error(ex.toString());
@@ -47,13 +48,13 @@ public class CategoryWebController {
         return "oldhtml/category_old";  // resources/templates 폴더안의 화면파일
     }
 
-    private String getHtmlPageString(SearchCategoryDto searchCategoryDto) {
+    private String getHtmlPageString(SearchAjaxDto searchAjaxDto) {
         StringBuilder sResult = new StringBuilder();
-        int tPage = (searchCategoryDto.getTotal() + 9) / 10;
+        int tPage = (searchAjaxDto.getTotal() + 9) / 10;
         sResult.append("<div>");
         for ( int i = 0; i < tPage; i++ ) {
             sResult.append(" <a href='category_old?page=" + (i+1) +
-                    "&searchName=" + searchCategoryDto.getSearchName() + "'>");
+                    "&searchName=" + searchAjaxDto.getSearchName() + "'>");
             sResult.append(i+1);
             sResult.append("</a> ");
         }

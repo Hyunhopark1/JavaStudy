@@ -9,11 +9,11 @@
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
         $(function(){
-            let totPage = Math.ceil({{searchCategoryDto.total}} / 10);
-            let page = {{searchCategoryDto.page}};
+            let totPage = Math.ceil({{searchAjaxDto.total}} / 10);
+            let page = {{searchAjaxDto.page}};
             let startPage = getStartPage(page);
             let endPage = getEndPage(startPage);
-            let searchName = '{{searchCategoryDto.searchName}}';
+            let searchName = '{{searchAjaxDto.searchName}}';
             let sClass = "btn btn-success rounded-pill";
             let prev = (page-1) < 1 ? 1 : page-1;
             let next = (page+1) >= totPage ? totPage : page+1;
@@ -37,7 +37,7 @@
         }
 
         function getEndPage(startPage) {
-            let totPage = Math.ceil({{searchCategoryDto.total}} / 10);
+            let totPage = Math.ceil({{searchAjaxDto.total}} / 10);
             let tPage = startPage + 9;
             return tPage < totPage ? tPage : totPage;
         }
@@ -162,8 +162,8 @@
 <div class="form-container">
     <form id="search-form" name="search-form" method="get" action="category_list">
         <label for="search-name">이름</label>
-        <input type="text" id="search-name" name="searchName" placeholder="검색할 이름 입력" autofocus value="{{searchCategoryDto.searchName}}"/>
-        <input type="hidden" id="page" name="page" value="{{searchCategoryDto.page}}"/>
+        <input type="text" id="search-name" name="searchName" placeholder="검색할 이름 입력" autofocus value="{{searchAjaxDto.searchName}}"/>
+        <input type="hidden" id="page" name="page" value="{{searchAjaxDto.page}}"/>
         <input type="submit" value="검색"/>
     </form>
 </div>
@@ -192,7 +192,7 @@
     <button class="btn btn-info btn-insert"><a href="/catweb/category_add">추가</a></button>
 </div>
 <!--카테고리 개수 -->
-<div>total: {{searchCategoryDto.total}}</div>
+<div>total: {{searchAjaxDto.total}}</div>
 <div id="pageDiv"></div>
 </body>
 </html>
