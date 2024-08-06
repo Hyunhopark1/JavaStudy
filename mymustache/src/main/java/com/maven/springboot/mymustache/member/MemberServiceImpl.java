@@ -23,11 +23,6 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public List<IMember> getAllList() {
-        return List.of();
-    }
-
-    @Override
     public IMember insert(IMember dto) throws Exception {
         return null;
     }

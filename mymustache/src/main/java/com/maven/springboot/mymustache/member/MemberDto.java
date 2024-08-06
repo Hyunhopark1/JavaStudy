@@ -1,6 +1,5 @@
 package com.maven.springboot.mymustache.member;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

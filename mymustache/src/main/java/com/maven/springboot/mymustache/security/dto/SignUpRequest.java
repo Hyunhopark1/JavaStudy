@@ -3,7 +3,6 @@ package com.maven.springboot.mymustache.security.dto;
 import com.maven.springboot.mymustache.member.IMember;
 import lombok.*;
 
-
 @Getter
 @Setter
 @Builder

@@ -1,7 +1,6 @@
 package com.maven.springboot.mymustache.member;
 
 
-
 public interface IMember {
     Long getId();
     void setId(Long id);
@@ -21,7 +20,7 @@ public interface IMember {
     String getRole();
     void setRole(String role);
 
-    default void copyFields(IMember from){
+    default void copyFields(IMember from) {
         if (from == null) {
             return;
         }
@@ -43,6 +42,5 @@ public interface IMember {
         if (from.getRole() != null && !from.getRole().isEmpty()) {
             this.setRole(from.getRole());
         }
-
     }
 }

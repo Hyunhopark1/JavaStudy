@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface IMemberService {
     IMember findById(Long id);
-    List<IMember> getAllList();
     IMember insert(IMember dto) throws Exception;
     Boolean delete(Long id) throws Exception;
     IMember update(Long id, IMember dto) throws Exception;
