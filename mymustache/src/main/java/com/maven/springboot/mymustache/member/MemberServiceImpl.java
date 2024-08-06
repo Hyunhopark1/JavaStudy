@@ -23,12 +23,12 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public List<MemberDto> getAllList() {
+    public List<IMember> getAllList() {
         return List.of();
     }
 
     @Override
-    public MemberDto insert(MemberDto dto) throws Exception {
+    public IMember insert(IMember dto) throws Exception {
         return null;
     }
 
@@ -49,9 +49,11 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public MemberDto update(Long id, MemberDto dto) throws Exception {
+    public IMember update(Long id, IMember dto) throws Exception {
         dto.setId(id);
-        this.memberMybatisMapper.update(dto);
+        MemberDto insert = MemberDto.builder().build();
+        insert.copyFields(dto);
+        this.memberMybatisMapper.update(insert);
         return null;
     }
 
