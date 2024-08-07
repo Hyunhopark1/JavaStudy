@@ -1,13 +1,16 @@
 package com.maven.springboot.mymustache.member;
 
 import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Builder
 @Service
 public class MemberServiceImpl implements IMemberService {
     @Autowired
@@ -21,9 +24,17 @@ public class MemberServiceImpl implements IMemberService {
         MemberDto find = this.memberMybatisMapper.findById(id);
         return find;
     }
-
     @Override
     public IMember insert(IMember dto) throws Exception {
+        return null;
+    }
+
+    @Override
+    public IMember login(LoginRequest dto) {
+        IMember find = this.memberMybatisMapper.findByLoginId(dto.getLoginId());
+        if ( encoder.matches(dto.getPassword(), find.getPassword()) ) {
+            return find;
+        }
         return null;
     }
 
@@ -46,9 +57,9 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public IMember update(Long id, IMember dto) throws Exception {
         dto.setId(id);
-        MemberDto insert = MemberDto.builder().build();
-        insert.copyFields(dto);
-        this.memberMybatisMapper.update(insert);
+        MemberDto member = MemberDto.builder().build();
+        member.copyFields(dto);
+        this.memberMybatisMapper.update(member);
         return null;
     }
 

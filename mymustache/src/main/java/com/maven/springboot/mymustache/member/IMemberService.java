@@ -1,6 +1,7 @@
 package com.maven.springboot.mymustache.member;
 
 import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface IMemberService {
     IMember addMember(SignUpRequest dto);
     IMember findByLoginId(String loginId);
     List<IMember> findAllByLoginIdContains(SearchAjaxDto dto);
-    int countAllByLoginIdContains(SearchAjaxDto searchMemberDto);
+    int countAllByLoginIdContains(SearchAjaxDto dto);
+    IMember login(LoginRequest dto);
 }
