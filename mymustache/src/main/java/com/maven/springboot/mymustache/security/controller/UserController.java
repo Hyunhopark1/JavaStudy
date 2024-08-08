@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Slf4j
 @Controller
@@ -20,10 +21,23 @@ public class UserController {
     private MemberServiceImpl memberService;
 
 
-    @GetMapping("/info")
-    private String showInfo(Model model, @CookieValue(name = "loginId") String loginId) {
+    @GetMapping("/infoCookie")
+    private String showInfoCookie(Model model, @CookieValue(name="loginId", required = false) String loginId) {
+        if ( loginId == null ) {
+            return "redirect:/";
+        }
         IMember loginUser = memberService.findByLoginId(loginId);
         model.addAttribute("loginUser", loginUser);
+        return "user/info";
+    }
+
+
+    @GetMapping("/infoSession")
+    private String showInfoSession(Model model) {
+        IMember loginUser = (IMember)model.getAttribute("loginUser");
+        if ( loginUser == null ) {
+            return "redirect:/";
+        }
         return "user/info";
     }
 }
