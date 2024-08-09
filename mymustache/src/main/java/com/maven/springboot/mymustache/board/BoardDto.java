@@ -1,6 +1,6 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
-import com.softagape.mustacheajax.commons.dto.BaseDto;
+import com.maven.springboot.mymustache.commons.dto.BaseDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

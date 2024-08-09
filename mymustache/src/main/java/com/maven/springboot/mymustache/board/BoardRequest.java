@@ -1,4 +1,4 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;

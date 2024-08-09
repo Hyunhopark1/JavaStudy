@@ -2,6 +2,8 @@ package com.maven.springboot.mymustache.category;
 
 
 import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.member.IMember;
+import com.maven.springboot.mymustache.member.MemberRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,14 +16,8 @@ import java.util.List;
 @Controller // Web 용 Controller 이다. 화면을 그리거나 redirect 할때 유용하다.
 @RequestMapping("/catweb")  // Controller 의 url 앞부분이다.
 public class CatWebController {
-
-    @Autowired
+    @Autowired  // SpringBoot 가 CategoryServiceImpl 데이터형으로 객체를 자동 생성한다.
     private CategoryServiceImpl categoryService;
-
-    @GetMapping("")
-    public String indexHome() {
-        return "index";
-    }
 
     @GetMapping("/category_list")
     // GET method로 /catweb/category_list url 주소로 요청을 받도록 한다.
@@ -32,6 +28,15 @@ public class CatWebController {
         // @RequestParam int page, @RequestParam String searchName : HTTP Request Query String
         //  : url 주소에서 ?searchName=&page=값 변수의 값을 받는다. Request Query String
         try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                // 로그인 사용자가 아니면 리턴
+                return "redirect:/";
+            }
+            if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) ) {
+                // 로그인 사용자의 role 이 ADMIN 이 아니면 리턴
+                return "redirect:/";
+            }
             SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .page(page).searchName(searchName).build();
             // SearchAjaxDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.
@@ -140,7 +145,7 @@ public class CatWebController {
             log.error(ex.toString()); // error 응답
         }
         return "redirect:/catweb/category_list?page=1&searchName=";
+        // 화면 템플릿 엔진의 화면파일 경로/파일명
+        // => redirect : 브라우저의 절대주소(/catweb/category_list?page=1&searchName=)를 리다이렉트 한다. 절대주소를 사용하지 말자.
     }
-
-
 }

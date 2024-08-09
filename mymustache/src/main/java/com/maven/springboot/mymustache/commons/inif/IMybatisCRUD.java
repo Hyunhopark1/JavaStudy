@@ -1,4 +1,4 @@
-package com.softagape.mustacheajax.commons.inif;
+package com.maven.springboot.mymustache.commons.inif;
 
 public interface IMybatisCRUD<T> {
     void insert(T dto);

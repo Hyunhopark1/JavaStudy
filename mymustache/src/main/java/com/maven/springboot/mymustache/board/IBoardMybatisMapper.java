@@ -1,7 +1,7 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
-import com.softagape.mustacheajax.commons.dto.SearchAjaxDto;
-import com.softagape.mustacheajax.commons.inif.IMybatisCRUD;
+import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.inif.IMybatisCRUD;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

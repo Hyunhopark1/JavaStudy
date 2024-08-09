@@ -1,4 +1,4 @@
-package com.softagape.mustacheajax.commons.dto;
+package com.maven.springboot.mymustache.commons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

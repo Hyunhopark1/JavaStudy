@@ -8,10 +8,9 @@ public interface ICategory {
     String getName();
     void setName(String name);
 
-    // 인터페이스 안에 몸체가 있는 메소드이며, 마치 static 처럼 new 하지 않고 사용 된다.
-    //그러나 호출할 때 클래스명.메소드명() 으로 선언하면 안되고
-    //객체명.copyFields() 이렇게 사용한다. 객체간에 형변환할 때 사용
-    default void copyFields(ICategory from){
+    // 인터페이스안에 몸체가 있는 메소드 이며, 마치 static 처럼 new 하지 않고 사용 된다.
+    // 그러나 호출할때는 ICategory.copyfields 하면 안되고 객체명.copyfields 해야 한다.
+    default void copyFields(ICategory from) {
         if (from == null) {
             return;
         }

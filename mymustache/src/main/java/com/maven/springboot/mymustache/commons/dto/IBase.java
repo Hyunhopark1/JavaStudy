@@ -1,4 +1,4 @@
-package com.softagape.mustacheajax.commons.dto;
+package com.maven.springboot.mymustache.commons.dto;
 
 public interface IBase {
     String getCreateDt();

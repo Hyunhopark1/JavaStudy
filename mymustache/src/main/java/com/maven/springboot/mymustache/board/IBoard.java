@@ -1,4 +1,4 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
 public interface IBoard {
     Long getId();

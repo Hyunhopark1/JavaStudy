@@ -1,13 +1,15 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
-import com.softagape.mustacheajax.commons.dto.CUDInfoDto;
-import com.softagape.mustacheajax.commons.dto.SearchAjaxDto;
+import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Primary
 public class BoardServiceImpl implements IBoardService {
     @Autowired
     private IBoardMybatisMapper boardMybatisMapper;

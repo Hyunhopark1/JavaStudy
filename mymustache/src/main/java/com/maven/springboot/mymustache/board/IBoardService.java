@@ -1,11 +1,18 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
-import com.softagape.mustacheajax.commons.dto.SearchAjaxDto;
-import com.softagape.mustacheajax.commons.inif.IServiceCRUD;
+
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
+import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.inif.IServiceCRUD;
 
 import java.util.List;
 
 public interface IBoardService extends IServiceCRUD<IBoard> {
+//    void insert(CUDInfoDto info, IBoard dto);
+//    void update(CUDInfoDto info, IBoard dto);
+//    void deleteFlag(CUDInfoDto info, IBoard dto);
+//    void deleteById(Long id);
+//    IBoard findById(Long id);
     int countByCreateId(SearchAjaxDto searchDto);
     List<IBoard> findPagesByCreateId(SearchAjaxDto searchDto);
 

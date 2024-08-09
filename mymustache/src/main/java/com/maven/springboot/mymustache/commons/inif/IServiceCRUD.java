@@ -1,6 +1,7 @@
-package com.softagape.mustacheajax.commons.inif;
+package com.maven.springboot.mymustache.commons.inif;
 
-import com.softagape.mustacheajax.commons.dto.CUDInfoDto;
+
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 
 public interface IServiceCRUD<T> {
     void insert(CUDInfoDto info, T dto);

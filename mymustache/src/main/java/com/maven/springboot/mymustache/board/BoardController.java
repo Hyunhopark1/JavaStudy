@@ -1,7 +1,8 @@
-package com.softagape.mustacheajax.board;
+package com.maven.springboot.mymustache.board;
 
-import com.softagape.mustacheajax.commons.dto.CUDInfoDto;
-import com.softagape.mustacheajax.member.IMember;
+
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
+import com.maven.springboot.mymustache.member.IMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+
     @Autowired
     private IBoardService boardService;
 

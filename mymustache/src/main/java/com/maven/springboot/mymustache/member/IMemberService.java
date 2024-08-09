@@ -1,19 +1,16 @@
 package com.maven.springboot.mymustache.member;
 
+import com.maven.springboot.mymustache.ICommonService;
 import com.maven.springboot.mymustache.SearchAjaxDto;
 import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
 
 import java.util.List;
 
-public interface IMemberService {
-    IMember findById(Long id);
-    IMember insert(IMember dto) throws Exception;
-    Boolean delete(Long id) throws Exception;
-    IMember update(Long id, IMember dto) throws Exception;
+public interface IMemberService extends ICommonService<MemberDto> {
+    IMember login(LoginRequest dto);
     IMember addMember(SignUpRequest dto);
     IMember findByLoginId(String loginId);
     List<IMember> findAllByLoginIdContains(SearchAjaxDto dto);
     int countAllByLoginIdContains(SearchAjaxDto dto);
-    IMember login(LoginRequest dto);
 }
