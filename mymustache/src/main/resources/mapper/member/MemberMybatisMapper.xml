@@ -60,4 +60,6 @@
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
+
+
 </mapper>

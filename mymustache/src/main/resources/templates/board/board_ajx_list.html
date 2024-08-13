@@ -81,6 +81,24 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 99;
         }
+        #listHeader {
+            border: 1px black solid;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 15px;
+        }
+        #listHeader span{
+            border: 1px black solid;
+            background-color: #FFFFFF;
+            color:dodgerblue;
+
+        }
+        #strLi{
+            cursor:pointer;
+        }
+        #strLi:hover{
+            background-color: #a5c8fa;
+        }
     </style>
     <script>
         let page = 0;
@@ -99,12 +117,16 @@
             $("#updateButton").click(function () {
                 // id="updateButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
                 $.update();
-            })
+            });
 
             $("#deleteButton").click(function () {
                 // id="deleteButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
                 $.deleteFlag();
-            })
+            });
+            $("#likeButton").click(function () {
+                // id="likeButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
+                $.likeBoard();
+            });
 
             $("#searchName").on("keyup", function (key) {
                 // id="searchName" 요소의 키보드 업 이벤트발생 시 실행한다.
@@ -161,6 +183,50 @@
             sortAscDesc = "DESC";
             $.searchBoardList(page);
         }
+        $.createDtAsc = function () {
+            sortColumn = "create_Dt";
+            sortAscDesc = "ASC";
+            $.searchBoardList(page);
+        }
+
+        $.createDtDesc = () => {
+            sortColumn = "create_Dt";
+            sortAscDesc = "DESC";
+            $.searchBoardList(page);
+        }
+        $.createIdAsc = function () {
+            sortColumn = "create_Id";
+            sortAscDesc = "ASC";
+            $.searchBoardList(page);
+        }
+
+        $.createIdDesc = () => {
+            sortColumn = "create_Id";
+            sortAscDesc = "DESC";
+            $.searchBoardList(page);
+        }
+        $.viewQtyAsc = function () {
+            sortColumn = "view_qty";
+            sortAscDesc = "ASC";
+            $.searchBoardList(page);
+        }
+
+        $.viewQtyDesc = () => {
+            sortColumn = "view_qty";
+            sortAscDesc = "DESC";
+            $.searchBoardList(page);
+        }
+        $.likeQtyAsc = function () {
+            sortColumn = "like_qty";
+            sortAscDesc = "ASC";
+            $.searchBoardList(page);
+        }
+
+        $.likeQtyDesc = () => {
+            sortColumn = "like_qty";
+            sortAscDesc = "DESC";
+            $.searchBoardList(page);
+        }
 
         $.searchBoardList = function (pPage) {
             page = pPage;
@@ -213,18 +279,36 @@
             // id="boardList" 요소 객체를 가져온다.
             list.children().remove();
             // list 요소의 자식을 모두 삭제한다.
+
+            let listHeader ="<div class='row d-flex' id='listHeader'>"+
+                "<span class='col-md-7 d-flex justify-content-center'> 제목 </span>" +
+                "<span class='col-md-2 d-flex justify-content-center'> 작성일 </span>" +
+                "<span class='col-md-1 d-flex justify-content-start'> 작성자 </span>" +
+                "<span class='col-md-1 d-flex justify-content-end'> 조회수 </span>" +
+                "<span class='col-md-1 d-flex justify-content-end'> 좋아요 </span>" +
+                "</div>";
+            list.append(listHeader);
             for (let i = 0; i < boardList.length; i++) {
+
                 let id = boardList[i].id;
                 let name = boardList[i].name;
-                let content = boardList[i].content;
-                let strLi = "<li><div onClick='$.viewBoard(" + id + ");' class='itemRow'><span>"
-                    + id + "</span><span> : </span><span>"
-                    + name + "</span></div></li>";
+                let createDt = boardList[i].createDt;
+                let createId = boardList[i].createId;
+                let viewQty = boardList[i].viewQty;
+                let likeQty = boardList[i].likeQty;
+                let strLi = "<li id='strLi'><div onClick='$.viewBoard(" + id + ");' class='row d-flex'>" +
+                    "<span class='col-md-7 d-flex justify-content-center'>" + name + "</span>" +
+                    "<span class='col-md-2 d-flex justify-content-center'>" + createDt   +"</span>" +
+                    "<span class='col-md-1 d-flex justify-content-start'>" + createId   +"</span>" +
+                    "<span class='col-md-1 d-flex justify-content-end'>" + viewQty   +"</span>" +
+                    "<span class='col-md-1 d-flex justify-content-end'>" + likeQty   +"</span>" +
+                    "</div></li>";
                 list.append(strLi);
                 // boardList 배열의 요소들의 id 와 name 값을 이용하여
                 // <li><div><span>...</span>..</div></li> html 요소를 만드는
                 // list 요소의 자식으로 append 한다.
             }
+
         }
 
         $.viewBoard = function (id) {
@@ -247,6 +331,8 @@
             });
         }
 
+
+
         $.showBoardInfo = function (item) {
             if (item == null) {
                 return;
@@ -255,6 +341,9 @@
             // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
             $("#name2").val(item.name);
             $("#content2").val(item.content);
+            $("#likeCnt").text(item.likeQty);
+            $("#showViewModalButton").trigger("click");
+
         }
 
         $.makePageUI = function (paramTotal, paramPage) {
@@ -415,6 +504,26 @@
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
             });
         }
+
+        $.likeBoard = function () {
+            let id = $("#id2").val();
+            if (id <= 0) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/board/like/" + id,
+                type: "GET",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("Like 실패했습니다.");
+            });
+        }
     </script>
 </head>
 <body>
@@ -441,6 +550,26 @@
                         <button onclick="$.nameDesc();">▽</button>
                     </span>
                     <span> : </span>
+                    <span>글쓴날짜
+                        <button onclick="$.createDtAsc();">△</button>
+                        <button onclick="$.createDtDesc();">▽</button>
+                    </span>
+                    <span> : </span>
+                    <span>글쓴이
+                        <button onclick="$.createIdAsc();">△</button>
+                        <button onclick="$.createIdDesc();">▽</button>
+                    </span>
+                    <span> : </span>
+                    <span>조회수
+                        <button onclick="$.viewQtyAsc();">△</button>
+                        <button onclick="$.viewQtyDesc();">▽</button>
+                    </span>
+                    <span> : </span>
+                    <span>좋아요
+                        <button onclick="$.likeQtyAsc();">△</button>
+                        <button onclick="$.likeQtyDesc();">▽</button>
+                    </span>
+                    <span> : </span>
                     <span>
                         <label for="rowsOnePage">Row</label>
                         <select id="rowsOnePage">
@@ -465,7 +594,7 @@
             <fieldset>
                 <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
                 <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
-                <label for="content">content</label> <textarea id="content" name="content"></textarea>
+                <label for="content">Content</label> <textarea id="content" name="content"></textarea>
             </fieldset>
             <div class="row">
                 <div class="col-6">
@@ -481,16 +610,19 @@
             <fieldset>
                 <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
                 <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
-                <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                <label for="content2">Content</label> <textarea id="content2" name="content2"></textarea>
             </fieldset>
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <button id="updateButton">수정</button>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <button id="deleteButton">삭제</button>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
+                    <button id="likeButton">좋아요<span id="likeCnt"></span></button>
+                </div>
+                <div class="col-3">
                     <button class="modalCloseButton">Close</button>
                 </div>
             </div>

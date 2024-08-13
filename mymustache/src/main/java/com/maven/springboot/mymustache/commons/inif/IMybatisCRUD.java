@@ -1,6 +1,7 @@
 package com.maven.springboot.mymustache.commons.inif;
 
 public interface IMybatisCRUD<T> {
+
     void insert(T dto);
     void update(T dto);
     void deleteFlag(T dto);

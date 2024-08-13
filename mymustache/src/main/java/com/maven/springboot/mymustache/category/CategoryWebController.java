@@ -17,7 +17,7 @@ import java.util.List;
 public class CategoryWebController {
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private ICategoryService<ICategory> categoryService;
 
 
 

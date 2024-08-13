@@ -112,10 +112,25 @@ public class BoardApiController {
                 return ResponseEntity.badRequest().build();
             }
             IBoard result = this.boardService.findById(id);
+            this.boardService.addViewQty(id);
             if ( result == null ) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(result);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/like/{id}")
+    public ResponseEntity<String> addLikeQty(@PathVariable Long id) {
+        try {
+            if ( id == null || id <= 0 ) {
+                return ResponseEntity.badRequest().build();
+            }
+            this.boardService.addLikeQty(id);
+            return ResponseEntity.ok("ok");
         } catch ( Exception ex ) {
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
