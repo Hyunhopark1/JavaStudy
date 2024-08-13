@@ -1,6 +1,6 @@
 package com.maven.springboot.mymustache.category;
 
-import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

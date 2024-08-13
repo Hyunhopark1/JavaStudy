@@ -1,7 +1,7 @@
 package com.maven.springboot.mymustache.category;
 
 
-import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.member.IMember;
 import com.maven.springboot.mymustache.member.MemberRole;
 import lombok.extern.slf4j.Slf4j;

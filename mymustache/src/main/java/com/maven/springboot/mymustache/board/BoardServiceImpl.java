@@ -1,6 +1,6 @@
 package com.maven.springboot.mymustache.board;
 
-import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -9,160 +9,110 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Primary
 public class BoardServiceImpl implements IBoardService {
     @Autowired
     private IBoardMybatisMapper boardMybatisMapper;
 
     @Override
-    public void insert(CUDInfoDto info, IBoard dto) {
-        if (dto == null) {
+    public void addViewQty(Long id) {
+        if ( id == null || id <= 0 ) {
             return;
         }
-        BoardDto insert = BoardDto.builder()
-                .viewQty(0).likeQty(0)
-                .build();
+        this.boardMybatisMapper.addViewQty(id);
+    }
+
+    @Override
+    public void addLikeQty(Long id) {
+        if ( id == null || id <= 0 ) {
+            return;
+        }
+        this.boardMybatisMapper.addLikeQty(id);
+    }
+
+    @Override
+    public Integer countAllByNameContains(SearchAjaxDto searchAjaxDto) {
+        if ( searchAjaxDto == null ) {
+            return 0;
+        }
+        Integer count = this.boardMybatisMapper.countAllByNameContains(searchAjaxDto);
+        return count;
+    }
+
+    @Override
+    public List<BoardDto> findAllByNameContains(SearchAjaxDto searchAjaxDto) {
+        if ( searchAjaxDto == null ) {
+            return List.of();
+        }
+        searchAjaxDto.setOrderByWord( (searchAjaxDto.getSortColumn() != null ? searchAjaxDto.getSortColumn() : "id")
+                + " " + (searchAjaxDto.getSortAscDsc() != null ? searchAjaxDto.getSortAscDsc() : "DESC") );
+        // SQL select 문장의 ORDER BY 구문을 만들어 주는 역할
+        if ( searchAjaxDto.getRowsOnePage() == null ) {
+            // 한 페이지당 보여주는 행의 갯수
+            searchAjaxDto.setRowsOnePage(10);
+        }
+        List<BoardDto> list = this.boardMybatisMapper.findAllByNameContains(searchAjaxDto);
+        return list;
+    }
+
+    private List<IBoard> getInterfaceList(List<BoardDto> list) {
+        if( list == null ) {
+            return List.of();
+        }
+        List<IBoard> result = list.stream().map(item -> (IBoard)item).toList();
+        return result;
+    }
+
+    @Override
+    public BoardDto insert(CUDInfoDto info, BoardDto dto) {
+        if ( info == null || dto == null ) {
+            return null;
+        }
+        BoardDto insert = BoardDto.builder().build();
         insert.copyFields(dto);
         info.setCreateInfo(insert);
         this.boardMybatisMapper.insert(insert);
+        return insert;
     }
 
     @Override
-    public void update(CUDInfoDto info, IBoard dto) {
-        if ( dto == null || dto.getId() == null || dto.getId() <= 0 ) {
-            return;
+    public BoardDto update(CUDInfoDto info, BoardDto dto) {
+        if ( info == null || dto == null ) {
+            return null;
         }
-        BoardDto find = this.boardMybatisMapper.findById(dto.getId());
-        if (find == null) {
-            return;
-        }
-        if ( !find.getCreateId().equals(info.getLoginUser().getLoginId()) ) {
-            return;
-        }
-        find.copyFields(dto);
-        info.setUpdateInfo(find);
-        this.boardMybatisMapper.update(find);
+        BoardDto update = BoardDto.builder().build();
+        update.copyFields(dto);
+        info.setUpdateInfo(update);
+        this.boardMybatisMapper.update(update);
+        return update;
     }
 
     @Override
-    public void deleteFlag(CUDInfoDto info, IBoard dto) {
-        if (dto == null) {
-            return;
+    public Boolean deleteFlag(CUDInfoDto info, BoardDto dto) {
+        if ( info == null || dto == null ) {
+            return false;
         }
-        BoardDto find = this.boardMybatisMapper.findById(dto.getId());
-        if (find == null) {
-            return;
-        }
-        if ( !find.getCreateId().equals(info.getLoginUser().getLoginId()) ) {
-            return;
-        }
-        info.setDeleteInfo(find);
-        this.boardMybatisMapper.deleteFlag(find);
+        BoardDto delete = BoardDto.builder().build();
+        delete.copyFields(dto);
+        info.setDeleteInfo(delete);
+        this.boardMybatisMapper.deleteFlag(delete);
+        return true;
     }
 
     @Override
-    public void deleteById(Long id) {
-        if (id == null || id <= 0 ) {
-            return;
-        }
-        BoardDto find = this.boardMybatisMapper.findById(id);
-        if (find == null) {
-            return;
+    public Boolean deleteById(Long id) {
+        if ( id == null || id <= 0 ) {
+            return false;
         }
         this.boardMybatisMapper.deleteById(id);
+        return true;
     }
 
     @Override
-    public IBoard findById(Long id) {
-        if (id == null || id <= 0 ) {
+    public BoardDto findById(Long id) {
+        if ( id == null || id <= 0 ) {
             return null;
         }
         BoardDto find = this.boardMybatisMapper.findById(id);
         return find;
-    }
-
-    @Override
-    public int countByCreateId(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return 0;
-        }
-        int count = this.boardMybatisMapper.countByCreateId(searchDto);
-        return count;
-    }
-
-    @Override
-    public List<IBoard> findPagesByCreateId(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return List.of();
-        }
-        searchDto.setOrderByWord( (searchDto.getSortColumn() != null ? searchDto.getSortColumn() : "id")
-                + " " + (searchDto.getSortAscDsc() != null ? searchDto.getSortAscDsc() : "DESC") );
-        if ( searchDto.getRowsOnePage() == null ) {
-            searchDto.setRowsOnePage(10);
-        }
-        List<IBoard> list = this.getIterfaceList(
-                this.boardMybatisMapper.findPagesByCreateId(searchDto)
-        );
-        return list;
-    }
-
-    @Override
-    public int countByNameContains(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return 0;
-        }
-        int count = this.boardMybatisMapper.countByNameContains(searchDto);
-        return count;
-    }
-
-    @Override
-    public List<IBoard> findPagesByNameContains(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return List.of();
-        }
-        searchDto.setOrderByWord( (searchDto.getSortColumn() != null ? searchDto.getSortColumn() : "id")
-                + " " + (searchDto.getSortAscDsc() != null ? searchDto.getSortAscDsc() : "DESC") );
-        if ( searchDto.getRowsOnePage() == null ) {
-            searchDto.setRowsOnePage(10);
-        }
-        List<IBoard> list = this.getIterfaceList(
-                this.boardMybatisMapper.findPagesByNameContains(searchDto)
-        );
-        return list;
-    }
-
-    @Override
-    public int countByContentContains(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return 0;
-        }
-        int count = this.boardMybatisMapper.countByContentContains(searchDto);
-        return count;
-    }
-
-    @Override
-    public List<IBoard> findPagesByContentContains(SearchAjaxDto searchDto) {
-        if (searchDto == null) {
-            return List.of();
-        }
-        searchDto.setOrderByWord( (searchDto.getSortColumn() != null ? searchDto.getSortColumn() : "id")
-                + " " + (searchDto.getSortAscDsc() != null ? searchDto.getSortAscDsc() : "DESC") );
-        if ( searchDto.getRowsOnePage() == null ) {
-            searchDto.setRowsOnePage(10);
-        }
-        List<IBoard> list = this.getIterfaceList(
-                this.boardMybatisMapper.findPagesByContentContains(searchDto)
-        );
-        return list;
-    }
-
-    private List<IBoard> getIterfaceList(List<BoardDto> list) {
-        if ( list == null || list.size() <= 0 ) {
-            return List.of();
-        }
-        List<IBoard> result = list.stream()
-                .map(entity -> (IBoard)entity)
-                .toList();
-        return result;
     }
 }

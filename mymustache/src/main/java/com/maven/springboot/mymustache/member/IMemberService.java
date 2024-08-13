@@ -1,7 +1,7 @@
 package com.maven.springboot.mymustache.member;
 
 import com.maven.springboot.mymustache.ICommonService;
-import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
 

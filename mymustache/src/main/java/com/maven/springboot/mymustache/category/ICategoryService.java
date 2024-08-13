@@ -1,7 +1,7 @@
 package com.maven.springboot.mymustache.category;
 
 import com.maven.springboot.mymustache.ICommonService;
-import com.maven.springboot.mymustache.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 
 import java.util.List;
 

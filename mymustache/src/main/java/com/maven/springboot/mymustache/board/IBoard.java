@@ -1,6 +1,8 @@
 package com.maven.springboot.mymustache.board;
 
-public interface IBoard {
+import com.maven.springboot.mymustache.commons.dto.IBase;
+
+public interface IBoard extends IBase {
     Long getId();
     void setId(Long id);
 
@@ -18,24 +20,6 @@ public interface IBoard {
 
     String getDelFlag();
     void setDelFlag(String delFlag);
-
-    String getCreateDt();
-    void setCreateDt(String createDt);
-
-    String getCreateId();
-    void setCreateId(String createId);
-
-    String getUpdateDt();
-    void setUpdateDt(String updateDt);
-
-    String getUpdateId();
-    void setUpdateId(String updateId);
-
-    String getDeleteDt();
-    void setDeleteDt(String deleteDt);
-
-    String getDeleteId();
-    void setDeleteId(String deleteId);
 
     default void copyFields(IBoard from) {
         if (from == null) {
@@ -59,23 +43,6 @@ public interface IBoard {
         if (from.getDelFlag() != null && !from.getDelFlag().isEmpty()) {
             this.setDelFlag(from.getDelFlag());
         }
-        if (from.getCreateDt() != null && !from.getCreateDt().isEmpty()) {
-            this.setCreateDt(from.getCreateDt());
-        }
-        if (from.getCreateId() != null && !from.getCreateId().isEmpty()) {
-            this.setCreateId(from.getCreateId());
-        }
-        if (from.getUpdateDt() != null && !from.getUpdateDt().isEmpty()) {
-            this.setUpdateDt(from.getUpdateDt());
-        }
-        if (from.getUpdateId() != null && !from.getUpdateId().isEmpty()) {
-            this.setUpdateId(from.getUpdateId());
-        }
-        if (from.getDeleteDt() != null && !from.getDeleteDt().isEmpty()) {
-            this.setDeleteDt(from.getDeleteDt());
-        }
-        if (from.getDeleteId() != null && !from.getDeleteId().isEmpty()) {
-            this.setDeleteId(from.getDeleteId());
-        }
+        IBase.super.copyFields(from);
     }
 }
