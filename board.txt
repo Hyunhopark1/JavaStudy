@@ -1,0 +1,17 @@
+1. BoardDto 필드 : id,name,content,viewQty,likeQty,delFlag
+BaseDto(상속 클래스) 필드: createDt,createId,updateDt,updateId,deleteDt,deleteId
+IBoard인터페이스 메소드 : 
+board_tbl(DB테이블) 필드 : id,name,content,view_qty,like_qty,create_dt,create_id,updateDt,updateId,deleteDt,deleteId
+
+
+
+2. IBoardMybatisMapper 메소드 : int countByCreateId, List<BoardDto> findPagesByCreatedId,
+int countByNameContains, List<BoardDto> findPagesByNameContains,
+int countByContentContains, List<BoardDto> findPagesByContentContains
+IMybatisCRUD<T> (상속 인터페이스) :  void insert, void update, void deleteById, T findById
+
+
+3. IBoardService 인터페이스 메소드 : int countByNameContains ~~ ...
+IServiceSRUD<T> (상속 인터페이스) 메소드 : void insert, void update, void deleteById, T findById
+
+4. 

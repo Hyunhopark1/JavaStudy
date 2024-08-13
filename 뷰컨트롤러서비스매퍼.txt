@@ -1,0 +1,70 @@
+
+<멤버추가>
+뷰 -> 컨트롤러로 post방식의 request요청을 지정한 url로  모델(객체)를 보냄 
+
+매핑된 컨트롤러의 메소드는 파라미터로 받아온 모델(객체)을 service의 insert메소드의 인자로 넘겨준다.
+
+service는 파라미터로 받아온 모델(객체)를 mapper의 insert메소드의 인자로 넘겨준다.
+
+그럼 결론적으로 mapper의 insert메소드 파라미터로 모델(객체)가 도착하고  해당 메소드가 실행되면
+mapper.xml에 매핑되어있는 쿼리문이 실행된다.
+
+
+
+
+*********주의 사항  :  mapper의 파라미터는 반드시 Dto클래스여야한다, 만약 service단에서
+ 파라미터로 Request클래스를 받았다면 copyField로 다시 Dto클래스타입으로 변환 후 mapper의 메소드를 호출할것****
+
+[게시판 글 추가 : 로그인한 회원만 가능함]
+필요한 클래스
+*BoardDto : 모델
+*BoardController : 컨트롤러
+*BoardService : 서비스
+*BoardMyBatisMapper : 매퍼
+필요한 resource > templates
+
+*board_add.html : 게시글 추가
+*board_view.html : 게시글 보기
+
+필요한 resource > mapper
+*BoardMyBatisMapper.xml : 매퍼 xml 파일
+1. 뷰에서 입력한 값을 컨트롤러로 보냄
+<form name="boradForm" method="post" action="/board/insert">
+	제목 : <input type="text" id="title" name="title/>
+	내용 : <textarea id="content" name="content"></textarea>
+	<input type="submit" value="게시글 등록"/>
+</form>
+
+2. 컨트롤러에서 값을 객체로 받아와서 service의 insert 메소드의 인자로 전달 / 뷰에 다시 
+
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+
+ @AutoWired
+ private BoardService boardservice;
+
+ @PostMapping("/insert")
+ public String insert(@ModelAttribute BoardDto dto,Model model)
+ {
+   IMember loginUser = model.getAttribute("loginUser");
+   CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);
+   this.boardservice.insert(dto,cudInfoDto);
+
+ }
+}
+
+3. service의 insert 메소드는 받아온 값을 mapper의 insert메소드로 전달
+
+@Service
+public class BoardServiceImpl implements IBoardService {
+
+ @AutoWired
+ private BoardMybatisMapper boardMybatisMapper;
+
+ public void insert(
+
+
+
+
+} 
