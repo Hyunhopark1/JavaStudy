@@ -21,8 +21,17 @@ public class BoardApiController {
     @Autowired
     private IBoardService boardService;
 
+    @Autowired
+    private IBoardLikeService boardLikeService;
+
+    @Autowired
+    private ISbFileService sbFileService;
+
     @PostMapping
-    public ResponseEntity<IBoard> insert(Model model, @RequestBody BoardDto dto) {
+    public ResponseEntity<IBoard> insert(Model model
+            , @RequestPart(value="boardDto") BoardDto dto
+            , @RequestPart(value="files", required = false) MultipartFile[] files
+    ) {
         try {
             if ( dto == null ) {
                 return ResponseEntity.badRequest().build();
@@ -32,10 +41,11 @@ public class BoardApiController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);
-            IBoard result = this.boardService.insert(cudInfoDto, dto);
+            BoardDto result = this.boardService.insert(cudInfoDto, dto);
             if ( result == null ) {
                 return ResponseEntity.badRequest().build();
             }
+            this.sbFileService.insertFiles(result, files);
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
             log.error(ex.toString());
@@ -106,31 +116,21 @@ public class BoardApiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IBoard> findById(@PathVariable Long id) {
+    public ResponseEntity<IBoard> findById(Model model, @PathVariable Long id) {
         try {
             if ( id == null || id <= 0 ) {
                 return ResponseEntity.badRequest().build();
             }
-            IBoard result = this.boardService.findById(id);
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
             this.boardService.addViewQty(id);
+            IBoard result = this.getBoardAndLike(id, loginUser);
             if ( result == null ) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(result);
-        } catch ( Exception ex ) {
-            log.error(ex.toString());
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/like/{id}")
-    public ResponseEntity<String> addLikeQty(@PathVariable Long id) {
-        try {
-            if ( id == null || id <= 0 ) {
-                return ResponseEntity.badRequest().build();
-            }
-            this.boardService.addLikeQty(id);
-            return ResponseEntity.ok("ok");
         } catch ( Exception ex ) {
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
@@ -177,5 +177,66 @@ public class BoardApiController {
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/like/{id}")
+    public ResponseEntity<IBoard> addLikeQty(Model model, @PathVariable Long id) {
+        try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            if ( id == null || id <= 0 ) {
+                return ResponseEntity.badRequest().build();
+            }
+            CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);
+            this.boardService.addLikeQty(cudInfoDto, id);
+            IBoard result = this.getBoardAndLike(id, loginUser);
+            if ( result == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/unlike/{id}")
+    public ResponseEntity<IBoard> subLikeQty(Model model, @PathVariable Long id) {
+        try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            if ( id == null || id <= 0 ) {
+                return ResponseEntity.badRequest().build();
+            }
+            CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);
+            this.boardService.subLikeQty(cudInfoDto, id);
+            IBoard result = this.getBoardAndLike(id, loginUser);
+            if ( result == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(result);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    private IBoard getBoardAndLike(Long id, IMember loginUser) {
+        IBoard result = this.boardService.findById(id);
+        if ( result == null ) {
+            return null;
+        }
+        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+                .tbl("board")
+                .likeUserId(loginUser.getLoginId())
+                .boardId(id)
+                .build();
+        Integer likeCount = this.boardLikeService.countByTableUserBoard(boardLikeDto);
+        result.setDelFlag(likeCount.toString());
+        return result;
     }
 }
