@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private MemberServiceImpl memberService;
-
+    private IMemberService memberService;
 
     @GetMapping("/infoCookie")
     private String showInfoCookie(Model model, @CookieValue(name="loginId", required = false) String loginId) {

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cologin")
 public class LoginCookieController {
     @Autowired
-    private MemberServiceImpl memberService;
+    private IMemberService memberService;
 
     @GetMapping("/signup")
     private String viewSignUp() {

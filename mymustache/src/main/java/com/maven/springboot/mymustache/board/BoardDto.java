@@ -1,7 +1,10 @@
 package com.maven.springboot.mymustache.board;
 
 import com.maven.springboot.mymustache.commons.dto.BaseDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Getter

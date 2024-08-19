@@ -1,5 +1,7 @@
 package com.maven.springboot.mymustache.board;
 
+import com.maven.springboot.mymustache.boardlike.BoardLikeDto;
+import com.maven.springboot.mymustache.boardlike.IBoardLikeMybatisMapper;
 import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;

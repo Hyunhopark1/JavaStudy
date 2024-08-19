@@ -16,7 +16,7 @@ import java.util.Arrays;
 @ControllerAdvice   // 모든 URL 요청을 가로채서 처리한다.
 public class AllControllerAdvice {
     @Autowired
-    private MemberServiceImpl memberService;
+    private IMemberService memberService;
 
     private final String[] authUrls = new String[]{
             "/ct"

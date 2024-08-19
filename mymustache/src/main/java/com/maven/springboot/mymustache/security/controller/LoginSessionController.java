@@ -1,6 +1,7 @@
 package com.maven.springboot.mymustache.security.controller;
 
 import com.maven.springboot.mymustache.member.IMember;
+import com.maven.springboot.mymustache.member.IMemberService;
 import com.maven.springboot.mymustache.member.MemberServiceImpl;
 import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
@@ -22,8 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/selogin")
 public class LoginSessionController {
     @Autowired
-    private MemberServiceImpl memberService;
-
+    private IMemberService memberService;
 
     @GetMapping("/signup")
     private String viewSignUp() {

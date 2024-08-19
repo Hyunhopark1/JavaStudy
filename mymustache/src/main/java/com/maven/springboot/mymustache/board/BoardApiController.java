@@ -1,17 +1,26 @@
 package com.maven.springboot.mymustache.board;
 
 
+import com.maven.springboot.mymustache.boardlike.BoardLikeDto;
+import com.maven.springboot.mymustache.boardlike.IBoardLikeService;
 import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import com.maven.springboot.mymustache.member.IMember;
 import com.maven.springboot.mymustache.member.MemberRole;
+import com.maven.springboot.mymustache.sbfile.ISbFile;
+import com.maven.springboot.mymustache.sbfile.ISbFileService;
+import com.maven.springboot.mymustache.sbfile.SbFileDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -238,5 +247,53 @@ public class BoardApiController {
         Integer likeCount = this.boardLikeService.countByTableUserBoard(boardLikeDto);
         result.setDelFlag(likeCount.toString());
         return result;
+    }
+
+    @GetMapping("/files/{tbl}/{boardId}")
+    public ResponseEntity<List<ISbFile>> getFileList(Model model
+            , @PathVariable String tbl, @PathVariable Long boardId) {
+        try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            if ( tbl == null || tbl.isEmpty() || boardId == null || boardId <= 0 ) {
+                return ResponseEntity.badRequest().build();
+            }
+            SbFileDto search = SbFileDto.builder()
+                    .tbl(tbl).boardId(boardId).build();
+            List<ISbFile> result = this.sbFileService.findAllByTblBoardId(search);
+            return ResponseEntity.ok(result);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/file/{tbl}/{name}/{uniqName}/{fileType}")
+    public ResponseEntity<ByteArrayResource> downloadFile(Model model
+            , @PathVariable String tbl, @PathVariable String name
+            , @PathVariable String uniqName, @PathVariable String fileType) {
+        try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            if ( name == null || name.isEmpty() || uniqName == null || uniqName.isEmpty() || fileType == null || fileType.isEmpty() ) {
+                return ResponseEntity.badRequest().build();
+            }
+            SbFileDto down = SbFileDto.builder()
+                    .tbl(tbl).name(name).uniqName(uniqName).fileType(fileType).build();
+            byte[] bytes = this.sbFileService.getBytesFromFile(down);
+            ByteArrayResource resource = new ByteArrayResource(bytes);
+            return ResponseEntity.ok()
+                    .contentLength(bytes.length)
+                    .header("Content-Type", "application/octet-stream")
+                    .header("Content-Disposition", "attachment; filename=" + URLEncoder.encode(name, StandardCharsets.UTF_8))
+                    .body(resource);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
