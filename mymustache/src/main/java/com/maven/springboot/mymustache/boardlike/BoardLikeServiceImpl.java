@@ -27,7 +27,7 @@ public class BoardLikeServiceImpl implements IBoardLikeService {
     }
 
     @Override
-    public Boolean deleteFlag(CUDInfoDto info, IBoardLike dto) {
+    public Boolean updateDeleteFlag(CUDInfoDto info, IBoardLike dto) {
         return false;
     }
 

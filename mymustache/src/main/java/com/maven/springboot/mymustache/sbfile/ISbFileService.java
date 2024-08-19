@@ -11,4 +11,5 @@ public interface ISbFileService extends IServiceCRUD<ISbFile> {
     List<ISbFile> findAllByTblBoardId(ISbFile search);
     Boolean insertFiles(BoardDto boardDto, MultipartFile[] files);
     byte[] getBytesFromFile(ISbFile down);
+
 }
