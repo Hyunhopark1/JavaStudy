@@ -1,11 +1,13 @@
 package com.maven.springboot.mymustache.board;
 
-import com.maven.springboot.mymustache.boardlike.BoardLikeDto;
-import com.maven.springboot.mymustache.boardlike.IBoardLikeMybatisMapper;
+import com.maven.springboot.mymustache.filecntl.FileCtrlService;
+import com.maven.springboot.mymustache.sbfile.ISbFileMybatisMapper;
+import com.maven.springboot.mymustache.sbfile.SbFileDto;
+import com.maven.springboot.mymustache.sblike.SbLikeDto;
+import com.maven.springboot.mymustache.sblike.ISbLikeMybatisMapper;
 import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
 import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,13 @@ public class BoardServiceImpl implements IBoardService {
     private IBoardMybatisMapper boardMybatisMapper;
 
     @Autowired
-    private IBoardLikeMybatisMapper boardLikeMybatisMapper;
+    private ISbLikeMybatisMapper sbLikeMybatisMapper;
+
+    @Autowired
+    private ISbFileMybatisMapper sbFileMybatisMapper;
+
+    @Autowired
+    private FileCtrlService fileCtrlService;
 
     @Override
     public void addViewQty(Long id) {
@@ -31,17 +39,17 @@ public class BoardServiceImpl implements IBoardService {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
         }
-        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+        SbLikeDto boardLikeDto = SbLikeDto.builder()
                 .tbl("board")
-                .likeUserId(cudInfoDto.getLoginUser().getLoginId())
+                .nickname(cudInfoDto.getLoginUser().getNickname())
                 .boardId(id)
                 .build();
 
-        Integer count = this.boardLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
+        Integer count = this.sbLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
         if ( count > 0 ) {
             return;
         }
-        this.boardLikeMybatisMapper.insert(boardLikeDto);
+        this.sbLikeMybatisMapper.insert(boardLikeDto);
         this.boardMybatisMapper.addLikeQty(id);
     }
 
@@ -50,17 +58,17 @@ public class BoardServiceImpl implements IBoardService {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
         }
-        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
+        SbLikeDto boardLikeDto = SbLikeDto.builder()
                 .tbl("board")
-                .likeUserId(cudInfoDto.getLoginUser().getLoginId())
+                .nickname(cudInfoDto.getLoginUser().getNickname())
                 .boardId(id)
                 .build();
 
-        Integer count = this.boardLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
+        Integer count = this.sbLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
         if ( count < 1 ) {
             return;
         }
-        this.boardLikeMybatisMapper.deleteByTableUserBoard(boardLikeDto);
+        this.sbLikeMybatisMapper.deleteByTableUserBoard(boardLikeDto);
         this.boardMybatisMapper.subLikeQty(id);
     }
 
@@ -130,6 +138,13 @@ public class BoardServiceImpl implements IBoardService {
         delete.copyFields(dto);
         info.setDeleteInfo(delete);
         this.boardMybatisMapper.updateDeleteFlag(delete);
+        SbFileDto search = SbFileDto.builder().tbl("board").boardId(delete.getId()).build();
+        List<SbFileDto> list = this.sbFileMybatisMapper.findAllByTblBoardId(search);
+        for ( SbFileDto sbFileDto : list ) {
+            sbFileDto.setDeleteFlag(true);
+            this.sbFileMybatisMapper.updateDeleteFlag(sbFileDto);
+            // this.fileCtrlService.deleteFile(sbFileDto.getTbl(), sbFileDto.getUniqName(), sbFileDto.getFileType());
+        }
         return true;
     }
 

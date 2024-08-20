@@ -1,6 +1,7 @@
 package com.maven.springboot.mymustache.security.controller;
 
 
+import com.maven.springboot.mymustache.security.config.SecurityConfig;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class IndexController {
     private String signout(HttpServletResponse response, HttpSession session) {
         session.invalidate();
 
-        Cookie cookie = new Cookie("loginId", null);
+        Cookie cookie = new Cookie(SecurityConfig.LOGINUSER, null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "login/signout";

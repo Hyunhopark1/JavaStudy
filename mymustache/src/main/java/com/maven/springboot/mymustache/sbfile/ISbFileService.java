@@ -10,6 +10,6 @@ import java.util.List;
 public interface ISbFileService extends IServiceCRUD<ISbFile> {
     List<ISbFile> findAllByTblBoardId(ISbFile search);
     Boolean insertFiles(BoardDto boardDto, MultipartFile[] files);
+    Boolean updateFiles(BoardDto boardDto, List<SbFileDto> sbFileDtoList);
     byte[] getBytesFromFile(ISbFile down);
-
 }

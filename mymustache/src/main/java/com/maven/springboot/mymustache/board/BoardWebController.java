@@ -2,6 +2,7 @@ package com.maven.springboot.mymustache.board;
 
 
 import com.maven.springboot.mymustache.member.IMember;
+import com.maven.springboot.mymustache.security.config.SecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class BoardWebController {
 //            HttpHeaders headers,
             HttpSession session
     ) {
-        IMember loginUser = (IMember)model.getAttribute("loginUser");
+        IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
         if ( loginUser == null ) {
             return "redirect:/";
         }

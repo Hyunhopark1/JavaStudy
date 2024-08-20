@@ -4,6 +4,7 @@ package com.maven.springboot.mymustache.security.controller;
 import com.maven.springboot.mymustache.member.IMember;
 import com.maven.springboot.mymustache.member.IMemberService;
 import com.maven.springboot.mymustache.member.MemberServiceImpl;
+import com.maven.springboot.mymustache.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,18 +20,18 @@ public class UserController {
     private IMemberService memberService;
 
     @GetMapping("/infoCookie")
-    private String showInfoCookie(Model model, @CookieValue(name = "loginId", required = false) String loginId) {
+    private String showInfoCookie(Model model, @CookieValue(name = SecurityConfig.LOGINUSER, required = false) String loginId) {
         if ( loginId == null ) {
             return "redirect:/";
         }
         IMember loginUser = memberService.findByLoginId(loginId);
-        model.addAttribute("loginUser", loginUser);
+        model.addAttribute(SecurityConfig.LOGINUSER, loginUser);
         return "user/info";
     }
 
     @GetMapping("/infoSession")
     private String showInfoSession(Model model) {
-        IMember loginUser = (IMember)model.getAttribute("loginUser");
+        IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
         if ( loginUser == null ) {
             return "redirect:/";
         }
