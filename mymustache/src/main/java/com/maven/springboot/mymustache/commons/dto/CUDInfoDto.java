@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Getter
 public class CUDInfoDto {
+
     private final IMember loginUser;
 
     public CUDInfoDto(IMember loginUser) {

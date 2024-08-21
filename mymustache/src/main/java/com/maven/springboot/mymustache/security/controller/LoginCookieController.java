@@ -1,5 +1,6 @@
 package com.maven.springboot.mymustache.security.controller;
 
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import com.maven.springboot.mymustache.member.IMember;
 import com.maven.springboot.mymustache.member.IMemberService;
 import com.maven.springboot.mymustache.member.MemberDto;
@@ -9,12 +10,18 @@ import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -29,14 +36,26 @@ public class LoginCookieController {
     }
 
     @PostMapping("/signup")
-    private String signUp(@ModelAttribute SignUpRequest dto) {
+    private String signUp(Model model, @Valid @ModelAttribute SignUpRequest dto, BindingResult bindingResult) {
         try {
             if (dto == null) {
                 return "redirect:/";
             }
-            this.memberService.addMember(dto);
+            if (bindingResult.hasErrors()) {
+                List<String> errorList = new ArrayList<>();
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    errorList.add(error.getField() + " : " + error.getDefaultMessage());
+                    log.info(error.getDefaultMessage());
+                }
+                model.addAttribute("errorList", errorList);
+                return "login/fail";
+            }
+            CUDInfoDto cudInfoDto = new CUDInfoDto(dto);
+            IMember iMember = this.memberService.insert(cudInfoDto, dto);
         } catch (Exception ex) {
             log.error(ex.toString());
+            model.addAttribute("message", "회원 가입 실패 했습니다. 입력 정보를 다시 확인하거나 관리자에게 문의하세요");
+            return "login/fail";
         }
         return "redirect:/";
     }
@@ -55,17 +74,22 @@ public class LoginCookieController {
             }
             IMember loginUser = this.memberService.login(dto);
             if ( loginUser == null ) {
+                model.addAttribute("message", "로그인 실패 실패 했습니다. ID와 암호를 확인하세요");
                 return "login/fail";
             }
-            Cookie cookie = new Cookie(SecurityConfig.LOGINUSER, loginUser.getLoginId());
+            if ( !loginUser.getActive() ) {
+                model.addAttribute("message", "회원계정이 비활성 상태입니다, 관리자에게 문의 하세요");
+                return "login/fail";
+            }
+            Cookie cookie = new Cookie(SecurityConfig.LOGINUSER, loginUser.getNickname());
             cookie.setMaxAge(60 * 30);
             cookie.setPath("/");    // 쿠키 사용 가능한 url 주소를 root 로 설정
             cookie.setHttpOnly(true);   // 쿠키를 client 에서 수정 못하도록 설정
             response.addCookie(cookie);
-
-            model.addAttribute(SecurityConfig.LOGINUSER, loginUser);
         } catch (Exception ex) {
             log.error(ex.toString());
+            model.addAttribute("message", "로그인 실패 실패 했습니다. 관리자에게 문의 하세요");
+            return "login/fail";
         }
         return "redirect:/";
     }
@@ -76,6 +100,12 @@ public class LoginCookieController {
         return "login/signout";
     }
 
-
-
+//    @GetMapping("/signout")
+//    private String signout(HttpSession session, HttpServletResponse response) {
+//        Cookie cookie = new Cookie("loginId", null);
+//        cookie.setMaxAge(0);
+//        response.addCookie(cookie);
+//        session.invalidate();
+//        return "login/signout";
+//    }
 }

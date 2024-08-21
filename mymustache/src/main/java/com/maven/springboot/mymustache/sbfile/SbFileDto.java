@@ -17,7 +17,7 @@ public class SbFileDto implements ISbFile {
     private Integer ord;
     private String fileType;
     private String uniqName;
-    private Integer length;
+    private Long length;
     private String description;
     private String tbl;
     private Long boardId;
