@@ -5,8 +5,8 @@
 
     <insert id="insert" parameterType="SbLikeDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sblike_tbl ( tbl
-                               , nickname
-                               , boardId)
+                              , nickname
+                              , boardId)
         VALUES ( #{tbl}
                , #{nickname}
                , #{boardId})
