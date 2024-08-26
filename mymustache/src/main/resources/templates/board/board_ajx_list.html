@@ -90,6 +90,10 @@
             padding: 10px;
         }
 
+        .board_info{
+            display: flex;
+            flex-direction: column;
+        }
         .file_list .filebox p {
             font-size: 14px;
             margin-top: 10px;
@@ -101,7 +105,7 @@
             margin-left: 5px;
             cursor: pointer;
         }
-		   #listHeader {
+        #listHeader {
             border: 1px black solid;
             font-weight: bold;
             font-style: italic;
@@ -111,7 +115,20 @@
             border: 1px black solid;
             background-color: #FFFFFF;
             color:dodgerblue;
-
+        }
+        #commentList{
+            border-top: 30px;
+        }
+        #commentListHeader{
+            border: 1px black solid;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 15px;
+        }
+        #commentListHeader span{
+            border: 1px black solid;
+            background-color: #bdbbbb;
+            color: #a8eda8;
         }
         #strLi{
             cursor:pointer;
@@ -122,6 +139,10 @@
         }
         #heartIcon{
             cursor:pointer;
+        }
+        #id2{
+            background-color: gray;
+            color:#ffffff;
         }
     </style>
 
@@ -561,9 +582,22 @@
             if (commentList == null) {
                 return;
             }
+            let list =  $("#commentList");
             if (clear) {
-                $("#commentList").children().remove();
+                list.children().remove();
             }
+
+            let commentListHeader ="<div class='row d-flex' id='commentListHeader'>"+
+                "<span class='col-md-3 d-flex justify-content-center'> 작성자 </span>" +
+                "<span class='col-md-3 d-flex justify-content-center'> 내용 </span>" +
+                "<span class='col-md-2 d-flex justify-content-center'> 작성일 </span>" +
+                "<span class='col-md-1 d-flex justify-content-start'> 조회수 </span>" +
+                "<span class='col-md-1 d-flex justify-content-start'> 좋아요 </span>" +
+                "<span class='col-md-1 d-flex justify-content-start'> 삭제 </span>" +
+                "<span class='col-md-1 d-flex justify-content-start'> 좋아요 수 </span>" +
+                "</div>";
+            list.append(commentListHeader);
+
             let html = "";
             for (const commentItem of commentList) {
                 let id = commentItem.id;
@@ -574,7 +608,7 @@
                 let createId = commentItem.createId;
                 let createName = commentItem.createName;
                 html += "<div id='likeList_" + id + "' class='row'>";
-                html += "<div class='commentListDiv col-md-3'><h3>" + createName + "</h3></div>";
+                html += "<div class='commentListDiv col-md-3'><bold>" + createName + "</></div>";
                 html += "<div class='commentListDiv col-md-3'>" + comment + "</div>";
                 html += "<div class='commentListDiv col-md-2'>" + createDt + "</div>";
                 html += "<div class='commentListDiv col-md-1'>" + createId + "</div>";
@@ -587,7 +621,7 @@
                 html += "<div class='col-md-1' id='likeListQty_" + id + "'> " + likeQty + " </div>";
                 html += "</div>";
             }
-            $("#commentList").append(html);
+            list.append(html);
         }
 
         // 댓글 좋아요
@@ -1006,14 +1040,14 @@
         <div id="modal_box_view" style="display: none">
             <h2>Board Info</h2>
             <fieldset>
-                <div>
+                <div class="board_info">
                     <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
                 </div>
-                <div>
-                    <label for="name2">Title</label> <input id="name2" name="name2" type="text" value=""/>
+                <div class="board_info">
+                    <label for="name2">제목 : </label> <input id="name2" name="name2" type="text" value=""/>
                 </div>
-                <div>
-                    <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                <div class="board_info">
+                    <label for="content2">내용</label> <textarea id="content2" name="content2"></textarea>
                 </div>
                 <div>
                     <div id="fileListView" class="file-list"></div>
