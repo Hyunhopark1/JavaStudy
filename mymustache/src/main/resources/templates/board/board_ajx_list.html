@@ -328,16 +328,15 @@
 
                 let id = itemList[i].id;
                 let name = itemList[i].name;
-                let content = itemList[i].content;
                 let createDt = itemList[i].createDt;
-                let createId = itemList[i].createId;
+                let createName = itemList[i].createName;
                 let viewQty = itemList[i].viewQty;
                 let likeQty =itemList[i].likeQty;
                 let strLi = "<li id='strLi'><div onClick='$.viewItem(" + id + ");' class='row d-flex'>" +
                     "<span class='col-md-1 d-flex justify-content-center'>" + id + "</span>" +
                     "<span class='col-md-6 d-flex justify-content-center'>" + name + "</span>" +
                     "<span class='col-md-2 d-flex justify-content-center'>" + createDt   +"</span>" +
-                    "<span class='col-md-1 d-flex justify-content-start'>" + createId   +"</span>" +
+                    "<span class='col-md-1 d-flex justify-content-start'>" + createName   +"</span>" +
                     "<span class='col-md-1 d-flex justify-content-end'>" + viewQty   +"</span>" +
                     "<span class='col-md-1 d-flex justify-content-end'>" + likeQty   +"</span>" +
                     "</div></li>";
