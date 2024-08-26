@@ -1,9 +1,6 @@
 package com.maven.springboot.mymustache.member;
 
-import com.softagape.mustacheajax.commons.dto.CUDInfoDto;
-import com.softagape.mustacheajax.member.MemberDto;
-import com.softagape.mustacheajax.member.IMember;
-import com.softagape.mustacheajax.member.IMemberMybatisMapper;
+import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
