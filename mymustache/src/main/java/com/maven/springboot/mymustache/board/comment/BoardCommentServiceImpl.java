@@ -24,7 +24,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
         }
         CommentLikeDto commentLikeDto = CommentLikeDto.builder()
                 .commentTbl(new BoardCommentDto().getTbl())
-                .userId(cudInfoDto.getLoginUser().getId())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .commentId(id)
                 .build();
 
@@ -43,7 +43,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
         }
         CommentLikeDto commentLikeDto = CommentLikeDto.builder()
                 .commentTbl(new BoardCommentDto().getTbl())
-                .userId(cudInfoDto.getLoginUser().getId())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .commentId(id)
                 .build();
 

@@ -57,8 +57,8 @@
              , bt.deleteFlag
         FROM board_tbl AS bt
         LEFT JOIN member_tbl AS ct ON bt.createId = ct.id
-        LEFT JOIN member_tbl AS ut ON bt.createId = ut.id
-        LEFT JOIN member_tbl AS dt ON bt.createId = dt.id
+        LEFT JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT JOIN member_tbl AS dt ON bt.deleteId = dt.id
         WHERE bt.id = #{id}
             AND bt.deleteFlag = false
     </select>
