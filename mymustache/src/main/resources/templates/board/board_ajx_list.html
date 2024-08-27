@@ -403,6 +403,8 @@
             $("#content2").val(item.content);
             $("#viewQty2").val(item.viewQty);
             $("#likeQty2").text(item.likeQty);
+            $("#createName").text(item.createName);
+            $("#createDt").text(item.createDt);
             let count = item.deleteDt;
             if (count === "0") {
                 $("#heartIcon").attr("src", "/svg/heartOff.svg");
