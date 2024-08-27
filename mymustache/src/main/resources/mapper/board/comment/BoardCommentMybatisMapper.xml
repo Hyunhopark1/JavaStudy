@@ -91,18 +91,18 @@
              , ut.nickname AS updateName
              , bc.deleteDt
              , bc.deleteId
-             , dt.nickname AS deleteName
+             , dt.nickName AS deleteName
              , bc.deleteFlag
              , cl.commentId
         FROM board_comment_tbl AS bc
-        LEFT JOIN comment_like_tbl AS cl
-            ON cl.commentTbl = #{commentTbl} AND cl.createId = #{createId} AND bc.id = cl.commentId
-        LEFT OUTER JOIN member_tbl AS ct ON bc.createId = ct.id
-        LEFT OUTER JOIN member_tbl AS ut ON bc.updateId = ut.id
-        LEFT OUTER JOIN member_tbl AS dt ON bc.deleteId = dt.id
+                 LEFT JOIN comment_like_tbl AS cl
+                     ON cl.commentTbl = #{commentTbl} AND cl.createId = #{createId} AND bc.id = cl.commentId
+                 LEFT OUTER JOIN member_tbl AS ct ON bc.createId = ct.id
+                 LEFT OUTER JOIN member_tbl AS ut ON bc.updateId = ut.id
+                 LEFT OUTER JOIN member_tbl AS dt ON bc.deleteId = dt.id
         WHERE bc.boardId = #{boardId}
           AND bc.deleteFlag = false
         ORDER BY ${orderByWord}
-        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+            LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
 </mapper>
