@@ -116,8 +116,9 @@
             background-color: #FFFFFF;
             color:dodgerblue;
         }
+
         #commentList{
-            border-top: 30px;
+            border:200px;
         }
         #commentListHeader{
             border: 1px black solid;
@@ -127,8 +128,8 @@
         }
         #commentListHeader span{
             border: 1px black solid;
-            background-color: #bdbbbb;
-            color: #a8eda8;
+            background-color: #fdf5f5;
+            color: #70ec70;
         }
         #strLi{
             cursor:pointer;
@@ -141,9 +142,10 @@
             cursor:pointer;
         }
         #id2{
-            background-color: gray;
+            background-color: lightgray;
             color:#ffffff;
         }
+
     </style>
 
     <script>
@@ -599,6 +601,7 @@
             list.append(commentListHeader);
 
             let html = "";
+
             for (const commentItem of commentList) {
                 let id = commentItem.id;
                 let comment = commentItem.comment;
@@ -1077,7 +1080,7 @@
                     <button class="modalCloseButton">Close</button>
                 </div>
             </div>
-            <fieldset>
+            <fieldset id="comment_input">
                 <label for="comment"></label> <input type="text" id="comment" name="comment" maxlength="100"/>
                 <button id="addComment" onclick="$.addComment();">댓글추가</button>
             </fieldset>
