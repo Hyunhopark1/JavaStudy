@@ -10,48 +10,6 @@ public class CommentLikeServiceImpl implements ICommentLikeService {
     private ICommentLikeMybatisMapper commentLikeMybatisMapper;
 
     @Override
-    public ICommentLike insert(CUDInfoDto info, ICommentLike dto) {
-        if ( dto == null ) {
-            return null;
-        }
-        CommentLikeDto insert = CommentLikeDto.builder().id(0L).build();
-        insert.copyFields(dto);
-        commentLikeMybatisMapper.insert(insert);
-        return insert;
-    }
-
-    @Override
-    public ICommentLike update(CUDInfoDto info, ICommentLike dto) {
-        return null;
-    }
-
-    @Override
-    public Boolean updateDeleteFlag(CUDInfoDto info, ICommentLike dto) {
-        return false;
-    }
-
-    @Override
-    public Boolean deleteById(Long id) {
-        return false;
-    }
-
-    @Override
-    public ICommentLike findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public Boolean deleteByCommentTableUserBoard(CommentLikeDto dto) {
-        if ( dto == null || dto.getCommentTbl() == null || dto.getCommentTbl().isEmpty()
-                || dto.getCreateId() == null
-                || dto.getCommentId() == null || dto.getCommentId() <= 0 ) {
-            return false;
-        }
-        this.commentLikeMybatisMapper.countByCommentTableUserBoard(dto);
-        return true;
-    }
-
-    @Override
     public Integer countByCommentTableUserBoard(ICommentLike searchDto) {
         if ( searchDto == null || searchDto.getCommentTbl() == null || searchDto.getCommentTbl().isEmpty()
                 || searchDto.getCreateId() == null

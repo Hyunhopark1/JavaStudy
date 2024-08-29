@@ -94,6 +94,10 @@
             display: flex;
             flex-direction: column;
         }
+        .board_add{
+            display: flex;
+            flex-direction: column;
+        }
         .file_list .filebox p {
             font-size: 14px;
             margin-top: 10px;
@@ -125,6 +129,7 @@
             font-weight: bold;
             font-style: italic;
             font-size: 15px;
+            margin-top : 100px;
         }
         #commentListHeader span{
             border: 1px black solid;
@@ -1018,14 +1023,11 @@
         <div id="modal_box_add" style="display: none">
             <h2>Board Add</h2>
                 <fieldset>
-                    <div>
-                        <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
+                    <div class="board_add">
+                        <label for="name">제목</label> <input id="name" name="name" type="text" value=""/>
                     </div>
-                    <div>
-                        <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
-                    </div>
-                    <div>
-                        <label for="content">content</label> <textarea id="content" name="content"></textarea>
+                    <div class="board_add">
+                        <label for="content">내용</label> <textarea id="content" name="content"></textarea>
                     </div>
                     <div>
                         <label for="file">첨부파일</label>

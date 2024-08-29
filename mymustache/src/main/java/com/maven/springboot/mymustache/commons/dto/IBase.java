@@ -16,11 +16,11 @@ public interface IBase {
     String getUpdateDt();
     void setUpdateDt(String updateDt);
 
-    String getUpdateName();
-    void setUpdateName(String updateName);
-
     Long getUpdateId();
     void setUpdateId(Long updateId);
+
+    String getUpdateName();
+    void setUpdateName(String updateName);
 
     String getDeleteDt();
     void setDeleteDt(String deleteDt);
@@ -44,17 +44,26 @@ public interface IBase {
         if (from.getCreateId() != null) {
             this.setCreateId(from.getCreateId());
         }
-        if (from.getUpdateDt() != null) {
+        if (from.getCreateName() != null && !from.getCreateName().isEmpty()) {
+            this.setCreateName(from.getCreateName());
+        }
+        if (from.getUpdateDt() != null && !from.getUpdateDt().isEmpty()) {
             this.setUpdateDt(from.getUpdateDt());
         }
         if (from.getUpdateId() != null) {
             this.setUpdateId(from.getUpdateId());
         }
-        if (from.getDeleteDt() != null ) {
+        if (from.getUpdateName() != null && !from.getUpdateName().isEmpty()) {
+            this.setUpdateName(from.getUpdateName());
+        }
+        if (from.getDeleteDt() != null && !from.getDeleteDt().isEmpty()) {
             this.setDeleteDt(from.getDeleteDt());
         }
-        if (from.getDeleteId() != null ) {
+        if (from.getDeleteId() != null) {
             this.setDeleteId(from.getDeleteId());
+        }
+        if (from.getDeleteName() != null && !from.getDeleteName().isEmpty()) {
+            this.setDeleteName(from.getDeleteName());
         }
         if (from.getDeleteFlag() != null) {
             this.setDeleteFlag(from.getDeleteFlag());
@@ -67,18 +76,18 @@ public interface IBase {
         return dateFormat.format(today);
     }
 
-    default void setCreateInfo(Long userId) {
+    default void setCreateInfo(Long memberId) {
         this.setCreateDt(this.getSystemDt());
-        this.setCreateId(userId);
+        this.setCreateId(memberId);
     }
 
-    default void setUpdateInfo(Long userId) {
+    default void setUpdateInfo(Long memberId) {
         this.setUpdateDt(this.getSystemDt());
-        this.setUpdateId(userId);
+        this.setUpdateId(memberId);
     }
 
-    default void setDeleteInfo(Long userId) {
+    default void setDeleteInfo(Long memberId) {
         this.setDeleteDt(this.getSystemDt());
-        this.setDeleteId(userId);
+        this.setDeleteId(memberId);
     }
 }

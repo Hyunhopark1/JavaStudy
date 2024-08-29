@@ -2,9 +2,9 @@ package com.maven.springboot.mymustache.member;
 
 import com.maven.springboot.mymustache.commons.dto.CUDInfoDto;
 import com.maven.springboot.mymustache.commons.dto.SearchAjaxDto;
+import com.maven.springboot.mymustache.commons.exception.IdNotFoundException;
 import com.maven.springboot.mymustache.security.dto.LoginRequest;
 import com.maven.springboot.mymustache.security.dto.SignUpRequest;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -101,6 +101,9 @@ public class MemberServiceImpl implements IMemberService {
             return null;
         }
         MemberDto find = this.memberMybatisMapper.findById(id);
+        if (find == null) {
+            throw new IdNotFoundException(String.format("Error : not found id = %d !", id));
+        }
         return find;
     }
 
@@ -175,14 +178,7 @@ public class MemberServiceImpl implements IMemberService {
         if (dto == null) {
             return List.of();
         }
-        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
-                + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        if ( dto.getRowsOnePage() == null ) {
-            dto.setRowsOnePage(10);
-        }
-        if ( dto.getPage() == null || dto.getPage() <= 0 ) {
-            dto.setPage(1);
-        }
+        dto.settingValues();
         List<IMember> result = this.getIMemberList(
                 this.memberMybatisMapper.findAllByNameContains(dto)
         );
