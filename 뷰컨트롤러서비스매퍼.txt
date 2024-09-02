@@ -9,7 +9,8 @@ service는 파라미터로 받아온 모델(객체)를 mapper의 insert메소드
 그럼 결론적으로 mapper의 insert메소드 파라미터로 모델(객체)가 도착하고  해당 메소드가 실행되면
 mapper.xml에 매핑되어있는 쿼리문이 실행된다.
 
-
+**컨트롤러는 뷰가 보낸 객체를 서비스와 매퍼로 전달하여 다시 필요한 객체를 return받고 그 return된 객체를
+model.addAttribute를 통해 뷰로 다시 전달하고 화면파일을 return한다.
 
 
 *********주의 사항  :  mapper의 파라미터는 반드시 Dto클래스여야한다, 만약 service단에서
@@ -62,9 +63,9 @@ public class BoardServiceImpl implements IBoardService {
  @AutoWired
  private BoardMybatisMapper boardMybatisMapper;
 
- public void insert(
+ public void insert(BoardDto dto){
 
-
-
-
+   this.boardMybatisMapper.insert(
+	
+ }
 } 

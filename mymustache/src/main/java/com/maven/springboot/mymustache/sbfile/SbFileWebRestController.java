@@ -37,16 +37,16 @@ public class SbFileWebRestController implements IResponseController {
             }
             makeResponseCheckLogin(model);
             List<ISbFile> result = this.sbFileService.findAllByTblBoardId(search);
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", result);
         } catch (LoginAccessException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, ex.getMessage(), null);
         } catch (IdNotFoundException ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, ex.getMessage(), null);
         } catch (Exception ex) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
