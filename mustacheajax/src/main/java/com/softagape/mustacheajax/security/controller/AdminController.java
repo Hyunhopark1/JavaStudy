@@ -3,6 +3,7 @@ package com.softagape.mustacheajax.security.controller;
 import com.softagape.mustacheajax.member.IMember;
 import com.softagape.mustacheajax.member.IMemberService;
 import com.softagape.mustacheajax.member.MemberRole;
+import com.softagape.mustacheajax.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

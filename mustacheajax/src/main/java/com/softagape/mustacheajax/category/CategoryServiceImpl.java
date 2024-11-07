@@ -1,6 +1,6 @@
 package com.softagape.mustacheajax.category;
 
-import com.softagape.mustacheajax.SearchAjaxDto;
+import com.softagape.mustacheajax.commons.dto.SearchAjaxDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements ICategoryService<ICategory> {
     @Autowired  // SpringBoot 가 CategoryMybatisMapper 데이터형으로 객체를 자동 생성한다.
-    private CategoryMybatisMapper categoryMybatisMapper;
+    private ICategoryMybatisMapper categoryMybatisMapper;
 
     @Override
     public ICategory findById(Long id) {
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public ICategory insert(ICategory category) throws Exception {
+    public ICategory insert(ICategory category) {
         if ( !isValidInsert(category) ) {
             return null;
         }
@@ -85,7 +85,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public Boolean delete(Long id) throws Exception {
+    public Boolean deleteById(Long id) {
         ICategory find = this.findById(id);
         if ( find == null ) {
             return false;
@@ -96,12 +96,15 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public ICategory update(Long id, ICategory category) throws Exception {
-        ICategory find = this.findById(id);
+    public ICategory update(ICategory dto) {
+        if ( dto == null || dto.getId() == null || dto.getId() <= 0 ) {
+            return null;
+        }
+        ICategory find = this.findById(dto.getId());
         if ( find == null ) {
             return null;
         }
-        find.copyFields(category);
+        find.copyFields(dto);
         this.categoryMybatisMapper.update((CategoryDto) find);
         // CategoryMybatisMapper 의 쿼리 XML 파일의 <update id="update" 문장을 실행한다.
         return find;
@@ -113,13 +116,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
             //return List.of();
             return new ArrayList<>();
         }
-        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
-                + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        // SQL select 문장의 ORDER BY 구문을 만들어 주는 역할
-        if ( dto.getRowsOnePage() == null ) {
-            // 한 페이지당 보여주는 행의 갯수
-            dto.setRowsOnePage(10);
-        }
+        dto.settingValues();
         List<ICategory> list = this.getICategoryList(
                 this.categoryMybatisMapper.findAllByNameContains(dto)
                 // CategoryMybatisMapper 의 쿼리 XML 파일의 <select id="findAllByNameContains" 문장을 실행한 결과를 리턴한다.

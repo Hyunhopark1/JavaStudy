@@ -1,16 +1,16 @@
 package com.softagape.mustacheajax.member;
 
-import com.softagape.mustacheajax.ICommonService;
-import com.softagape.mustacheajax.SearchAjaxDto;
+import com.softagape.mustacheajax.commons.dto.SearchAjaxDto;
+import com.softagape.mustacheajax.commons.inif.IServiceCRUD;
 import com.softagape.mustacheajax.security.dto.LoginRequest;
-import com.softagape.mustacheajax.security.dto.SignUpRequest;
 
 import java.util.List;
 
-public interface IMemberService extends ICommonService<MemberDto> {
-    IMember login(LoginRequest dto);
-    IMember addMember(SignUpRequest dto);
+public interface IMemberService extends IServiceCRUD<IMember> {
+    IMember login(LoginRequest loginRequest);
+    Boolean changePassword(IMember dto) throws Exception;
     IMember findByLoginId(String loginId);
-    List<IMember> findAllByLoginIdContains(SearchAjaxDto dto);
-    int countAllByLoginIdContains(SearchAjaxDto dto);
+    IMember findByNickname(String nickname);
+    Integer countAllByNameContains(SearchAjaxDto dto);
+    List<IMember> findAllByNameContains(SearchAjaxDto dto);
 }

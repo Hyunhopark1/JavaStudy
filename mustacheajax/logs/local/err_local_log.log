@@ -1,0 +1,2 @@
+ERROR 24-11-07 19:17:23[http-nio-8088-exec-7] [LoginSessionController:54] - org.mybatis.spring.MyBatisSystemException
+ERROR 24-11-07 19:18:04[http-nio-8088-exec-7] [LoginSessionController:54] - org.mybatis.spring.MyBatisSystemException

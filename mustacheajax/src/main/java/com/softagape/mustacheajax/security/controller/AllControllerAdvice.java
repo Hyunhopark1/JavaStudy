@@ -2,6 +2,7 @@ package com.softagape.mustacheajax.security.controller;
 
 import com.softagape.mustacheajax.member.IMember;
 import com.softagape.mustacheajax.member.IMemberService;
+import com.softagape.mustacheajax.security.config.SecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -18,11 +19,11 @@ public class AllControllerAdvice {
 
     private final String[] authUrls = new String[]{
             "/api"
+            , "/catweb"
             , "/admin"
             , "/user"
             , "/member"
             , "/board"
-            ,"/catweb"
     };
 
 

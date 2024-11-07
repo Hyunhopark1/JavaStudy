@@ -1,5 +1,6 @@
 package com.softagape.mustacheajax.category;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoryServiceImplTest {
@@ -26,16 +28,16 @@ public class CategoryServiceImplTest {
     @Test
     @Order(1)
     public void CategoryInsertTest() throws Exception {
-        CategoryDto insert = CategoryDto.builder()
-                .name("123456789012345678901").build();
-        Throwable exception = assertThrows(Exception.class, () -> {
-            categoryService.insert(insert);
-        });
-        System.out.println(exception.toString());
-
-        CategoryDto insert2 = CategoryDto.builder().build();
-        ICategory resultInsert2 = categoryService.insert(insert2);
+        CategoryDto insert = CategoryDto.builder().build();
+        ICategory resultInsert2 = categoryService.insert(insert);
         assertThat(resultInsert2).isNull();
+
+        CategoryDto insert2 = CategoryDto.builder()
+                .name("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890").build();
+        Throwable exception = assertThrows(Exception.class, () -> {
+            categoryService.insert(insert2);
+        });
+        log.error("Exception : {}", exception.toString());
 
         CategoryDto insert3 = CategoryDto.builder()
                 .name("AAAAAA").build();
@@ -59,7 +61,7 @@ public class CategoryServiceImplTest {
     public void CategoryUpdateTest() throws Exception {
         ICategory find2ICategory = this.categoryService.findByName("AAAAAA");
         find2ICategory.setName("ABCDEFGH");
-        ICategory save = this.categoryService.update(find2ICategory.getId(), find2ICategory);
+        ICategory save = this.categoryService.update(find2ICategory);
         this.AssertFields(save, find2ICategory);
         ICategory find3ICategory = this.categoryService.findById(find2ICategory.getId());
         this.AssertFields(find3ICategory, find2ICategory);
@@ -70,7 +72,7 @@ public class CategoryServiceImplTest {
     public void CategoryDeleteTest() throws Exception {
         ICategory find2ICategory = this.categoryService.findByName("ABCDEFGH");
         assertThat(find2ICategory).isNotNull();
-        this.categoryService.delete(find2ICategory.getId());
+        this.categoryService.deleteById(find2ICategory.getId());
         ICategory find3ICategory = this.categoryService.findById(find2ICategory.getId());
         assertThat(find3ICategory).isNull();
     }
